@@ -1,12 +1,12 @@
 package com;
 
-public class Oprand {
+public class Instru {
 	
 	public Object opcode;
 	
 	public Object opcodeNum;
 
-	public Oprand(Object opcode, Object opcodeNum) {
+	public Instru(Object opcode, Object opcodeNum) {
 		super();
 		this.opcode = opcode;
 		this.opcodeNum = opcodeNum;

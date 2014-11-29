@@ -1,4 +1,4 @@
-package com;
+package com.javaStack;
 
 import java.util.List;
 import java.util.Stack;

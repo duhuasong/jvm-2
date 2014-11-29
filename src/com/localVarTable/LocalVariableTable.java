@@ -1,4 +1,4 @@
-package com;
+package com.localVarTable;
 
 import java.util.ArrayList;
 import java.util.List;
