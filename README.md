@@ -1,2 +1,2 @@
-myjvm is my second github project
+gitxj is my second github project
 =====
