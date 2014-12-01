@@ -1,0 +1,28 @@
+Compiled from "MyTest.java"
+public class test.MyTest extends java.lang.Object{
+public test.MyTest();
+  Code:
+   0:   aload_0
+   1:   invokespecial   #8; //Method java/lang/Object."<init>":()V
+   4:   return
+
+public static void main(java.lang.String[]);
+  Code:
+   0:   iconst_1
+   1:   istore_1
+   2:   bipush  11
+   4:   istore_2
+   5:   iload_1
+   6:   iload_2
+   7:   invokestatic    #16; //Method add:(II)I
+   10:  istore_3
+   11:  return
+
+public static int add(int, int);
+  Code:
+   0:   iload_0
+   1:   iload_1
+   2:   iadd
+   3:   ireturn
+
+}

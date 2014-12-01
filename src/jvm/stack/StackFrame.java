@@ -1,10 +1,10 @@
-package com.javaStack;
+package jvm.stack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import com.localVarTable.LocalVariableTable;
+import jvm.stack.localVarTable.LocalVariableTable;
 
 public class StackFrame {
 	//局部变量表

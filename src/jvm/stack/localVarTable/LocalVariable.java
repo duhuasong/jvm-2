@@ -1,6 +1,6 @@
-package com.localVarTable;
+package jvm.stack.localVarTable;
 
-import com.operandStack.OperandVariable;
+import jvm.stack.operandStack.OperandVariable;
 
 public class LocalVariable extends OperandVariable{
 	//±äÁ¿Ãû

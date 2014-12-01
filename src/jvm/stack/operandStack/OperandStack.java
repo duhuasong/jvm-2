@@ -1,4 +1,4 @@
-package com.operandStack;
+package jvm.stack.operandStack;
 
 import java.util.Stack;
 
