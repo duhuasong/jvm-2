@@ -3,7 +3,7 @@ package jvm.memory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Memory {
 	
@@ -15,6 +15,6 @@ public class Memory {
 	/**
 	 * jvm执行的入口方法
 	 */
-	public static BlockingQueue entrancesMethods = new LinkedBlockingDeque<>();
+	public static BlockingQueue<StaticMethod> entrancesMethods = new LinkedBlockingQueue<StaticMethod>();
 	
 }

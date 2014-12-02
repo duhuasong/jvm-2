@@ -1,4 +1,4 @@
-package jvm.instruct;
+package jvm.instruction;
 
 public class InstructionProcessor {
 	

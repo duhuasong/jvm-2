@@ -3,7 +3,7 @@ package jvm.bootstrap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import jvm.classloader.BaseClassLoader;
+import jvm.classloader.TestClassLoader;
 import jvm.daemon.EntrancesSearcher;
 
 public class MyJvm {
@@ -12,7 +12,9 @@ public class MyJvm {
 
 	public static void java(String className) {
 		
-		BaseClassLoader.loadClass(className);
+		TestClassLoader testClassLoader = new TestClassLoader();
+		
+		testClassLoader.loadClass(className);
 		
 		launchJvm();
 	}
