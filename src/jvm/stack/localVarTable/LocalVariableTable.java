@@ -27,18 +27,6 @@ public class LocalVariableTable {
 
 	}
 	
-	/**
-	 * 根据插槽返回数据
-	 * @param slot
-	 */
-	public Object getLocalVariableBySlot(int slot){
-		for(LocalVariable lv : values){
-			if(lv.getSlot() == slot){
-				return lv.getValue();
-			}
-		}
-		return null;
-	}
 
 	public int getLocals() {
 		return locals;

@@ -1,4 +1,4 @@
-package jvm.classloader;
+package jvm.classloader.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,11 @@ import jvm.instruction.Instruction;
 import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
 import jvm.memory.StaticMethod;
-
+/**
+ * 把类的信息加载到Memory中
+ * @author yangrui
+ *
+ */
 public class TestClassLoader implements BaseClassLoader{
 	
 	/**

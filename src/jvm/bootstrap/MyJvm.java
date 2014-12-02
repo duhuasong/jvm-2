@@ -1,27 +1,22 @@
 package jvm.bootstrap;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
-import jvm.classloader.TestClassLoader;
+import jvm.classloader.impl.TestClassLoader;
 import jvm.daemon.EntrancesSearcher;
 
 public class MyJvm {
 	
-	private static ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-
 	public static void java(String className) {
 		
 		TestClassLoader testClassLoader = new TestClassLoader();
 		
 		testClassLoader.loadClass(className);
 		
-		launchJvm();
+		launchEntranSearcher();
 	}
 
-	private static void launchJvm() {
+	private static void launchEntranSearcher() {
 		
-		pool.execute(new EntrancesSearcher());
+		new Thread(new EntrancesSearcher()).start();
 		
 	}
 	

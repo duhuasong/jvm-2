@@ -14,8 +14,8 @@ public class LocalVariable extends OperandVariable{
 		super();
 	}
 
-	public LocalVariable(String name, String signature,int slot,String value) {
-		super(slot,value);
+	public LocalVariable(String name, String signature,String value) {
+		super(value);
 		this.name = name;
 		this.signature = signature;
 	}
