@@ -1,10 +1,9 @@
-package jvm.classloader.impl;
+package jvm.classloader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jvm.classloader.inter.BaseClassLoader;
-import jvm.instruction.Instruction;
+import jvm.engine.instruction.Instruction;
 import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
 import jvm.memory.StaticMethod;
@@ -13,7 +12,7 @@ import jvm.memory.StaticMethod;
  * @author yangrui
  *
  */
-public class TestClassLoader implements BaseClassLoader{
+public class TestClassLoader implements IClassLoader{
 	
 	/**
 	 * º”‘ÿ¿‡£¨»Á£∫

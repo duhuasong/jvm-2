@@ -2,7 +2,7 @@ package jvm.memory;
 
 import java.util.List;
 
-import jvm.instruction.Instruction;
+import jvm.engine.instruction.Instruction;
 
 public class StaticMethod {
 	

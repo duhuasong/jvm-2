@@ -1,6 +1,6 @@
-package jvm.instruction;
+package jvm.engine.instruction;
 
-import jvm.instruction.inter.InstructionProcessor;
+import jvm.engine.instruction.instructSet.InstructionProcessor;
 import jvm.stack.StackFrame;
 
 public class InstructionInterpreter {

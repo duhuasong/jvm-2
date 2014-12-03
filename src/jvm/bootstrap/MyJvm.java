@@ -1,7 +1,7 @@
 package jvm.bootstrap;
 
-import jvm.classloader.impl.TestClassLoader;
-import jvm.daemon.EntrancesSearcher;
+import jvm.classloader.TestClassLoader;
+import jvm.engine.ExecuteEngine;
 
 public class MyJvm {
 	
@@ -11,13 +11,9 @@ public class MyJvm {
 		
 		testClassLoader.loadClass(className);
 		
-		launchEntranSearcher();
+		ExecuteEngine.execute();
+		
 	}
 
-	private static void launchEntranSearcher() {
-		
-		new Thread(new EntrancesSearcher()).start();
-		
-	}
 	
 }

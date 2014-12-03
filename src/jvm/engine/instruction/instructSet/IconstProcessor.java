@@ -1,7 +1,6 @@
-package jvm.instruction.impl;
+package jvm.engine.instruction.instructSet;
 
-import jvm.instruction.Instruction;
-import jvm.instruction.inter.InstructionProcessor;
+import jvm.engine.instruction.Instruction;
 import jvm.stack.StackFrame;
 
 public class IconstProcessor implements InstructionProcessor{

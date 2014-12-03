@@ -1,4 +1,4 @@
-package jvm.instruction;
+package jvm.engine.instruction;
 
 public class Instruction {
 	

@@ -1,15 +1,20 @@
-package jvm.stack;
+package jvm.engine;
 
 import jvm.memory.StaticMethod;
+import jvm.stack.JavaStack;
+import jvm.stack.StackFrame;
+/**
+ * 该线程创建一个java栈
+ * @author yangrui
+ *
+ */
+public class StackWorker implements Runnable{
 
-public class StackOperator {
-	
 	private JavaStack javaStack;
-	
-	public StackOperator(StaticMethod mainMethod) {
+
+	public StackWorker(StaticMethod mainMethod) {
 		init(mainMethod);
 	}
-	
 	/**
 	 * 初始化栈和栈帧
 	 */
@@ -20,11 +25,10 @@ public class StackOperator {
 		StackFrame mainFrame = new StackFrame(mainMethod);
 		javaStack.getStack().push(mainFrame);
 	}
-	
-	
-	public void execute() {
-		javaStack.execute();
+
+	@Override
+	public void run() {
+		
 	}
-	
 
 }

@@ -3,8 +3,8 @@ package jvm.stack;
 import java.util.List;
 import java.util.Stack;
 
-import jvm.instruction.Instruction;
-import jvm.instruction.InstructionInterpreter;
+import jvm.engine.instruction.Instruction;
+import jvm.engine.instruction.InstructionInterpreter;
 import jvm.memory.StaticMethod;
 import jvm.stack.localVarTable.LocalVariableTable;
 
@@ -15,7 +15,7 @@ public class StackFrame {
 	//²Ù×÷ÊýÕ»
 	private Stack<Object> operandStack = new Stack<Object>();
 	
-	private int frameCounter = 0;
+	private int programCounter = 0;
 	
 	private StaticMethod mainMethod;
 
@@ -29,7 +29,7 @@ public class StackFrame {
 		List<Instruction> instructions = mainMethod.getMethodInstructions();
 		for(Instruction instruct : instructions){
 			InstructionInterpreter.explain(instruct,this);
-			frameCounter++;
+			programCounter++;
 		}
 	}
 
