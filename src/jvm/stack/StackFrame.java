@@ -6,23 +6,22 @@ import java.util.Stack;
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionInterpreter;
 import jvm.memory.StaticMethod;
-import jvm.stack.localVarTable.LocalVariableTable;
+import jvm.stack.operandStack.OperandStack;
+import jvm.stack.varTable.LocalVariableTable;
 
 public class StackFrame {
 	
 	//局部变量表
 	private LocalVariableTable localVariableTable;
 	//操作数栈
-	private Stack<Object> operandStack = new Stack<Object>();
+	private OperandStack operandStack = new OperandStack();
 	
 	private int programCounter = 0;
 	
 	private StaticMethod mainMethod;
 
 	public StackFrame(StaticMethod mainMethod) {
-		
 		this.mainMethod = mainMethod;
-		
 	}
 
 	public void execute() {
@@ -43,15 +42,7 @@ public class StackFrame {
 		this.localVariableTable = localVariableTable;
 	}
 
-	public Stack<Object> getOperandStack() {
-		return operandStack;
-	}
 
-	public void setOperandStack(Stack<Object> operandStack) {
-		this.operandStack = operandStack;
-	}
-
-	
 	
 	
 
