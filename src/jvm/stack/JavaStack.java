@@ -2,6 +2,8 @@ package jvm.stack;
 
 import java.util.Stack;
 
+import jvm.memory.BaseMethod;
+
 public class JavaStack {
 	
 	private Stack<StackFrame> stack = new Stack<StackFrame>();
@@ -11,10 +13,10 @@ public class JavaStack {
 	private StackFrame previousStackFrame;
 	
 	
-	public void push(StackFrame stackFrame) {
+	public void pushMethodToFrame(BaseMethod method) {
 		previousStackFrame = currentStackFrame;
-		stack.push(stackFrame);
-		currentStackFrame = stackFrame;
+		currentStackFrame = new StackFrame(method, this);
+		stack.push(currentStackFrame);
 	}
 
 	public Stack<StackFrame> getStack() {
