@@ -9,6 +9,7 @@ import java.util.List;
             0       8     0     a   J
             0       8     2     b   J
             5       3     4     r   J
+   实现暂时忽略long类型占用两个slot的规则
  * @author yangrui
  */
 public class LocalVariableTable {

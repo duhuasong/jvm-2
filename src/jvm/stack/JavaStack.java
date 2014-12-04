@@ -13,7 +13,7 @@ public class JavaStack {
 	private StackFrame previousStackFrame;
 	
 	
-	public void pushMethodToFrame(BaseMethod method) {
+	public void createAndPushFrameByMethod(BaseMethod method) {
 		previousStackFrame = currentStackFrame;
 		currentStackFrame = new StackFrame(method, this);
 		stack.push(currentStackFrame);

@@ -19,7 +19,7 @@ public class StackWorker implements Runnable{
 	 */
 	private void init(StaticMethod mainMethod) {
 		javaStack = new JavaStack();
-		javaStack.pushMethodToFrame(mainMethod);
+		javaStack.createAndPushFrameByMethod(mainMethod);
 	}
 
 	@Override

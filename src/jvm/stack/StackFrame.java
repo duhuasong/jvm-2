@@ -15,7 +15,7 @@ import jvm.stack.varTable.LocalVariableTable;
 public class StackFrame {
 	
 	//栈帧对应的方法
-	private BaseMethod mainMethod;
+	private BaseMethod method;
 	//局部变量表
 	private LocalVariableTable localVariableTable;
 	//操作数栈
@@ -25,14 +25,14 @@ public class StackFrame {
 	
 	private int programCounter = 0;
 	
-	public StackFrame(BaseMethod mainMethod,JavaStack javaStack) {
+	public StackFrame(BaseMethod method,JavaStack javaStack) {
 		super();
 		this.javaStack = javaStack;
-		this.mainMethod = mainMethod;
+		this.method = method;
 	}
 	
 	public void execute() {
-		List<Instruction> instructions = mainMethod.getMethodInstructions();
+		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
 			InstructionInterpreter.explain(instruct,this);
 			programCounter++;

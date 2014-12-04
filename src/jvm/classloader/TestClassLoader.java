@@ -82,7 +82,6 @@ public class TestClassLoader implements IClassLoader{
 	 * @param classInfo
 	 */
 	private  void entrancesMethodsFilter(ClassInfo classInfo) {
-		
 		if(classInfo.getStaticMethods()!=null){
 			for(StaticMethod staticMethod : classInfo.getStaticMethods()){
 				if(staticMethod.getMethodName().endsWith(".main")){
