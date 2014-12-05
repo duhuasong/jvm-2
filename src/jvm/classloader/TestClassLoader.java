@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jvm.engine.instruction.Instruction;
+import jvm.memory.MethodInfo;
 import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
-import jvm.memory.StaticMethod;
 /**
  * 把类的信息加载到Memory中
  * @author yangrui
@@ -34,32 +34,30 @@ public class TestClassLoader implements IClassLoader{
 		
 		ClassInfo classInfo = new ClassInfo(className);
 		
-		assembleClassStaticMethods(classInfo);
-
-		
+		assembleClassBaseMethods(classInfo);
 
 		return classInfo;
 	}
 
-	private  void assembleClassStaticMethods(ClassInfo classInfo) {
+	private  void assembleClassBaseMethods(ClassInfo classInfo) {
 		//设置main方法
-		StaticMethod mainMethod = new StaticMethod();
+		MethodInfo mainMethod = new MethodInfo();
 		List<Instruction> mainInstruct = new ArrayList<Instruction>();
 		mainInstruct.add(new Instruction("iconst_1", null));
 		mainInstruct.add(new Instruction("istore_1", null));
-		mainInstruct.add(new Instruction("bipush", 11));
+		mainInstruct.add(new Instruction("bipush", "11"));
 		mainInstruct.add(new Instruction("istore_2", null));
 		mainInstruct.add(new Instruction("iload_1", null));
 		mainInstruct.add(new Instruction("iload_2", null));
-		mainInstruct.add(new Instruction("invokestatic", "test.MyTest.add", 2));// 第三个代表操作数中的两个参数
+		mainInstruct.add(new Instruction("invokestatic", "test.MyTest.add", "2"));// 第三个代表操作数中的两个参数
 		mainInstruct.add(new Instruction("istore_3", null));
 		mainInstruct.add(new Instruction("return", null));
 		mainMethod.setClassInfo(classInfo);
 		mainMethod.setMethodInstructions(mainInstruct);
-		mainMethod.setMethodName("test.MyTest.main");
+		mainMethod.setName("test.MyTest.main");
 		
 		//设置add方法
-		StaticMethod addMethod = new StaticMethod();
+		MethodInfo addMethod = new MethodInfo();
 		List<Instruction> addInstruct = new ArrayList<Instruction>();
 		addInstruct.add(new Instruction("iload_0", null));
 		addInstruct.add(new Instruction("iload_1", null));
@@ -67,13 +65,13 @@ public class TestClassLoader implements IClassLoader{
 		addInstruct.add(new Instruction("ireturn", null));
 		addMethod.setClassInfo(classInfo);
 		addMethod.setMethodInstructions(addInstruct);
-		addMethod.setMethodName("test.MyTest.add");
+		addMethod.setName("test.MyTest.add");
 		
-		//设置class的staticMethod
-		List<StaticMethod> staticMethods = new ArrayList<StaticMethod>();
-		staticMethods.add(mainMethod);
-		staticMethods.add(addMethod);
-		classInfo.setStaticMethods(staticMethods);
+		//设置class的BaseMethod
+		List<MethodInfo> BaseMethods = new ArrayList<MethodInfo>();
+		BaseMethods.add(mainMethod);
+		BaseMethods.add(addMethod);
+		classInfo.setMethods(BaseMethods);
 		
 	}
 	
@@ -82,11 +80,11 @@ public class TestClassLoader implements IClassLoader{
 	 * @param classInfo
 	 */
 	private  void entrancesMethodsFilter(ClassInfo classInfo) {
-		if(classInfo.getStaticMethods()!=null){
-			for(StaticMethod staticMethod : classInfo.getStaticMethods()){
-				if(staticMethod.getMethodName().endsWith(".main")){
+		if(classInfo.getMethods()!=null){
+			for(MethodInfo BaseMethod : classInfo.getMethods()){
+				if(BaseMethod.getName().endsWith(".main")){
 					try {
-						Memory.entrancesMethods.put(staticMethod);
+						Memory.entrancesMethods.put(BaseMethod);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

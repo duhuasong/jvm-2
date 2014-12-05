@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jvm.memory.Memory;
-import jvm.memory.StaticMethod;
+import jvm.memory.MethodInfo;
 
 /**
  * 在内存中找到main方法入口，并执行
@@ -19,7 +19,7 @@ public class ExecuteEngine  {
 		
 		while(Memory.entrancesMethods.size() > 0){
 			try {
-				StaticMethod mainMethod = Memory.entrancesMethods.take();
+				MethodInfo mainMethod = Memory.entrancesMethods.take();
 				createStackAndExecute(mainMethod);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -28,7 +28,7 @@ public class ExecuteEngine  {
 		
 	}
 	
-	private static void createStackAndExecute(StaticMethod mainMethod) {
+	private static void createStackAndExecute(MethodInfo mainMethod) {
 		pool.execute(new StackWorker(mainMethod));
 	}
 

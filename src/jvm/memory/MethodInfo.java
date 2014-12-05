@@ -4,11 +4,11 @@ import java.util.List;
 
 import jvm.engine.instruction.Instruction;
 
-public class BaseMethod {
+public class MethodInfo {
 	
 	private ClassInfo classInfo;
 	
-	private String methodName;
+	private String name;
 	
 	private List<Instruction> methodInstructions;
 
@@ -20,13 +20,6 @@ public class BaseMethod {
 		this.classInfo = classInfo;
 	}
 
-	public String getMethodName() {
-		return methodName;
-	}
-
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
-	}
 
 	public List<Instruction> getMethodInstructions() {
 		return methodInstructions;
@@ -34,6 +27,14 @@ public class BaseMethod {
 
 	public void setMethodInstructions(List<Instruction> methodInstructions) {
 		this.methodInstructions = methodInstructions;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 

@@ -4,34 +4,47 @@ import java.util.List;
 
 public class ClassInfo {
 	
-	private String className;
+	private String name;
 	
-	private List<StaticMethod> staticMethods;
+	private List<MethodInfo> methods;
 
-	public ClassInfo(String className) {
+	public ClassInfo(String name, List<MethodInfo> methods) {
 		super();
-		this.className = className;
+		this.setName(name);
+		this.methods = methods;
 	}
 
-
-	public String getClassName() {
-		return className;
+	public ClassInfo(String name) {
+		super();
+		this.setName(name);
+	}
+	
+	public List<MethodInfo> getMethods() {
+		return methods;
 	}
 
-
-	public void setClassName(String className) {
-		this.className = className;
+	public void setMethods(List<MethodInfo> methods) {
+		this.methods = methods;
 	}
 
-
-	public List<StaticMethod> getStaticMethods() {
-		return staticMethods;
+	public MethodInfo getMethodByName(String name) {
+		for(MethodInfo method : methods){
+			if(method.getName().equals(name)){
+				return method;
+			}
+		}
+		return null;
 	}
 
-
-	public void setStaticMethods(List<StaticMethod> staticMethods) {
-		this.staticMethods = staticMethods;
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
 
 
 	

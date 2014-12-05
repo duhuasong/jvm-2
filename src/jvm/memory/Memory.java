@@ -15,6 +15,6 @@ public class Memory {
 	/**
 	 * jvm执行的入口方法
 	 */
-	public static BlockingQueue<StaticMethod> entrancesMethods = new LinkedBlockingQueue<StaticMethod>();
+	public static BlockingQueue<MethodInfo> entrancesMethods = new LinkedBlockingQueue<MethodInfo>();
 	
 }

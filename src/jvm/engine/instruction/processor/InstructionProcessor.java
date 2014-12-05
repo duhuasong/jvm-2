@@ -1,4 +1,4 @@
-package jvm.engine.instruction.instructSet;
+package jvm.engine.instruction.processor;
 
 import jvm.engine.instruction.Instruction;
 import jvm.stack.JavaStack;
