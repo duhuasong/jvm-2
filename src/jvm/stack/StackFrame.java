@@ -3,7 +3,6 @@ package jvm.stack;
 import java.util.List;
 
 import jvm.engine.instruction.Instruction;
-import jvm.engine.instruction.InstructionInterpreter;
 import jvm.memory.BaseMethod;
 import jvm.stack.operandStack.OperandStack;
 import jvm.stack.varTable.LocalVariableTable;
@@ -34,7 +33,7 @@ public class StackFrame {
 	public void execute() {
 		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
-			InstructionInterpreter.explain(instruct,this);
+			//InstructionInterpreter.explain(instruct,this);
 			programCounter++;
 		}
 	}

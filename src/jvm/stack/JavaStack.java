@@ -12,37 +12,32 @@ public class JavaStack {
 	
 	private StackFrame previousStackFrame;
 	
-	
+	/**
+	 * 根据方法创建对应的栈帧，把该栈帧压入java栈顶
+	 * @param method
+	 */
 	public void createAndPushFrameByMethod(BaseMethod method) {
 		previousStackFrame = currentStackFrame;
 		currentStackFrame = new StackFrame(method, this);
 		stack.push(currentStackFrame);
 	}
 
+	
+	public void execute() {
+		getCurrentStackFrame().execute();
+	}
+	
+	
 	public Stack<StackFrame> getStack() {
 		return stack;
-	}
-
-	public void setStack(Stack<StackFrame> stack) {
-		this.stack = stack;
 	}
 
 	public StackFrame getCurrentStackFrame() {
 		return currentStackFrame;
 	}
 
-	public void setCurrentStackFrame(StackFrame currentStackFrame) {
-		this.currentStackFrame = currentStackFrame;
-	}
-
 	public StackFrame getPreviousStackFrame() {
 		return previousStackFrame;
 	}
-
-	public void setPreviousStackFrame(StackFrame previousStackFrame) {
-		this.previousStackFrame = previousStackFrame;
-	}
-	
-	
 
 }
