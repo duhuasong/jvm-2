@@ -1,6 +1,7 @@
 package jvm.engine.instruction.processor;
 
 import jvm.engine.instruction.Instruction;
+import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.varTable.LocalVariable;

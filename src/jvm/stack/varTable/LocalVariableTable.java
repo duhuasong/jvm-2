@@ -13,5 +13,9 @@ public class LocalVariableTable {
 	public void put(int localIndex, LocalVariable localVar) {
 		values.put(localIndex, localVar);
 	}
+
+	public LocalVariable get(int index) {
+		return values.get(index);
+	}
 	
 }

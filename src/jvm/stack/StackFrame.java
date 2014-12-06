@@ -18,6 +18,7 @@ public class StackFrame {
 	//栈帧对应的方法
 	private MethodInfo method;
 	//局部变量表
+	//TODO 直接用map？
 	private LocalVariableTable localVariableTable = new LocalVariableTable();
 	//操作数栈
 	private Stack<OperandVariable> operandStack = new Stack<OperandVariable>();
@@ -64,6 +65,12 @@ public class StackFrame {
 
 	public void putLocalVarTable(int localIndex, LocalVariable localVar) {
 		localVariableTable.put(localIndex,localVar);
+	}
+
+	public void loadTableToStack(int index) {
+		LocalVariable localVar = localVariableTable.get(index);
+		OperandVariable operandVar = new OperandVariable(localVar.getType(),localVar.getValue());
+		operandStack.push(operandVar);
 	}
 
 

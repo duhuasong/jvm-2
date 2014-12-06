@@ -66,4 +66,12 @@ public class JavaStack {
 		currentStackFrame.putLocalVarTable(localIndex,localVar);
 	}
 
+	/**
+	 * 把本地变量表中index中的数据load进操作数栈
+	 * @param index
+	 */
+	public void loadCurFrameTableToStack(int index) {
+		currentStackFrame.loadTableToStack(index);
+	}
+
 }

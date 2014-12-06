@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jvm.engine.instruction.Instruction;
-import jvm.memory.MethodInfo;
 import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
+import jvm.memory.MethodInfo;
+import jvm.memory.ParameterDescriptor;
+import jvm.util.Constants;
+import jvm.util.MethodUtil;
 /**
  * 把类的信息加载到Memory中
  * @author yangrui
@@ -54,7 +57,15 @@ public class TestClassLoader implements IClassLoader{
 		mainInstruct.add(new Instruction("return", null));
 		mainMethod.setClassInfo(classInfo);
 		mainMethod.setMethodInstructions(mainInstruct);
-		mainMethod.setName("test.MyTest.main");
+		mainMethod.setName("main");
+		mainMethod.setScope("public");
+		mainMethod.setStatic(true);
+		//设置方法参数
+		ParameterDescriptor param = new ParameterDescriptor();
+		param.addInput(Constants.VarType.STRING_ARRAY);
+		param.addOutput(Constants.VarType.VOID);
+		mainMethod.setDescriptor(param);
+		
 		
 		//设置add方法
 		MethodInfo addMethod = new MethodInfo();
@@ -65,9 +76,18 @@ public class TestClassLoader implements IClassLoader{
 		addInstruct.add(new Instruction("ireturn", null));
 		addMethod.setClassInfo(classInfo);
 		addMethod.setMethodInstructions(addInstruct);
-		addMethod.setName("test.MyTest.add");
+		addMethod.setName("add");
+		addMethod.setScope(Constants.Scope.PUBLIC);
+		addMethod.setStatic(true);
+		//设置方法参数
+		ParameterDescriptor param2 = new ParameterDescriptor();
+		param2.addInput(Constants.VarType.INTEGER);
+		param2.addInput(Constants.VarType.INTEGER);
+		param2.addOutput(Constants.VarType.INTEGER);
+		addMethod.setDescriptor(param2);
 		
-		//设置class的BaseMethod
+		
+		//设置class的methods
 		List<MethodInfo> BaseMethods = new ArrayList<MethodInfo>();
 		BaseMethods.add(mainMethod);
 		BaseMethods.add(addMethod);
@@ -81,10 +101,10 @@ public class TestClassLoader implements IClassLoader{
 	 */
 	private  void entrancesMethodsFilter(ClassInfo classInfo) {
 		if(classInfo.getMethods()!=null){
-			for(MethodInfo BaseMethod : classInfo.getMethods()){
-				if(BaseMethod.getName().endsWith(".main")){
+			for(MethodInfo method : classInfo.getMethods()){
+				if(MethodUtil.isEntryMethod(method)){
 					try {
-						Memory.entrancesMethods.put(BaseMethod);
+						Memory.entrancesMethods.put(method);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

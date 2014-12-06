@@ -10,6 +10,12 @@ public class MethodInfo {
 	
 	private String name;
 	
+	private boolean isStatic;
+	
+	private String Scope;
+	
+	private ParameterDescriptor descriptor;
+	
 	private List<Instruction> methodInstructions;
 
 	public ClassInfo getClassInfo() {
@@ -35,6 +41,30 @@ public class MethodInfo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isStatic() {
+		return isStatic;
+	}
+
+	public void setStatic(boolean isStatic) {
+		this.isStatic = isStatic;
+	}
+
+	public String getScope() {
+		return Scope;
+	}
+
+	public void setScope(String scope) {
+		Scope = scope;
+	}
+
+	public ParameterDescriptor getDescriptor() {
+		return descriptor;
+	}
+
+	public void setDescriptor(ParameterDescriptor descriptor) {
+		this.descriptor = descriptor;
 	}
 
 

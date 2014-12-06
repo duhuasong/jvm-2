@@ -2,7 +2,7 @@ package jvm.engine.instruction;
 
 import jvm.engine.instruction.processor.BipushProcessor;
 import jvm.engine.instruction.processor.IconstProcessor;
-import jvm.engine.instruction.processor.InstructionProcessor;
+import jvm.engine.instruction.processor.IloadProcessor;
 import jvm.engine.instruction.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
 /**
@@ -28,6 +28,10 @@ public class InstructionInterpreter {
 		if(opcode.startsWith("bipush")){
 			return new BipushProcessor();
 		}
+		if(opcode.startsWith("iload_")){
+			return new IloadProcessor();
+		}
+		
 		return null;
 	}
 	
