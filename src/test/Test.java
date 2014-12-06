@@ -1,10 +1,14 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Test {
 
 	public static void main(String[] args) {
-		String str = "iconst_1";
-		System.out.println(str.substring(str.length()-1, str.length()));
+		List<String> list = new ArrayList<String>();
+		
+		list.add(1, "112");
 
 	}
 

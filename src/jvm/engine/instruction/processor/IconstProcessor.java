@@ -4,7 +4,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 /**
- * iconst_<n>指令，把操作数n push到操作数栈（大于5的int值会用到 bipush <i> 指令）
+ * iconst_<n>指令，把常数n push到操作数栈（大于5的int值会用到 bipush <i> 指令）
  * @author yangrui
  */
 public class IconstProcessor implements InstructionProcessor{
@@ -12,9 +12,12 @@ public class IconstProcessor implements InstructionProcessor{
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		String opcode = instruct.getOpcode();
-		String s = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
-		int num = Integer.parseInt(s);
+		//指令下划线后面的常量数字
+		String num_str = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
+		int num = Integer.parseInt(num_str);
+		//创建操作数
 		OperandVariable operVar = new OperandVariable("Integer",num);
+		//push到栈帧的操作数栈
 		javaStack.pushCurrentFrameOprandStack(operVar);
 	}
 

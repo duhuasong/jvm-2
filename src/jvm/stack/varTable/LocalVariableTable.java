@@ -1,23 +1,17 @@
 package jvm.stack.varTable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author yangrui
  */
 public class LocalVariableTable {
 	
-	private List<LocalVariable>	values = new ArrayList<>();
+	private Map<Integer,LocalVariable> values = new HashMap<Integer,LocalVariable>();
 
-	public List<LocalVariable> getValues() {
-		return values;
+	public void put(int localIndex, LocalVariable localVar) {
+		values.put(localIndex, localVar);
 	}
-
-	public void setValues(List<LocalVariable> values) {
-		this.values = values;
-	}
-	
-	
 	
 }

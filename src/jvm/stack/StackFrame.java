@@ -7,6 +7,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionInterpreter;
 import jvm.memory.MethodInfo;
 import jvm.stack.operandStack.OperandVariable;
+import jvm.stack.varTable.LocalVariable;
 import jvm.stack.varTable.LocalVariableTable;
 /**
  * StackFrame只能由JavaStack创建和操作
@@ -17,7 +18,7 @@ public class StackFrame {
 	//栈帧对应的方法
 	private MethodInfo method;
 	//局部变量表
-	private LocalVariableTable localVariableTable;
+	private LocalVariableTable localVariableTable = new LocalVariableTable();
 	//操作数栈
 	private Stack<OperandVariable> operandStack = new Stack<OperandVariable>();
 	
@@ -55,6 +56,14 @@ public class StackFrame {
 
 	public void pushOprandStack(OperandVariable num) {
 		operandStack.push(num);
+	}
+
+	public OperandVariable popOprandStack() {
+		return operandStack.pop();
+	}
+
+	public void putLocalVarTable(int localIndex, LocalVariable localVar) {
+		localVariableTable.put(localIndex,localVar);
 	}
 
 

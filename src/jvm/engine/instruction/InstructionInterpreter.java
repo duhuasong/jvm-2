@@ -2,6 +2,7 @@ package jvm.engine.instruction;
 
 import jvm.engine.instruction.processor.IconstProcessor;
 import jvm.engine.instruction.processor.InstructionProcessor;
+import jvm.engine.instruction.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
 /**
  * iconst_1
@@ -20,8 +21,8 @@ public class InstructionInterpreter {
 		if(opcode.startsWith("iconst_")){
 			return new IconstProcessor();
 		}
-		if(opcode.startsWith("iconst_")){
-			return new IconstProcessor();
+		if(opcode.startsWith("istore_")){
+			return new IstoreProcessor();
 		}
 		return null;
 	}

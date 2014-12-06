@@ -9,6 +9,10 @@ public class LocalVariable extends OperandVariable{
 	public LocalVariable() {
 		super();
 	}
+	
+	public LocalVariable(String type,Object value) {
+		super(type,value);
+	}
 
 	public LocalVariable(String name, String type,Object value) {
 		super(type,value);
