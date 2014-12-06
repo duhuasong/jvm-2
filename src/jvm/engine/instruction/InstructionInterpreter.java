@@ -1,5 +1,6 @@
 package jvm.engine.instruction;
 
+import jvm.engine.instruction.processor.BipushProcessor;
 import jvm.engine.instruction.processor.IconstProcessor;
 import jvm.engine.instruction.processor.InstructionProcessor;
 import jvm.engine.instruction.processor.IstoreProcessor;
@@ -23,6 +24,9 @@ public class InstructionInterpreter {
 		}
 		if(opcode.startsWith("istore_")){
 			return new IstoreProcessor();
+		}
+		if(opcode.startsWith("bipush")){
+			return new BipushProcessor();
 		}
 		return null;
 	}

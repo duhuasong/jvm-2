@@ -29,7 +29,7 @@ public class Instruction {
 		this.opcode = opcode;
 	}
 
-	public Object getOpcodeNum() {
+	public String getOpcodeNum() {
 		return opcodeNum;
 	}
 
