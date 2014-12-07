@@ -3,6 +3,7 @@ package jvm.engine.instruction;
 import jvm.engine.instruction.processor.BipushProcessor;
 import jvm.engine.instruction.processor.IconstProcessor;
 import jvm.engine.instruction.processor.IloadProcessor;
+import jvm.engine.instruction.processor.InvokestaticProcessor;
 import jvm.engine.instruction.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
 /**
@@ -31,7 +32,9 @@ public class InstructionInterpreter {
 		if(opcode.startsWith("iload_")){
 			return new IloadProcessor();
 		}
-		
+		if(opcode.startsWith("invokestatic")){
+			return new InvokestaticProcessor();
+		}
 		return null;
 	}
 	

@@ -25,7 +25,7 @@ public class JavaStack {
 	}
 
 	
-	public void start() {
+	public void executeCurFrame() {
 		currentStackFrame.execute();
 	}
 	
@@ -72,6 +72,18 @@ public class JavaStack {
 	 */
 	public void loadCurFrameTableToStack(int index) {
 		currentStackFrame.loadTableToStack(index);
+	}
+
+	/**
+	 * 把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
+	 */
+	public void preOprandStackToCurLocalTable() {
+		int size = previousStackFrame.getOprandStackSize();
+		for(int i=0;i<size;i++){
+			OperandVariable operVar = previousStackFrame.popOprandStack();
+			LocalVariable localVar = new LocalVariable(operVar.getType(), operVar.getValue());
+			currentStackFrame.putLocalVarTable(i, localVar);
+		}
 	}
 
 }

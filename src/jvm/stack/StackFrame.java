@@ -62,6 +62,10 @@ public class StackFrame {
 	public OperandVariable popOprandStack() {
 		return operandStack.pop();
 	}
+	
+	public int getOprandStackSize() {
+		return operandStack.size();
+	}
 
 	public void putLocalVarTable(int localIndex, LocalVariable localVar) {
 		localVariableTable.put(localIndex,localVar);

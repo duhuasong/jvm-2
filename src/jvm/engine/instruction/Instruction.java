@@ -4,21 +4,23 @@ public class Instruction {
 	
 	public String opcode;
 	
-	public String opcodeNum;
+	public Object opcodeNum;
 	
-	public String opcodeNum2;
+	public Object opcodeNum2;
+	
+	
 
-	public Instruction(String opcode, String opcodeNum) {
-		super();
-		this.opcode = opcode;
-		this.opcodeNum = opcodeNum;
-	}
-
-	public Instruction(String opcode, String opcodeNum, String opcodeNum2) {
+	public Instruction(String opcode, Object opcodeNum, Object opcodeNum2) {
 		super();
 		this.opcode = opcode;
 		this.opcodeNum = opcodeNum;
 		this.opcodeNum2 = opcodeNum2;
+	}
+
+	public Instruction(String opcode, Object opcodeNum) {
+		super();
+		this.opcode = opcode;
+		this.opcodeNum = opcodeNum;
 	}
 
 	public String getOpcode() {
@@ -29,22 +31,22 @@ public class Instruction {
 		this.opcode = opcode;
 	}
 
-	public String getOpcodeNum() {
+	public Object getOpcodeNum() {
 		return opcodeNum;
 	}
 
-	public void setOpcodeNum(String opcodeNum) {
+	public void setOpcodeNum(Object opcodeNum) {
 		this.opcodeNum = opcodeNum;
 	}
 
-	public String getOpcodeNum2() {
+	public Object getOpcodeNum2() {
 		return opcodeNum2;
 	}
 
-	public void setOpcodeNum2(String opcodeNum2) {
+	public void setOpcodeNum2(Object opcodeNum2) {
 		this.opcodeNum2 = opcodeNum2;
 	}
-	
+
 	
 
 	

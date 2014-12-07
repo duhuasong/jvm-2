@@ -24,7 +24,7 @@ public class StackWorker implements Runnable{
 
 	@Override
 	public void run() {
-		javaStack.start();
+		javaStack.executeCurFrame();
 	}
 
 }

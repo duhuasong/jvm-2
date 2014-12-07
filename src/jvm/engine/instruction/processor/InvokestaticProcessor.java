@@ -2,6 +2,7 @@ package jvm.engine.instruction.processor;
 
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
+import jvm.memory.MethodInfo;
 import jvm.stack.JavaStack;
 /**
  * 
@@ -16,7 +17,13 @@ public class InvokestaticProcessor implements InstructionProcessor {
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		
+		MethodInfo invoked = (MethodInfo)instruct.getOpcodeNum();
+		//创建的新的栈帧
+		javaStack.createAndPushFrameByMethod(invoked);
+		//把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
+		javaStack.preOprandStackToCurLocalTable();
+		//开始执行新栈帧的指令
+		javaStack.executeCurFrame();
 	}
 
 }

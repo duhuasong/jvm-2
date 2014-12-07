@@ -43,8 +43,11 @@ public class TestClassLoader implements IClassLoader{
 	}
 
 	private  void assembleClassBaseMethods(ClassInfo classInfo) {
-		//设置main方法
+		
 		MethodInfo mainMethod = new MethodInfo();
+		MethodInfo addMethod = new MethodInfo();
+		
+		//设置main方法
 		List<Instruction> mainInstruct = new ArrayList<Instruction>();
 		mainInstruct.add(new Instruction("iconst_1", null));
 		mainInstruct.add(new Instruction("istore_1", null));
@@ -52,13 +55,13 @@ public class TestClassLoader implements IClassLoader{
 		mainInstruct.add(new Instruction("istore_2", null));
 		mainInstruct.add(new Instruction("iload_1", null));
 		mainInstruct.add(new Instruction("iload_2", null));
-		mainInstruct.add(new Instruction("invokestatic", "test.MyTest.add", "2"));// 第三个代表操作数中的两个参数
+		mainInstruct.add(new Instruction("invokestatic",addMethod));// 第三个代表操作数中的两个参数
 		mainInstruct.add(new Instruction("istore_3", null));
 		mainInstruct.add(new Instruction("return", null));
 		mainMethod.setClassInfo(classInfo);
 		mainMethod.setMethodInstructions(mainInstruct);
 		mainMethod.setName("main");
-		mainMethod.setScope("public");
+		mainMethod.setScope(Constants.Scope.PUBLIC);
 		mainMethod.setStatic(true);
 		//设置方法参数
 		ParameterDescriptor param = new ParameterDescriptor();
@@ -68,7 +71,6 @@ public class TestClassLoader implements IClassLoader{
 		
 		
 		//设置add方法
-		MethodInfo addMethod = new MethodInfo();
 		List<Instruction> addInstruct = new ArrayList<Instruction>();
 		addInstruct.add(new Instruction("iload_0", null));
 		addInstruct.add(new Instruction("iload_1", null));
@@ -88,10 +90,10 @@ public class TestClassLoader implements IClassLoader{
 		
 		
 		//设置class的methods
-		List<MethodInfo> BaseMethods = new ArrayList<MethodInfo>();
-		BaseMethods.add(mainMethod);
-		BaseMethods.add(addMethod);
-		classInfo.setMethods(BaseMethods);
+		List<MethodInfo> methods = new ArrayList<MethodInfo>();
+		methods.add(mainMethod);
+		methods.add(addMethod);
+		classInfo.setMethods(methods);
 		
 	}
 	
