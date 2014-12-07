@@ -1,15 +1,12 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
+import jvm.classloader.impl.BaseClassLoader;
 
 public class Test {
 
 	public static void main(String[] args) {
-		List<String> list = new ArrayList<String>();
-		
-		list.add(1, "112");
-
+		BaseClassLoader bc = new BaseClassLoader();
+		bc.loadClass("test.MyTest");
 	}
 
 }

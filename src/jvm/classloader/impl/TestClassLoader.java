@@ -1,8 +1,9 @@
-package jvm.classloader;
+package jvm.classloader.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jvm.classloader.IClassLoader;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
