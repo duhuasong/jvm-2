@@ -6,6 +6,7 @@ public class MyTest {
 		int i = 1;
 		int j = 11;
 		int c= add(i,j);
+		System.out.println(c);
 	}
 
 	private static int add(int i,int j) {
