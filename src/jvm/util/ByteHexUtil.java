@@ -1,5 +1,7 @@
 package jvm.util;
 
+import java.io.UnsupportedEncodingException;
+
 public class ByteHexUtil {
 
 	public static String bytesToHexString(byte[] src) {
@@ -38,6 +40,15 @@ public class ByteHexUtil {
 				r |= (buf[i] & 0x000000ff);
 			}
 		return r;
+	}
+
+	public static String getStringFromUtf8(byte[] temp) {
+		try {
+			return new String(temp, "US-ASCII");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		};
+		return null;
 	}
 
 }

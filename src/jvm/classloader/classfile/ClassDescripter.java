@@ -3,7 +3,7 @@ package jvm.classloader.classfile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassFileDescripter {
+public class ClassDescripter {
 	
 	public final static List<ElementDescripter> classElements = new ArrayList<ElementDescripter>();
 	
@@ -12,7 +12,7 @@ public class ClassFileDescripter {
 		classElements.add(new ElementDescripter("minor_version", 2));
 		classElements.add(new ElementDescripter("major_version", 2));
 		classElements.add(new ElementDescripter("constant_pool_count", 2));
-		classElements.add(new ElementDescripter("constant_pool_array", 0));
+		classElements.add(new ElementDescripter("constant_pool_array", 3));//第一个数据类型为3个字节（1个字节类型，后两个字节表示索引）
 		classElements.add(new ElementDescripter("access_flags", 2));
 		classElements.add(new ElementDescripter("this_class", 2));
 		classElements.add(new ElementDescripter("super_class", 2));

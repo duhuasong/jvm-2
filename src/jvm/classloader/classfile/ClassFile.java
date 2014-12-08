@@ -1,5 +1,6 @@
 package jvm.classloader.classfile;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ClassFile {
@@ -15,7 +16,7 @@ public class ClassFile {
 	
 	public int constant_pool_count;
 	
-	public Map<Integer,ConstantFile> constantFiles;
+	public Map<Integer,ConstantFile> constantFiles = new HashMap<Integer, ConstantFile>();
 	
 	public String access_flags;
 	

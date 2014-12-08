@@ -20,6 +20,16 @@ public class Constants {
 
 	}
 	
+	public static class ConstantType {
+
+		public final static String ClassType = "07";
+		
+		public final static String utf8 = "01";
+		
+
+	}
+
+	
 
 }
 
