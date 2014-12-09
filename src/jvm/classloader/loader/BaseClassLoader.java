@@ -37,8 +37,11 @@ public class BaseClassLoader implements IClassLoader {
 			
 			int constant_pool_count = 0;
 			int constant_pool_pointer = 1;
-			//当前正在读取的是utf8常量类型的内容（字符串）
-			boolean isUtf8_content = false;
+			//当前读取的常量类型
+			String constant_type = null;
+			//当前读取的常量类型对应的片段（utf8对应3，class类型对应2等）
+			int constant_type_part = 1;
+			
 			
 			int len = readElement.size;
 			byte[] temp = new byte[len];
@@ -74,35 +77,55 @@ public class BaseClassLoader implements IClassLoader {
 					len = readElement.size;
 					temp = new byte[len];
 				}else if(readElement.name.equals("constant_pool_array")){
-					//如果当前正在读取的是tf8常量类型的内容（字符串），就没有type，索引一说了
-					if(isUtf8_content){
-						String content = ByteHexUtil.getStringFromUtf8(temp);
-						ConstantFile cf = new ConstantFile(Constants.ConstantType.utf8,content);
-						classFile.constantFiles.put(constant_pool_pointer++, cf);
-						isUtf8_content = false;
-						
-						len = 3;
-						temp = new byte[len];
-						continue;
-					}
-					//找到常量类型（第一个字节），utf8索引（后两字节）
-					String type = ByteHexUtil.bytesToHexString(new byte[]{temp[0]});
-					int last_u2 = ByteHexUtil.getInt(new byte[]{temp[1],temp[2]}, false, 2);
 					
-					if(Constants.ConstantType.ClassType.equals(type)){//如果常量类型是07，ConstantFile保存类型和utf8索引
-						ConstantFile cf = new ConstantFile(type,last_u2);
-						classFile.constantFiles.put(constant_pool_pointer++, cf);
+					if(null == constant_type){
+						constant_type = ByteHexUtil.bytesToHexString(new byte[]{temp[0]});
+					}
+					
+					if(Constants.ConstantType.ClassType.equals(constant_type)){//如果常量类型是07，class类型
+						//如果当前读取的是class常量的第一部分
+						if(constant_type_part == 1){
+							len = 2;
+							temp = new byte[len];
+							constant_type_part++;
+							continue;
+						}else if(constant_type_part == 2){
+							int utf8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
+							ConstantFile cf = new ConstantFile(Constants.ConstantType.ClassType,utf8_index);
+							classFile.constantFiles.put(constant_pool_pointer++, cf);
+							//重置变量，读取下一个常量
+							constant_type = null;
+							constant_type_part = 1;
+							len = 1;
+							temp = new byte[len];
+							continue;
+						}
+					}else if(Constants.ConstantType.utf8.equals(constant_type)){//如果常量类型是01
+						//如果当前读取的是常量的第一部分
+						if(constant_type_part == 1){
+							len = 2;
+							temp = new byte[len];
+							constant_type_part++;
+							continue;
+						}else if(constant_type_part == 2){
+							len = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
+							temp = new byte[len];
+							constant_type_part++;
+							continue;
+						}else if(constant_type_part == 3){
+							String content = ByteHexUtil.getStringFromUtf8(temp);
+							ConstantFile cf = new ConstantFile(Constants.ConstantType.utf8,content);
+							classFile.constantFiles.put(constant_pool_pointer++, cf);
+							
+							//重置变量，读取下一个常量
+							constant_type = null;
+							constant_type_part = 1;
+							len = 1;
+							temp = new byte[len];
+							continue;
+						}
+					}else if(Constants.ConstantType.method.equals(constant_type)){//如果常量类型是0a
 						
-						len = 3;
-						temp = new byte[len];
-					}else if(Constants.ConstantType.utf8.equals(type)){//如果常量类型是01，后两个字段是字符串的长度
-						len = last_u2;
-						temp = new byte[len];
-						isUtf8_content = true;
-					}else if(Constants.ConstantType.method.equals(type)){//如果常量类型是0a，后面四个字段，前两个是class的索引，后两个是NameAndType索引
-						len = last_u2;
-						temp = new byte[len];
-						isUtf8_content = true;
 					}
 					
 					//如果常量池遍历结束，则执行下一个元素
