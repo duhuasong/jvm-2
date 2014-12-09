@@ -30,6 +30,8 @@ public class Constants {
 		
 		public final static String method = "0a";
 		
+		public final static String nameAndType = "0c";
+		
 
 	}
 

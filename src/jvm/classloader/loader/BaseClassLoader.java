@@ -93,12 +93,20 @@ public class BaseClassLoader implements IClassLoader {
 							int utf8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
 							ConstantFile cf = new ConstantFile(Constants.ConstantType.ClassType,utf8_index);
 							classFile.constantFiles.put(constant_pool_pointer++, cf);
-							//重置变量，读取下一个常量
-							constant_type = null;
-							constant_type_part = 1;
-							len = 1;
-							temp = new byte[len];
-							continue;
+							//如果常量池遍历结束，则执行下一个元素
+							if(constant_pool_pointer >= constant_pool_count){
+								readElement = counter.getCurElement();
+								len = readElement.size;
+								temp = new byte[len];
+								continue;
+							}else{
+								//重置变量，读取下一个常量
+								constant_type = null;
+								constant_type_part = 1;
+								len = 1;
+								temp = new byte[len];
+								continue;
+							}
 						}
 					}else if(Constants.ConstantType.utf8.equals(constant_type)){//如果常量类型是01
 						//如果当前读取的是常量的第一部分
@@ -117,23 +125,52 @@ public class BaseClassLoader implements IClassLoader {
 							ConstantFile cf = new ConstantFile(Constants.ConstantType.utf8,content);
 							classFile.constantFiles.put(constant_pool_pointer++, cf);
 							
-							//重置变量，读取下一个常量
-							constant_type = null;
-							constant_type_part = 1;
-							len = 1;
-							temp = new byte[len];
-							continue;
+							//如果常量池遍历结束，则执行下一个元素
+							if(constant_pool_pointer >= constant_pool_count){
+								readElement = counter.getCurElement();
+								len = readElement.size;
+								temp = new byte[len];
+								continue;
+							}else{
+								//重置变量，读取下一个常量
+								constant_type = null;
+								constant_type_part = 1;
+								len = 1;
+								temp = new byte[len];
+								continue;
+							}
 						}
-					}else if(Constants.ConstantType.method.equals(constant_type)){//如果常量类型是0a
-						
+					}else if(Constants.ConstantType.method.equals(constant_type) || Constants.ConstantType.field.equals(constant_type) || Constants.ConstantType.nameAndType.equals(constant_type)){//如果常量类型是0a
+						//如果当前读取的是常量的第一部分
+						if(constant_type_part == 1){
+							len = 4;
+							temp = new byte[len];
+							constant_type_part++;
+							continue;
+						}else if(constant_type_part == 2){
+							int pre_uft8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
+							int last_uft8_index = ByteHexUtil.getInt(new byte[]{temp[2],temp[3]}, false, 2);
+							ConstantFile cf = new ConstantFile(constant_type,pre_uft8_index,last_uft8_index);
+							classFile.constantFiles.put(constant_pool_pointer++, cf);
+							
+							//如果常量池遍历结束，则执行下一个元素
+							if(constant_pool_pointer >= constant_pool_count){
+								readElement = counter.getCurElement();
+								len = readElement.size;
+								temp = new byte[len];
+								continue;
+							}else{
+								//重置变量，读取下一个常量
+								constant_type = null;
+								constant_type_part = 1;
+								len = 1;
+								temp = new byte[len];
+								continue;
+							}
+							
+						}
 					}
 					
-					//如果常量池遍历结束，则执行下一个元素
-					if(constant_pool_pointer >= constant_pool_count){
-						readElement = counter.getCurElement();
-						len = readElement.size;
-						temp = new byte[len];
-					}
 				}
 				
 			}
