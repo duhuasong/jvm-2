@@ -1,4 +1,4 @@
-package jvm.classloader.impl;
+package jvm.classloader.loader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import jvm.classloader.IClassLoader;
+import jvm.classloader.assist.ClassReadCounter;
+import jvm.classloader.assist.ElementDescripter;
 import jvm.classloader.classfile.ClassFile;
-import jvm.classloader.classfile.ClassReadCounter;
 import jvm.classloader.classfile.ConstantFile;
-import jvm.classloader.classfile.ElementDescripter;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
 
@@ -96,6 +96,10 @@ public class BaseClassLoader implements IClassLoader {
 						len = 3;
 						temp = new byte[len];
 					}else if(Constants.ConstantType.utf8.equals(type)){//如果常量类型是01，后两个字段是字符串的长度
+						len = last_u2;
+						temp = new byte[len];
+						isUtf8_content = true;
+					}else if(Constants.ConstantType.method.equals(type)){//如果常量类型是0a，后面四个字段，前两个是class的索引，后两个是NameAndType索引
 						len = last_u2;
 						temp = new byte[len];
 						isUtf8_content = true;

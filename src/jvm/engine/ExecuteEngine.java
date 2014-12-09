@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import jvm.memory.Memory;
-import jvm.memory.MethodInfo;
+import jvm.memory.classinfo.MethodInfo;
 
 /**
  * 在内存中找到main方法入口，并执行

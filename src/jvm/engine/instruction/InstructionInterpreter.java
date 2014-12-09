@@ -1,10 +1,10 @@
 package jvm.engine.instruction;
 
-import jvm.engine.instruction.processor.BipushProcessor;
-import jvm.engine.instruction.processor.IconstProcessor;
-import jvm.engine.instruction.processor.IloadProcessor;
-import jvm.engine.instruction.processor.InvokestaticProcessor;
-import jvm.engine.instruction.processor.IstoreProcessor;
+import jvm.engine.processor.BipushProcessor;
+import jvm.engine.processor.IconstProcessor;
+import jvm.engine.processor.IloadProcessor;
+import jvm.engine.processor.InvokestaticProcessor;
+import jvm.engine.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
 /**
  * iconst_1

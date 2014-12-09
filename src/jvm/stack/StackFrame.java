@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionInterpreter;
-import jvm.memory.MethodInfo;
+import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.varTable.LocalVariable;
 import jvm.stack.varTable.LocalVariableTable;

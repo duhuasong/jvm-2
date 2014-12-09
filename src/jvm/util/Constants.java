@@ -26,6 +26,10 @@ public class Constants {
 		
 		public final static String utf8 = "01";
 		
+		public final static String field = "09";
+		
+		public final static String method = "0a";
+		
 
 	}
 

@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import jvm.memory.classinfo.ClassInfo;
+import jvm.memory.classinfo.MethodInfo;
+
 public class Memory {
 	
 	/**

@@ -1,4 +1,4 @@
-package jvm.classloader.classfile;
+package jvm.classloader.assist;
 
 public class ClassReadCounter {
 	

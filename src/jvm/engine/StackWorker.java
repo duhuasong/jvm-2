@@ -1,6 +1,6 @@
 package jvm.engine;
 
-import jvm.memory.MethodInfo;
+import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.JavaStack;
 /**
  * 该线程创建一个java栈（线程）

@@ -2,7 +2,7 @@ package jvm.util;
 
 import java.util.List;
 
-import jvm.memory.MethodInfo;
+import jvm.memory.classinfo.MethodInfo;
 
 public class MethodUtil {
 

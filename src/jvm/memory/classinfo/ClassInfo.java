@@ -1,4 +1,4 @@
-package jvm.memory;
+package jvm.memory.classinfo;
 
 import java.util.List;
 

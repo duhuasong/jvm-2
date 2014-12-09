@@ -1,6 +1,6 @@
 package test;
 
-import jvm.classloader.impl.BaseClassLoader;
+import jvm.classloader.loader.BaseClassLoader;
 
 public class Test {
 

@@ -1,4 +1,4 @@
-package jvm.classloader.classfile;
+package jvm.classloader.assist;
 
 import java.util.ArrayList;
 import java.util.List;

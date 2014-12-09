@@ -1,14 +1,14 @@
-package jvm.classloader.impl;
+package jvm.classloader.loader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import jvm.classloader.IClassLoader;
 import jvm.engine.instruction.Instruction;
-import jvm.memory.ClassInfo;
 import jvm.memory.Memory;
-import jvm.memory.MethodInfo;
-import jvm.memory.ParameterDescriptor;
+import jvm.memory.classinfo.ClassInfo;
+import jvm.memory.classinfo.MethodInfo;
+import jvm.memory.classinfo.ParameterDescriptor;
 import jvm.util.Constants;
 import jvm.util.MethodUtil;
 /**

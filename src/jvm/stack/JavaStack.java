@@ -2,7 +2,7 @@ package jvm.stack;
 
 import java.util.Stack;
 
-import jvm.memory.MethodInfo;
+import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.varTable.LocalVariable;
 
