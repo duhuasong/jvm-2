@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import jvm.classloader.IClassLoader;
-import jvm.classloader.assist.ClassReadCounter;
-import jvm.classloader.assist.ElementDescripter;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
+import jvm.classloader.classstruct.ClassElement;
+import jvm.classloader.classstruct.ClassReadCounter;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
 
@@ -33,7 +33,7 @@ public class BaseClassLoader implements IClassLoader {
 			//从常量池开始读
 			ClassReadCounter counter = new ClassReadCounter();
 			//下一元素
-			ElementDescripter readElement = counter.getCurElement();
+			ClassElement readElement = counter.getCurElement();
 			
 			int constant_pool_count = 0;
 			int constant_pool_pointer = 1;
@@ -170,6 +170,66 @@ public class BaseClassLoader implements IClassLoader {
 							
 						}
 					}
+					
+				}else if(readElement.name.equals("access_flags")){
+					String  access_flags= ByteHexUtil.bytesToHexString(temp);
+					classFile.access_flags = access_flags;
+					
+					readElement = counter.getCurElement();
+					len = readElement.size;
+					temp = new byte[len];
+					continue;
+				}else if(readElement.name.equals("this_class")){
+					int  this_class_index= ByteHexUtil.getInt(temp, false, temp.length);
+					classFile.this_class = this_class_index+"";
+					
+					readElement = counter.getCurElement();
+					len = readElement.size;
+					temp = new byte[len];
+					continue;
+				}else if(readElement.name.equals("super_class")){
+					int  super_class_index= ByteHexUtil.getInt(temp, false, temp.length);
+					classFile.super_class = super_class_index+"";
+					
+					readElement = counter.getCurElement();
+					len = readElement.size;
+					temp = new byte[len];
+					continue;
+				}else if(readElement.name.equals("interfaces_count")){
+					int  interfaces_count= ByteHexUtil.getInt(temp, false, temp.length);
+					classFile.interfaces_count = interfaces_count;
+					
+					//如果接口数为0，那么接口interfaces_array没有，所以跳过
+					if(interfaces_count == 0){
+						readElement = counter.getCurElement();
+						readElement = counter.getCurElement();
+						len = readElement.size;
+						temp = new byte[len];
+						continue;
+					}
+					
+				}else if(readElement.name.equals("fields_count")){
+					int  fields_count= ByteHexUtil.getInt(temp, false, temp.length);
+					classFile.fields_count = fields_count;
+					
+					//如果字段数为0，那么接口interfaces_array没有，所以跳过
+					if(fields_count == 0){
+						readElement = counter.getCurElement();
+						readElement = counter.getCurElement();
+						len = readElement.size;
+						temp = new byte[len];
+						continue;
+					}
+					
+				}else if(readElement.name.equals("methods_count")){
+					int  methods_count= ByteHexUtil.getInt(temp, false, temp.length);
+					classFile.methods_count = methods_count;
+					
+					readElement = counter.getCurElement();
+					len = readElement.size;
+					temp = new byte[len];
+				}else if(readElement.name.equals("methods_array")){
+					
 					
 				}
 				

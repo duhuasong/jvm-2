@@ -24,8 +24,22 @@ public class ClassFile {
 	
 	public String super_class;
 	
-	public String interfaces_count;
-
+	public int interfaces_count;
+	
+	public String interfaces_array;
+	
+	public int fields_count;
+	
+	public String fields_array;
+	
+	public int methods_count;
+	
+	public String methods_array;
+	
+	public int attributes_count;
+	
+	public String attributes_array;
+	
 	public String getMagic() {
 		return magic;
 	}
@@ -90,15 +104,14 @@ public class ClassFile {
 		this.super_class = super_class;
 	}
 
-	public String getInterfaces_count() {
+	public int getInterfaces_count() {
 		return interfaces_count;
 	}
 
-	public void setInterfaces_count(String interfaces_count) {
+	public void setInterfaces_count(int interfaces_count) {
 		this.interfaces_count = interfaces_count;
 	}
-	
-	
+
 	
 
 }
