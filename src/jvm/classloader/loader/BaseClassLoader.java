@@ -39,8 +39,10 @@ public class BaseClassLoader implements IClassLoader {
 			int constant_pool_pointer = 1;
 			//当前读取的常量类型
 			String constant_type = null;
-			//当前读取的常量类型对应的片段（utf8对应3，class类型对应2等）
+			//当前读取的常量类型对应的片段（utf8对应3，class类型对应2个部分等）
 			int constant_type_part = 1;
+			//当前读取的方法类型对应的片段（5个部分，access_flags，name_index，descriptor_index，attributes_count，attributes_info）
+			int method_info_part = 1;
 			
 			
 			int len = readElement.size;
@@ -52,30 +54,18 @@ public class BaseClassLoader implements IClassLoader {
 					String hex = ByteHexUtil.bytesToHexString(temp);
 					classFile.setMagic(hex);
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
 				}else if(readElement.name.equals("minor_version")){
 					String hex = ByteHexUtil.bytesToHexString(temp);
 					classFile.setMinor_version(hex);
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
 				}else if(readElement.name.equals("major_version")){
 					String hex = ByteHexUtil.bytesToHexString(temp);
 					classFile.setMajor_version(hex);
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
 				}else if(readElement.name.equals("constant_pool_count")){
 					constant_pool_count = ByteHexUtil.getInt(temp, false, temp.length);
 					classFile.setConstant_pool_count(constant_pool_count);
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
 				}else if(readElement.name.equals("constant_pool_array")){
 					
 					if(null == constant_type){
@@ -175,26 +165,14 @@ public class BaseClassLoader implements IClassLoader {
 					String  access_flags= ByteHexUtil.bytesToHexString(temp);
 					classFile.access_flags = access_flags;
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
-					continue;
 				}else if(readElement.name.equals("this_class")){
 					int  this_class_index= ByteHexUtil.getInt(temp, false, temp.length);
 					classFile.this_class = this_class_index+"";
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
-					continue;
 				}else if(readElement.name.equals("super_class")){
 					int  super_class_index= ByteHexUtil.getInt(temp, false, temp.length);
 					classFile.super_class = super_class_index+"";
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
-					continue;
 				}else if(readElement.name.equals("interfaces_count")){
 					int  interfaces_count= ByteHexUtil.getInt(temp, false, temp.length);
 					classFile.interfaces_count = interfaces_count;
@@ -225,13 +203,19 @@ public class BaseClassLoader implements IClassLoader {
 					int  methods_count= ByteHexUtil.getInt(temp, false, temp.length);
 					classFile.methods_count = methods_count;
 					
-					readElement = counter.getCurElement();
-					len = readElement.size;
-					temp = new byte[len];
 				}else if(readElement.name.equals("methods_array")){
+					if(method_info_part == 1){
+						String  access_flags = ByteHexUtil.bytesToHexString(temp);
+					}
+					
 					
 					
 				}
+				
+				//--------每个分支默认设置readElement、len和temp----------
+				readElement = counter.getCurElement();
+				len = readElement.size;
+				temp = new byte[len];
 				
 			}
 		} catch (FileNotFoundException e) {
