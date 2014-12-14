@@ -8,6 +8,7 @@ import java.io.IOException;
 import jvm.classloader.IClassLoader;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
+import jvm.classloader.classfile.MethodFile;
 import jvm.classloader.classstruct.ClassElement;
 import jvm.classloader.classstruct.ClassReadCounter;
 import jvm.util.ByteHexUtil;
@@ -206,10 +207,33 @@ public class BaseClassLoader implements IClassLoader {
 				}else if(readElement.name.equals("methods_array")){
 					if(method_info_part == 1){
 						String  access_flags = ByteHexUtil.bytesToHexString(temp);
+						MethodFile mf = new MethodFile();
+						mf.access_flags = access_flags;
+						classFile.methods_array.add(mf);
+						
+					}else if(method_info_part == 2){
+						int name_index = ByteHexUtil.getInt(temp, false, temp.length);
+						int cur_methods_array_count = classFile.methods_array.size();
+						MethodFile mf = classFile.methods_array.get(cur_methods_array_count-1);
+						mf.name_index = name_index + "";
+						
+					}else if(method_info_part == 3){
+						int descriptor_index = ByteHexUtil.getInt(temp, false, temp.length);
+						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.descriptor_index = descriptor_index + "";
+						
+					}else if(method_info_part == 4){
+						int attributes_count = ByteHexUtil.getInt(temp, false, temp.length);
+						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.attributes_count = attributes_count;
+						
 					}
 					
-					
-					
+					//-------------默认读取2个字节，并且method_info_part++
+					len = 2;
+					temp = new byte[len];
+					method_info_part++;
+					continue;
 				}
 				
 				//--------每个分支默认设置readElement、len和temp----------

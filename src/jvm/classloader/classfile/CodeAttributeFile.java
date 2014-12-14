@@ -1,5 +1,7 @@
 package jvm.classloader.classfile;
 
-public class AttributeFile {
+public class CodeAttributeFile {
+	
+	
 
 }

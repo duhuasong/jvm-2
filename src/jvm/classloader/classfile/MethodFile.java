@@ -1,5 +1,8 @@
 package jvm.classloader.classfile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MethodFile {
 	
 	public String access_flags;
@@ -10,8 +13,7 @@ public class MethodFile {
 	
 	public int attributes_count;
 	
-	public int attributes;
+	public List<CodeAttributeFile> code_attributes = new ArrayList<CodeAttributeFile>();
 	
 	
-
 }

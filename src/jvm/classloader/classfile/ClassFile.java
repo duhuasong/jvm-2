@@ -1,5 +1,6 @@
 package jvm.classloader.classfile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ClassFile {
 	
 	public int methods_count;
 	
-	public List<MethodFile> methods_array;
+	public List<MethodFile> methods_array = new ArrayList<MethodFile>();
 	
 	public int attributes_count;
 	
