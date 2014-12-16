@@ -22,8 +22,6 @@ public class ClassReadCounter {
 		classElements.add(new ClassElement("fields_array", 0));
 		classElements.add(new ClassElement("methods_count", 2));
 		classElements.add(new ClassElement("methods_array", 2));//œ»∂¡»°access_flags
-		classElements.add(new ClassElement("attributes_count", 2));
-		classElements.add(new ClassElement("attributes_array", 0));
 	}
 
 	public ClassReadCounter(int i) {

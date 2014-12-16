@@ -114,6 +114,11 @@ public class ClassFile {
 		this.interfaces_count = interfaces_count;
 	}
 
+	public String getUtf8ConstantContentByIndex(int attribute_name_index) {
+		ConstantFile con = constantFiles.get(attribute_name_index);
+		return con.content;
+	}
+
 	
 
 }

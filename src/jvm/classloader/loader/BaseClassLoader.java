@@ -44,6 +44,8 @@ public class BaseClassLoader implements IClassLoader {
 			int constant_type_part = 1;
 			//当前读取的方法类型对应的片段（5个部分，access_flags，name_index，descriptor_index，attributes_count，attributes_info）
 			int method_info_part = 1;
+			//当前读取的属性类型对应的片段
+			int attribute_info_part = 1;
 			
 			
 			int len = readElement.size;
@@ -227,6 +229,70 @@ public class BaseClassLoader implements IClassLoader {
 						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.attributes_count = attributes_count;
 						
+					}else if(method_info_part == 5){//说明开始读取属性信息
+						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						if(attribute_info_part == 1){
+							int attribute_name_index = ByteHexUtil.getInt(temp, false, temp.length);
+							String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
+							mf.current_attributes_type = attribute_name;
+							mf.setAttributeType(attribute_name);
+							
+							len = 4;
+							temp = new byte[len];
+							attribute_info_part++;
+							continue;
+						}else if(attribute_info_part == 2){
+							int attribute_length = ByteHexUtil.getInt(temp, false, temp.length);
+							mf.setAttributeLength(attribute_length);
+							
+							len = 2;
+							temp = new byte[len];
+							attribute_info_part++;
+							continue;
+						}else if(attribute_info_part == 3){
+							int max_stack = ByteHexUtil.getInt(temp, false, temp.length);
+							mf.setAttributeMaxStack(max_stack);
+							
+							len = 2;
+							temp = new byte[len];
+							attribute_info_part++;
+							continue;
+						}else if(attribute_info_part == 4){
+							int max_locals = ByteHexUtil.getInt(temp, false, temp.length);
+							mf.setAttributeMaxLocals(max_locals);
+							
+							len = 4;
+							temp = new byte[len];
+							attribute_info_part++;
+							continue;
+						}else if(attribute_info_part == 5){
+							int code_length = ByteHexUtil.getInt(temp, false, temp.length);
+							mf.setAttributeCodeLength(code_length);
+							
+							len = 1;
+							temp = new byte[len];
+							attribute_info_part++;
+							continue;
+						}else if(attribute_info_part == 6){//开始读取指令，一个指令一个字节
+							if(mf.isLastByteCode()){
+								String byteCode = ByteHexUtil.bytesToHexString(temp);
+								mf.setAttributeByteCode(byteCode);
+								
+								len = mf.getAttributeRemainBytes();
+								temp = new byte[len];
+								continue;
+								
+							}else{
+								String byteCode = ByteHexUtil.bytesToHexString(temp);
+								mf.setAttributeByteCode(byteCode);
+								
+								len = 1;
+								temp = new byte[len];
+								continue;
+							}
+						}
+						
+					
 					}
 					
 					//-------------默认读取2个字节，并且method_info_part++
