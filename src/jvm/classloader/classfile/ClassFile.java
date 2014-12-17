@@ -119,6 +119,10 @@ public class ClassFile {
 		return con.content;
 	}
 
+	public boolean hasRemainMethods() {
+		return methods_array.size() != methods_count;
+	}
+
 	
 
 }

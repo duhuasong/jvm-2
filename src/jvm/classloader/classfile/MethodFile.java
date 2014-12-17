@@ -66,6 +66,18 @@ public class MethodFile {
 		CodeAttributeFile attr = code_attributes.get(code_attributes.size() - 1);
 		return attr.getRemainBytes();
 	}
+
+	public boolean isByteCodeReaded() {
+		CodeAttributeFile attr = code_attributes.get(code_attributes.size() - 1);
+		if(attr.byteCodes.size() == attr.code_length){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean hasRemainAttrs() {
+		return code_attributes.size() !=  attributes_count;
+	}
 	
 	
 }

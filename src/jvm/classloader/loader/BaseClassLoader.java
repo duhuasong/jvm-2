@@ -215,8 +215,7 @@ public class BaseClassLoader implements IClassLoader {
 						
 					}else if(method_info_part == 2){
 						int name_index = ByteHexUtil.getInt(temp, false, temp.length);
-						int cur_methods_array_count = classFile.methods_array.size();
-						MethodFile mf = classFile.methods_array.get(cur_methods_array_count-1);
+						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.name_index = name_index + "";
 						
 					}else if(method_info_part == 3){
@@ -278,8 +277,10 @@ public class BaseClassLoader implements IClassLoader {
 								String byteCode = ByteHexUtil.bytesToHexString(temp);
 								mf.setAttributeByteCode(byteCode);
 								
+								//一次读完该属性剩余的字节
 								len = mf.getAttributeRemainBytes();
 								temp = new byte[len];
+								attribute_info_part++;
 								continue;
 								
 							}else{
@@ -290,6 +291,23 @@ public class BaseClassLoader implements IClassLoader {
 								temp = new byte[len];
 								continue;
 							}
+						}else if(attribute_info_part == 7){
+								//TODO 读取剩余的字节 目前不需要
+							
+								if(mf.hasRemainAttrs()){//此方法还有属性
+									attribute_info_part = 1;
+									len = 2;
+									temp = new byte[len];
+									continue;
+								}else if(classFile.hasRemainMethods()){//还有下一个方法
+									attribute_info_part = 1;
+									method_info_part = 1;
+									len = 2;
+									temp = new byte[len];
+									continue;
+								}else{
+									break;
+								}
 						}
 						
 					

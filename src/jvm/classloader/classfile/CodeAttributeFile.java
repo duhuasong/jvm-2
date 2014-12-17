@@ -24,6 +24,7 @@ public class CodeAttributeFile {
 	public int getRemainBytes() {
 		return attribute_length-2-2-4-code_length;
 	}
+
 	
 
 }
