@@ -1,5 +1,10 @@
 package jvm.classloader.classfile;
-
+/**
+ * nameAndType如果描述的是Method：方法名和入出参数
+ * nameAndType如果描述的是Field：字段名和类型
+ * @author yangrui
+ *
+ */
 public class ConstantFile {
 	
 	public String type;

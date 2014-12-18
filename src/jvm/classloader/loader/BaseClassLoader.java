@@ -18,6 +18,15 @@ public class BaseClassLoader implements IClassLoader {
 
 	@Override
 	public void loadClass(String className) {
+		
+		ClassFile classFile = loadClassFile(className);
+		
+		translateClassFile(classFile);
+		
+	}
+	
+
+	private ClassFile loadClassFile(String className) {
 		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
 		String classpath = System.getProperty("java.class.path");
 
@@ -309,8 +318,6 @@ public class BaseClassLoader implements IClassLoader {
 									break;
 								}
 						}
-						
-					
 					}
 					
 					//-------------默认读取2个字节，并且method_info_part++
@@ -330,8 +337,28 @@ public class BaseClassLoader implements IClassLoader {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally{
+			try {     
+                if(fis != null){  
+                	fis.close(); 
+                }  
+            } catch (IOException e) {     
+                e.printStackTrace();     
+            }  
 		}
-
+		return classFile;
 	}
-
+	
+	
+	
+	/**
+	 * 翻译classfile中的字段
+	 * @param classFile
+	 */
+	private void translateClassFile(ClassFile classFile) {
+		//1、解析常量
+		//2、解析方法
+	}
+	
+	
 }
