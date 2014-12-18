@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
 import jvm.classloader.IClassLoader;
 import jvm.classloader.classfile.ClassFile;
@@ -20,9 +21,9 @@ public class BaseClassLoader implements IClassLoader {
 	public void loadClass(String className) {
 		
 		ClassFile classFile = loadClassFile(className);
-		
 		translateClassFile(classFile);
 		
+		System.out.println(classFile.toString());
 	}
 	
 
@@ -356,8 +357,43 @@ public class BaseClassLoader implements IClassLoader {
 	 * @param classFile
 	 */
 	private void translateClassFile(ClassFile classFile) {
+		
 		//1、解析常量
+		Set<Integer> set = classFile.constantFiles.keySet();
+		//解析class常量
+		for(Integer key : set){
+			ConstantFile cf = classFile.constantFiles.get(key);
+			if(cf.type.equals(Constants.ConstantType.ClassType)){
+				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
+			}
+		}
+		//解析NameAndType类型的常量
+		translateConstantForTwoIndex(classFile,Constants.ConstantLinkSymbol.nameAndType);
+		//解析method和field类型的常量
+		translateConstantForTwoIndex(classFile,Constants.ConstantLinkSymbol.methodAndField);
+		
 		//2、解析方法
+		for(MethodFile mf : classFile.methods_array){
+			//解析name_index
+			mf.name_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.name_index));
+			//解析descriptor_index
+			mf.descriptor_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.descriptor_index));
+			//解析属性
+		}
+		
+	}
+
+	
+	private void translateConstantForTwoIndex(ClassFile classFile, String symbol) {
+		Set<Integer> set = classFile.constantFiles.keySet();
+		for(Integer key : set){
+			ConstantFile cf = classFile.constantFiles.get(key);
+			if(cf.type.equals(Constants.ConstantType.ClassType)){
+				String pre_content = classFile.getUtf8ConstantContentByIndex(cf.pre_uft8_index);
+				String last_content = classFile.getUtf8ConstantContentByIndex(cf.last_uft8_index);
+				cf.content = pre_content + symbol + last_content;
+			}
+		}
 	}
 	
 	

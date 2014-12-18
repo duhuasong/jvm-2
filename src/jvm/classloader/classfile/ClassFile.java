@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import jvm.util.Constants;
 
 public class ClassFile {
 	
@@ -38,9 +41,6 @@ public class ClassFile {
 	
 	public List<MethodFile> methods_array = new ArrayList<MethodFile>();
 	
-	public int attributes_count;
-	
-	public String attributes_array;
 	
 	public String getMagic() {
 		return magic;
@@ -123,6 +123,27 @@ public class ClassFile {
 		return methods_array.size() != methods_count;
 	}
 
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("magic : ").append(magic).append("\n");
+		sb.append("minor_version : ").append(minor_version).append("\n");
+		sb.append("major_version : ").append(major_version).append("\n");
+		//sb.append("------------------------------------").append("\n");
+		sb.append("constant_pool_count : ").append(constant_pool_count).append("\n");
+		for(int i=1 ; i<constant_pool_count ; i++){
+			ConstantFile cf = this.constantFiles.get(i);
+			sb.append(i+" : ").append(cf.content).append("\n");
+		}
+		//sb.append("------------------------------------").append("\n");
+		sb.append("access_flags : ").append(access_flags).append("\n");
+		sb.append("this_class : ").append(this_class).append("\n");
+		sb.append("super_class : ").append(super_class).append("\n");
+		sb.append("methods_count : ").append(methods_count).append("\n");
+		for(MethodFile mf : methods_array){
+			sb.append(mf.toString());
+		}
+		return sb.toString();
+	}
 
 }

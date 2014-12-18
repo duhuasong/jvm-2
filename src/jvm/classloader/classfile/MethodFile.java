@@ -80,4 +80,14 @@ public class MethodFile {
 	}
 	
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("method_name : ").append(name_index).append("\n");
+		for(CodeAttributeFile code : code_attributes){
+			sb.append(code.toString());
+		}
+		return sb.toString();
+	}
+	
 }

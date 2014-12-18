@@ -34,6 +34,16 @@ public class Constants {
 		
 
 	}
+	
+	public static class ConstantLinkSymbol {
+
+		public final static String nameAndType = ":";
+		
+		public final static String methodAndField = ".";
+		
+		
+
+	}
 
 	
 

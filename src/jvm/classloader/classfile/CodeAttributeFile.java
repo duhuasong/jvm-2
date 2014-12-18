@@ -25,6 +25,14 @@ public class CodeAttributeFile {
 		return attribute_length-2-2-4-code_length;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(String code : byteCodes){
+			sb.append(code.toString()).append("\n");
+		}
+		return sb.toString();
+	}
 	
 
 }
