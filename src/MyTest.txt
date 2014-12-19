@@ -26,3 +26,47 @@ public static int add(int, int);
    3:   ireturn
 
 }
+
+
+
+
+
+
+---------------------------
+
+
+
+
+		method_name : <init>
+		2a	aload_0
+		b7	
+		00	nop
+		08	iconst_5
+		b1
+		
+		method_name : main
+		04	iconst_1
+		3c	istore_1
+		10	bipush
+		0b	11
+		3d	istore_2
+		1b	iload_1
+		1c	iload_2
+		b8	invokestatic
+		00	
+		10	#16
+		3e	istore_3
+		b2	getstatic
+		00	
+		14	#20
+		1d	iload_3
+		b6	invokevirtual
+		00	
+		1a	#26
+		b1	return
+		
+		method_name : add
+		1a	iload_0
+		1b	iload_1
+		60	iadd
+		ac	ireturn

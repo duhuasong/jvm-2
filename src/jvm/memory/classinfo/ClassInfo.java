@@ -19,6 +19,9 @@ public class ClassInfo {
 		this.setName(name);
 	}
 	
+	public ClassInfo() {
+	}
+
 	public List<MethodInfo> getMethods() {
 		return methods;
 	}

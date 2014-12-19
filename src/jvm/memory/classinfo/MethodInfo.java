@@ -10,12 +10,26 @@ public class MethodInfo {
 	
 	private String name;
 	
-	private boolean isStatic;
+	private String descriptor;
 	
-	private String Scope;
+	private TypeDescriptor typeDescriptor;
 	
-	private ParameterDescriptor descriptor;
-	
+	public String getDescriptor() {
+		return descriptor;
+	}
+
+	public void setDescriptor(String descriptor) {
+		this.descriptor = descriptor;
+	}
+
+	public TypeDescriptor getTypeDescriptor() {
+		return typeDescriptor;
+	}
+
+	public void setTypeDescriptor(TypeDescriptor typeDescriptor) {
+		this.typeDescriptor = typeDescriptor;
+	}
+
 	private List<Instruction> methodInstructions;
 
 	public ClassInfo getClassInfo() {
@@ -43,29 +57,7 @@ public class MethodInfo {
 		this.name = name;
 	}
 
-	public boolean isStatic() {
-		return isStatic;
-	}
 
-	public void setStatic(boolean isStatic) {
-		this.isStatic = isStatic;
-	}
-
-	public String getScope() {
-		return Scope;
-	}
-
-	public void setScope(String scope) {
-		Scope = scope;
-	}
-
-	public ParameterDescriptor getDescriptor() {
-		return descriptor;
-	}
-
-	public void setDescriptor(ParameterDescriptor descriptor) {
-		this.descriptor = descriptor;
-	}
 
 
 }

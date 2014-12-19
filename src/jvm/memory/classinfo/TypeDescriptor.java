@@ -3,7 +3,7 @@ package jvm.memory.classinfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParameterDescriptor {
+public class TypeDescriptor {
 	
 	private List<String> inputList = new ArrayList<String>();
 	

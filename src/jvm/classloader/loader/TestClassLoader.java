@@ -8,7 +8,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
-import jvm.memory.classinfo.ParameterDescriptor;
+import jvm.memory.classinfo.TypeDescriptor;
 import jvm.util.Constants;
 import jvm.util.MethodUtil;
 /**
@@ -62,13 +62,13 @@ public class TestClassLoader implements IClassLoader{
 		mainMethod.setClassInfo(classInfo);
 		mainMethod.setMethodInstructions(mainInstruct);
 		mainMethod.setName("main");
-		mainMethod.setScope(Constants.Scope.PUBLIC);
-		mainMethod.setStatic(true);
+		//mainMethod.setScope(Constants.Scope.PUBLIC);
+		//mainMethod.setStatic(true);
 		//设置方法参数
-		ParameterDescriptor param = new ParameterDescriptor();
+		TypeDescriptor param = new TypeDescriptor();
 		param.addInput(Constants.VarType.STRING_ARRAY);
 		param.addOutput(Constants.VarType.VOID);
-		mainMethod.setDescriptor(param);
+		//mainMethod.setDescriptor(param);
 		
 		
 		//设置add方法
@@ -80,14 +80,14 @@ public class TestClassLoader implements IClassLoader{
 		addMethod.setClassInfo(classInfo);
 		addMethod.setMethodInstructions(addInstruct);
 		addMethod.setName("add");
-		addMethod.setScope(Constants.Scope.PUBLIC);
-		addMethod.setStatic(true);
+		//addMethod.setScope(Constants.Scope.PUBLIC);
+		//addMethod.setStatic(true);
 		//设置方法参数
-		ParameterDescriptor param2 = new ParameterDescriptor();
+		TypeDescriptor param2 = new TypeDescriptor();
 		param2.addInput(Constants.VarType.INTEGER);
 		param2.addInput(Constants.VarType.INTEGER);
 		param2.addOutput(Constants.VarType.INTEGER);
-		addMethod.setDescriptor(param2);
+	//	addMethod.setDescriptor(param2);
 		
 		
 		//设置class的methods

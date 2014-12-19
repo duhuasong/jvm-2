@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import jvm.classloader.IClassLoader;
@@ -12,6 +14,10 @@ import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
 import jvm.classloader.classstruct.ClassElement;
 import jvm.classloader.classstruct.ClassReadCounter;
+import jvm.engine.instruction.Instruction;
+import jvm.memory.Memory;
+import jvm.memory.classinfo.ClassInfo;
+import jvm.memory.classinfo.MethodInfo;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
 
@@ -31,8 +37,36 @@ public class BaseClassLoader implements IClassLoader {
 	
 
 	private void copyClassFileToClassInfo(ClassFile classFile) {
-		// TODO Auto-generated method stub
+		//1、拷贝classinfo
+		ClassInfo classInfo = new ClassInfo();
+		classInfo.setName(classFile.this_class);
 		
+		//2、拷贝methodinfo
+		List<MethodInfo> methods = new ArrayList<MethodInfo>();
+		for(MethodFile methodfile : classFile.methods_array){
+			MethodInfo methodinfo = new MethodInfo();
+			methodinfo.setClassInfo(classInfo);
+			methodinfo.setName(methodfile.name_index);
+			methodinfo.setDescriptor(methodfile.descriptor_index);
+			//转换instruction
+			List<Instruction> instr = mergeByteCode(methodfile,classFile);
+			methodinfo.setMethodInstructions(instr);
+			methods.add(methodinfo);
+		}
+		classInfo.setMethods(methods);
+		//3、把转换好的类，加载到内存中
+		Memory.classPool.put(classFile.this_class, classInfo);
+	}
+
+	/**
+	 * 合并字节码
+	 * @param mf
+	 * @param classFile 
+	 * @return
+	 */
+	private List<Instruction> mergeByteCode(MethodFile methodFile, ClassFile classFile) {
+		
+		return null;
 	}
 
 
@@ -369,26 +403,25 @@ public class BaseClassLoader implements IClassLoader {
 		
 		//1、解析常量
 		Set<Integer> set = classFile.constantFiles.keySet();
-		//解析class常量
+		//（1）解析class常量
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
 			if(cf.type.equals(Constants.ConstantType.ClassType)){
 				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
 			}
 		}
-		//解析NameAndType类型的常量
-		translateConstantForTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
-		//解析method和field类型的常量
-		translateConstantForTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
+		//（2）解析NameAndType类型的常量
+		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
+		//（3）解析method和field类型的常量
+		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
 		
 		//2、解析方法
 		for(MethodFile mf : classFile.methods_array){
-			//解析name_index
 			mf.name_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.name_index));
-			//解析descriptor_index
 			mf.descriptor_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.descriptor_index));
-			//解析属性
 		}
+		//3、解析classFile中其他字段
+		classFile.this_class =  classFile.getUtf8ConstantContentByIndex(Integer.parseInt(classFile.this_class));
 		
 	}
 
@@ -398,7 +431,7 @@ public class BaseClassLoader implements IClassLoader {
 	 * @param constantTypes
 	 * @param symbol
 	 */
-	private void translateConstantForTwoIndex(ClassFile classFile, String[] constantTypes, String symbol) {
+	private void translateConstantWithTwoIndex(ClassFile classFile, String[] constantTypes, String symbol) {
 		Set<Integer> set = classFile.constantFiles.keySet();
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
