@@ -21,11 +21,20 @@ public class BaseClassLoader implements IClassLoader {
 	public void loadClass(String className) {
 		
 		ClassFile classFile = loadClassFile(className);
+		
 		translateClassFile(classFile);
+		
+		copyClassFileToClassInfo(classFile);
 		
 		System.out.println(classFile.toString());
 	}
 	
+
+	private void copyClassFileToClassInfo(ClassFile classFile) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	private ClassFile loadClassFile(String className) {
 		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
@@ -368,9 +377,9 @@ public class BaseClassLoader implements IClassLoader {
 			}
 		}
 		//解析NameAndType类型的常量
-		translateConstantForTwoIndex(classFile,Constants.ConstantLinkSymbol.nameAndType);
+		translateConstantForTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
 		//解析method和field类型的常量
-		translateConstantForTwoIndex(classFile,Constants.ConstantLinkSymbol.methodAndField);
+		translateConstantForTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
 		
 		//2、解析方法
 		for(MethodFile mf : classFile.methods_array){
@@ -383,18 +392,32 @@ public class BaseClassLoader implements IClassLoader {
 		
 	}
 
-	
-	private void translateConstantForTwoIndex(ClassFile classFile, String symbol) {
+	/**
+	 * 解析有两个索引的常量
+	 * @param classFile
+	 * @param constantTypes
+	 * @param symbol
+	 */
+	private void translateConstantForTwoIndex(ClassFile classFile, String[] constantTypes, String symbol) {
 		Set<Integer> set = classFile.constantFiles.keySet();
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
-			if(cf.type.equals(Constants.ConstantType.ClassType)){
+			if(constainType(constantTypes,cf.type)){
 				String pre_content = classFile.getUtf8ConstantContentByIndex(cf.pre_uft8_index);
 				String last_content = classFile.getUtf8ConstantContentByIndex(cf.last_uft8_index);
 				cf.content = pre_content + symbol + last_content;
 			}
 		}
 	}
-	
+
+
+	private boolean constainType(String[] constantTypes, String type) {
+		for(String str : constantTypes){
+			if(str.equals(type)){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

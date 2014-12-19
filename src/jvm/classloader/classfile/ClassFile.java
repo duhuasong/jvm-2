@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import jvm.util.Constants;
 
 public class ClassFile {
 	
@@ -135,13 +132,14 @@ public class ClassFile {
 			ConstantFile cf = this.constantFiles.get(i);
 			sb.append(i+" : ").append(cf.content).append("\n");
 		}
+		sb.append("\n");
 		//sb.append("------------------------------------").append("\n");
 		sb.append("access_flags : ").append(access_flags).append("\n");
 		sb.append("this_class : ").append(this_class).append("\n");
 		sb.append("super_class : ").append(super_class).append("\n");
-		sb.append("methods_count : ").append(methods_count).append("\n");
+		sb.append("methods_count : ").append(methods_count).append("\n").append("\n");;
 		for(MethodFile mf : methods_array){
-			sb.append(mf.toString());
+			sb.append(mf.toString()).append("\n");;
 		}
 		return sb.toString();
 	}

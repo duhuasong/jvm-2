@@ -9,7 +9,7 @@ public class MyTest {
 		System.out.println(c);
 	}
 
-	private static int add(int i,int j) {
+	public static int add(int i,int j) {
 		return i+j;
 	}
 

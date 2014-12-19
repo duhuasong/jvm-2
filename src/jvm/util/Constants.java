@@ -1,5 +1,8 @@
 package jvm.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
 	
 	public static class Scope {
@@ -41,11 +44,29 @@ public class Constants {
 		
 		public final static String methodAndField = ".";
 		
-		
-
 	}
-
 	
+	public final static Map<String,String> InstructionMap = new HashMap<String,String>();
+	
+	static{
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+		InstructionMap.put("", "");
+	}
 
 }
 
