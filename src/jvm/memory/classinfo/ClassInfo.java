@@ -2,9 +2,6 @@ package jvm.memory.classinfo;
 
 import java.util.List;
 
-import jvm.classloader.classfile.ConstantFile;
-import jvm.classloader.classfile.MethodFile;
-
 public class ClassInfo {
 	
 	private String name;
@@ -41,6 +38,16 @@ public class ClassInfo {
 		}
 		return null;
 	}
+	
+	public MethodInfo getMethod(String methodName, String methodType) {
+		for(MethodInfo method : methods){
+			if(method.getName().equals(methodName) && method.getDescriptor().equals(methodType)){
+				return method;
+			}
+		}
+		return null;
+		
+	}
 
 	public String getName() {
 		return name;
@@ -59,6 +66,10 @@ public class ClassInfo {
 		}
 		return sb.toString();
 	}
+
+	
+	
+	
 
 
 	

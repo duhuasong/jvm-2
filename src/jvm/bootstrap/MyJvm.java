@@ -1,6 +1,6 @@
 package jvm.bootstrap;
 
-import jvm.classloader.loader.TestClassLoader;
+import jvm.classloader.loader.BaseClassLoader;
 import jvm.engine.ExecuteEngine;
 /**
  * 最终目标：根据字节码中某些信息加载成自己的class内存模型，来执行
@@ -10,9 +10,9 @@ public class MyJvm {
 	
 	public static void java(String className) {
 		
-		TestClassLoader testClassLoader = new TestClassLoader();
+		BaseClassLoader classloader = new BaseClassLoader();
 		
-		testClassLoader.loadClass(className);
+		classloader.loadClass(className);
 		
 		ExecuteEngine.execute();
 		
