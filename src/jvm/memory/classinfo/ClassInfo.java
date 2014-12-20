@@ -2,6 +2,9 @@ package jvm.memory.classinfo;
 
 import java.util.List;
 
+import jvm.classloader.classfile.ConstantFile;
+import jvm.classloader.classfile.MethodFile;
+
 public class ClassInfo {
 	
 	private String name;
@@ -47,7 +50,15 @@ public class ClassInfo {
 		this.name = name;
 	}
 
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("className : ").append(name).append("\n").append("\n");
+		for(MethodInfo mi : methods){
+			sb.append(mi.toString()).append("\n");;
+		}
+		return sb.toString();
+	}
 
 
 	

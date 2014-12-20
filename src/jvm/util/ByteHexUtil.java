@@ -20,8 +20,7 @@ public class ByteHexUtil {
 		return stringBuilder.toString();
 	}
 
-	/* byte to int */
-	public final static int getInt(byte[] buf, boolean asc, int len) {
+	public static int getInt(byte[] buf, boolean asc, int len) {
 		if (buf == null) {
 			throw new IllegalArgumentException("byte array is null!");
 		}
@@ -49,6 +48,10 @@ public class ByteHexUtil {
 			e.printStackTrace();
 		};
 		return null;
+	}
+
+	public static int fromHexToInt(String hex) {
+		return Integer.parseInt(hex,16);
 	}
 
 }

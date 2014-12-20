@@ -8,7 +8,6 @@ public class Instruction {
 	
 	public Object opcodeNum2;
 	
-	
 
 	public Instruction(String opcode, Object opcodeNum, Object opcodeNum2) {
 		super();
@@ -21,6 +20,11 @@ public class Instruction {
 		super();
 		this.opcode = opcode;
 		this.opcodeNum = opcodeNum;
+	}
+
+	public Instruction(String opcode) {
+		super();
+		this.opcode = opcode;
 	}
 
 	public String getOpcode() {

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import jvm.classloader.IClassLoader;
 import jvm.classloader.classfile.ClassFile;
+import jvm.classloader.classfile.CodeAttributeFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
 import jvm.classloader.classstruct.ClassElement;
@@ -20,6 +21,7 @@ import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
+import jvm.util.StringUtil;
 
 public class BaseClassLoader implements IClassLoader {
 
@@ -32,14 +34,15 @@ public class BaseClassLoader implements IClassLoader {
 		
 		copyClassFileToClassInfo(classFile);
 		
-		System.out.println(classFile.toString());
+		//System.out.println(classFile.toString());
+		
 	}
 	
 
 	private void copyClassFileToClassInfo(ClassFile classFile) {
 		//1、拷贝classinfo
 		ClassInfo classInfo = new ClassInfo();
-		classInfo.setName(classFile.this_class);
+		classInfo.setName(StringUtil.replacePathToClass(classFile.this_class));
 		
 		//2、拷贝methodinfo
 		List<MethodInfo> methods = new ArrayList<MethodInfo>();
@@ -55,7 +58,9 @@ public class BaseClassLoader implements IClassLoader {
 		}
 		classInfo.setMethods(methods);
 		//3、把转换好的类，加载到内存中
-		Memory.classPool.put(classFile.this_class, classInfo);
+		Memory.classPool.put(StringUtil.replacePathToClass(classFile.this_class), classInfo);
+		
+		System.out.println(classInfo.toString());
 	}
 
 	/**
@@ -66,7 +71,36 @@ public class BaseClassLoader implements IClassLoader {
 	 */
 	private List<Instruction> mergeByteCode(MethodFile methodFile, ClassFile classFile) {
 		
-		return null;
+		CodeAttributeFile code_attribute = null;
+		
+		for(CodeAttributeFile temp : methodFile.code_attributes){
+			if(temp.attribute_name.equals("Code")){
+				code_attribute = temp;
+			}
+		}
+		
+		List<Instruction> result = new ArrayList<Instruction>();
+		
+		for(int i=0;i<code_attribute.byteCodes.size();i++){
+			String opcode = Constants.InstructionMap.get(code_attribute.byteCodes.get(i));
+			if("invokestatic".equals(opcode) || "getstatic".equals(opcode) || "invokevirtual".equals(opcode) ){//下两个字节是操作数
+				int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
+				String opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
+				Instruction instr = new Instruction(opcode, opcodeNum);
+				result.add(instr);
+				i = i + 2;		
+			}else if("bipush".equals(opcode)){//下一个字节是操作数
+				int next_u1 = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1));
+				Instruction instr = new Instruction(opcode, next_u1);
+				result.add(instr);
+				i = i + 1;
+			}else{//没有操作数
+				Instruction instr = new Instruction(opcode);
+				result.add(instr);
+			}
+		}
+		
+		return result;
 	}
 
 
@@ -74,7 +108,7 @@ public class BaseClassLoader implements IClassLoader {
 		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
 		String classpath = System.getProperty("java.class.path");
 
-		String subpath = className.replace(".", "/");
+		String subpath = StringUtil.replaceClassToPath(className);
 
 		String filepath = classpath + "/" + subpath + ".class";
 

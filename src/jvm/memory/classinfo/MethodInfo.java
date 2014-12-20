@@ -14,6 +14,8 @@ public class MethodInfo {
 	
 	private TypeDescriptor typeDescriptor;
 	
+	private List<Instruction> methodInstructions;
+	
 	public String getDescriptor() {
 		return descriptor;
 	}
@@ -29,8 +31,6 @@ public class MethodInfo {
 	public void setTypeDescriptor(TypeDescriptor typeDescriptor) {
 		this.typeDescriptor = typeDescriptor;
 	}
-
-	private List<Instruction> methodInstructions;
 
 	public ClassInfo getClassInfo() {
 		return classInfo;
@@ -57,7 +57,16 @@ public class MethodInfo {
 		this.name = name;
 	}
 
-
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("methodName : ").append(name).append("\n");
+		sb.append("descriptor : ").append(descriptor).append("\n");
+		for(Instruction inst : methodInstructions){
+			sb.append(inst.opcode).append("  ").append(inst.opcodeNum==null?"":inst.opcodeNum).append("\n");
+		}
+		return sb.toString();
+	}
 
 
 }
