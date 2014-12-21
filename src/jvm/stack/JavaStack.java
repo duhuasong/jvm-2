@@ -86,4 +86,18 @@ public class JavaStack {
 		}
 	}
 
+	/**
+	 * 把OperandVariable push到上一个栈帧中
+	 * @param addNum
+	 */
+	public void pushPreviousStackFrameOprandStack(OperandVariable addNum) {
+		previousStackFrame.pushOprandStack(addNum);
+	}
+
+
+	public void discardCurrentFrame() {
+		currentStackFrame = previousStackFrame;
+		previousStackFrame = null;
+	}
+
 }

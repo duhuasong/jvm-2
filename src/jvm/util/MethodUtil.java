@@ -29,28 +29,48 @@ public class MethodUtil {
 		return false;
 		
 	}
-
+	/**
+	 * method_descripter : test/MyTest.add:(II)I
+	 * @param method_descripter
+	 * @return
+	 */
 	public static MethodInfo searchMethod(String method_descripter) {
 		String className = parseClassName(method_descripter);
 		ClassInfo classInfo = Memory.classPool.get(className);
 		
 		String methodName = parseMethodName(method_descripter);
 		String methodType = parseMethodType(method_descripter);
-		classInfo.getMethod(methodName,methodType);
-		return null;
+		MethodInfo methodInfo = classInfo.getMethod(methodName,methodType);
+		return methodInfo;
 	}
-
-	private static String parseMethodType(String method_descripter) {
-		return null;
-	}
-
-	private static String parseMethodName(String method_descripter) {
-		
-		return null;
-	}
-
+	/**
+	 * method_descripter : test/MyTest.add:(II)I
+	 * @param method_descripter
+	 * @return
+	 */
 	private static String parseClassName(String method_descripter) {
-		return null;
+		String[] arr = method_descripter.split("\\.");
+		return StringUtil.replacePathToClass(arr[0]);
 	}
+	/**
+	 * method_descripter : test/MyTest.add:(II)I
+	 * @param method_descripter
+	 * @return
+	 */
+	private static String parseMethodType(String method_descripter) {
+		String[] arr = method_descripter.split(":");
+		return StringUtil.replacePathToClass(arr[1]);
+	}
+	/**
+	 * method_descripter : test/MyTest.add:(II)I
+	 * @param method_descripter
+	 * @return
+	 */
+	private static String parseMethodName(String method_descripter) {
+		String[] arr = method_descripter.split("\\.");
+		return arr[1].split(":")[0];
+	}
+
+	
 
 }

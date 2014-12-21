@@ -25,7 +25,7 @@ public class StackFrame {
 	
 	private JavaStack javaStack;
 	
-	private int programCounter = 0;
+	//private int programCounter = 0;
 	
 	public StackFrame(MethodInfo method,JavaStack javaStack) {
 		super();
@@ -37,8 +37,10 @@ public class StackFrame {
 		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
 			InstructionInterpreter.explain(instruct,javaStack);
-			programCounter++;
+		//	programCounter++;
 		}
+		//µ±Ç°frameÍË³öjavaStack
+		javaStack.discardCurrentFrame();
 	}
 	
 	public LocalVariableTable getLocalVariableTable() {

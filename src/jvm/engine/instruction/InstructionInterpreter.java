@@ -1,13 +1,14 @@
 package jvm.engine.instruction;
 
 import jvm.engine.processor.BipushProcessor;
+import jvm.engine.processor.IaddProcessor;
 import jvm.engine.processor.IconstProcessor;
 import jvm.engine.processor.IloadProcessor;
 import jvm.engine.processor.InvokestaticProcessor;
+import jvm.engine.processor.IreturnProcessor;
 import jvm.engine.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
 /**
- * iconst_1
  * @author yangrui
  *
  */
@@ -34,6 +35,12 @@ public class InstructionInterpreter {
 		}
 		if(opcode.startsWith("invokestatic")){
 			return new InvokestaticProcessor();
+		}
+		if(opcode.startsWith("iadd")){
+			return new IaddProcessor();
+		}
+		if(opcode.startsWith("ireturn")){
+			return new IreturnProcessor();
 		}
 		return null;
 	}
