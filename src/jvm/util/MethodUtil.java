@@ -48,7 +48,7 @@ public class MethodUtil {
 	 * @param method_descripter
 	 * @return
 	 */
-	private static String parseClassName(String method_descripter) {
+	public static String parseClassName(String method_descripter) {
 		String[] arr = method_descripter.split("\\.");
 		return StringUtil.replacePathToClass(arr[0]);
 	}
@@ -57,7 +57,7 @@ public class MethodUtil {
 	 * @param method_descripter
 	 * @return
 	 */
-	private static String parseMethodType(String method_descripter) {
+	public static String parseMethodType(String method_descripter) {
 		String[] arr = method_descripter.split(":");
 		return StringUtil.replacePathToClass(arr[1]);
 	}
@@ -66,7 +66,7 @@ public class MethodUtil {
 	 * @param method_descripter
 	 * @return
 	 */
-	private static String parseMethodName(String method_descripter) {
+	public static String parseMethodName(String method_descripter) {
 		String[] arr = method_descripter.split("\\.");
 		return arr[1].split(":")[0];
 	}

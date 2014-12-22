@@ -1,6 +1,6 @@
 package test;
 
-public class MyTest {
+public class TemplateClass {
 
 	public static void main(String[] args) {
 		int i = 1;

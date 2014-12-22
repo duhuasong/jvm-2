@@ -1,6 +1,7 @@
 package jvm.engine.instruction;
 
 import jvm.engine.processor.BipushProcessor;
+import jvm.engine.processor.GetstaticProcessor;
 import jvm.engine.processor.IaddProcessor;
 import jvm.engine.processor.IconstProcessor;
 import jvm.engine.processor.IloadProcessor;
@@ -22,25 +23,28 @@ public class InstructionInterpreter {
 	private static InstructionProcessor findProcessor(Instruction instruct) {
 		String opcode = instruct.getOpcode().toLowerCase();
 		if(opcode.startsWith("iconst_")){
-			return new IconstProcessor();
+			return ProcessorFactory.createProcessor(IconstProcessor.class);
 		}
 		if(opcode.startsWith("istore_")){
-			return new IstoreProcessor();
+			return ProcessorFactory.createProcessor(IstoreProcessor.class);
 		}
 		if(opcode.startsWith("bipush")){
-			return new BipushProcessor();
+			return ProcessorFactory.createProcessor(BipushProcessor.class);
 		}
 		if(opcode.startsWith("iload_")){
-			return new IloadProcessor();
+			return ProcessorFactory.createProcessor(IloadProcessor.class);
 		}
 		if(opcode.startsWith("invokestatic")){
-			return new InvokestaticProcessor();
+			return ProcessorFactory.createProcessor(InvokestaticProcessor.class);
 		}
 		if(opcode.startsWith("iadd")){
-			return new IaddProcessor();
+			return ProcessorFactory.createProcessor(IaddProcessor.class);
 		}
 		if(opcode.startsWith("ireturn")){
-			return new IreturnProcessor();
+			return ProcessorFactory.createProcessor(IreturnProcessor.class);
+		}
+		if(opcode.startsWith("getstatic")){
+			return ProcessorFactory.createProcessor(GetstaticProcessor.class);
 		}
 		return null;
 	}
