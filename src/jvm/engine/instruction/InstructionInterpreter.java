@@ -6,6 +6,7 @@ import jvm.engine.processor.IaddProcessor;
 import jvm.engine.processor.IconstProcessor;
 import jvm.engine.processor.IloadProcessor;
 import jvm.engine.processor.InvokestaticProcessor;
+import jvm.engine.processor.InvokevirtualProcessor;
 import jvm.engine.processor.IreturnProcessor;
 import jvm.engine.processor.IstoreProcessor;
 import jvm.stack.JavaStack;
@@ -46,6 +47,10 @@ public class InstructionInterpreter {
 		if(opcode.startsWith("getstatic")){
 			return ProcessorFactory.createProcessor(GetstaticProcessor.class);
 		}
+		if(opcode.startsWith("invokevirtual")){
+			return ProcessorFactory.createProcessor(InvokevirtualProcessor.class);
+		}
+		
 		return null;
 	}
 	

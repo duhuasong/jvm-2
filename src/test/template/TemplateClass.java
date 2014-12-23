@@ -1,4 +1,4 @@
-package test;
+package test.template;
 
 public class TemplateClass {
 
