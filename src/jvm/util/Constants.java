@@ -11,17 +11,32 @@ public class Constants {
 
 	}
 	
+	public final static Map<String,String> VarTypeMap = new HashMap<String,String>();
+	
 	public static class VarType {
 
-		public final static String STRING = "String";
+		public final static String Object_Type = "L";
 		
-		public final static String INTEGER = "Integer";
+		public final static String Integer_Type= "I";
 		
-		public final static String STRING_ARRAY = "java.lang.String[]";
-
-		public static final String VOID = "void";
+		public final static String Byte_Type= "B";
+		
+		public final static String Char_Type= "C";
+		
+		public final static String Double_Type= "D";
+		
+		public final static String Float_Type= "F";
+		
+		public final static String Long_Type= "J";
+		
+		public final static String Short_Type= "S";
+		
+		public final static String Boolean_Type= "Z";
+		
+		public final static String Void_Type= "V";
 
 	}
+	
 	
 	public static class ConstantType {
 
@@ -34,7 +49,6 @@ public class Constants {
 		public final static String method = "0a";
 		
 		public final static String nameAndType = "0c";
-		
 
 	}
 	
@@ -64,6 +78,8 @@ public class Constants {
 		InstructionMap.put("60", "iadd");
 		InstructionMap.put("b1", "return");
 		InstructionMap.put("ac", "ireturn");
+		
+		VarTypeMap.put(VarType.Integer_Type, "java.lang.Integer");
 	}
 
 }

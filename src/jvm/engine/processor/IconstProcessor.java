@@ -18,7 +18,7 @@ public class IconstProcessor implements InstructionProcessor{
 		String num_str = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
 		int num = Integer.parseInt(num_str);
 		//创建操作数
-		OperandVariable operVar = new OperandVariable(Constants.VarType.INTEGER,num);
+		OperandVariable operVar = new OperandVariable(Constants.VarType.Integer_Type,num);
 		//push到栈帧的操作数栈
 		javaStack.pushCurrentFrameOprandStack(operVar);
 	}
