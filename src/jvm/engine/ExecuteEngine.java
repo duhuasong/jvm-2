@@ -1,8 +1,5 @@
 package jvm.engine;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import jvm.memory.Memory;
 import jvm.memory.classinfo.MethodInfo;
 
@@ -13,7 +10,7 @@ import jvm.memory.classinfo.MethodInfo;
  */
 public class ExecuteEngine  {
 	
-	public static ExecutorService pool = Executors.newCachedThreadPool();
+	//public static ExecutorService pool = Executors.newCachedThreadPool();
 			
 	public static void execute() {
 		
@@ -29,7 +26,8 @@ public class ExecuteEngine  {
 	}
 	
 	private static void createStackAndExecute(MethodInfo mainMethod) {
-		pool.execute(new StackWorker(mainMethod));
+		new Thread(new StackWorker(mainMethod)).start();
+		//pool.execute();
 	}
 
 }

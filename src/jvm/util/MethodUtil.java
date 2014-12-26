@@ -81,7 +81,7 @@ public class MethodUtil {
 	public static Class[] parseMethodInputType(String method_descripter) {
 		Class[] input_class = null;
 		String methodType = parseMethodType(method_descripter);
-		String inputType = methodType.split(")")[0].substring(1);
+		String inputType = methodType.split("\\)")[0].substring(1);
 		if(inputType.length() > 0){
 			input_class = new Class[inputType.length()];
 			for(int i=0;i<inputType.length();i++){
