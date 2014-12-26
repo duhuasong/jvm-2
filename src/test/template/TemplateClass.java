@@ -6,7 +6,7 @@ public class TemplateClass {
 		int i = 2;
 		int j = 18;
 		int c= add(i,j);
-		System.out.println(c);
+		System.out.println(j);
 	}
 
 	public static int add(int i,int j) {
