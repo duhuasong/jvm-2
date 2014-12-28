@@ -1,17 +1,16 @@
-package test.template;
+package test.template.template01;
 
 public class TemplateClass {
 
 	public static void main(String[] args) {
-		int i = 2;
-		int j = 18;
+		int j = 12; 
+		int i = 13;
 		int c= add(i,j);
-		System.out.println(j);
-	}
+		System.out.println(c);
+	} 
 
 	public static int add(int i,int j) {
 		return i+j;
 	}
-
 
 }

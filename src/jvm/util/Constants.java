@@ -63,7 +63,13 @@ public class Constants {
 	public final static Map<String,String> InstructionMap = new HashMap<String,String>();
 	
 	static{
+		InstructionMap.put("03", "iconst_0");
 		InstructionMap.put("04", "iconst_1");
+		InstructionMap.put("05", "iconst_2");
+		InstructionMap.put("06", "iconst_3");
+		InstructionMap.put("07", "iconst_4");
+		InstructionMap.put("08", "iconst_5");
+		
 		InstructionMap.put("1a", "iload_0");
 		InstructionMap.put("1b", "iload_1");
 		InstructionMap.put("1c", "iload_2");

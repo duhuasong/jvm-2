@@ -1,8 +1,8 @@
-package test;
+package test.other;
 
 import jvm.classloader.loader.BaseClassLoader;
 
-public class TestClassLoader {
+public class ClassLoaderTest {
 
 	public static void main(String[] args) {
 		BaseClassLoader bc = new BaseClassLoader();

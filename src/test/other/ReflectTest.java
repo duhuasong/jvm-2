@@ -1,12 +1,10 @@
-package test;
+package test.other;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Test {
-	
-	
+public class ReflectTest {
 	
 	private String faultName;
 	private String proc_instance_id ;

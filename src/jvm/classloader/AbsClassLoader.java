@@ -80,6 +80,9 @@ public abstract class AbsClassLoader implements IClassLoader {
 		
 		for(int i=0;i<code_attribute.byteCodes.size();i++){
 			String opcode = Constants.InstructionMap.get(code_attribute.byteCodes.get(i));
+			if(null == opcode){
+				System.err.println(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述");
+			}
 			if("invokestatic".equals(opcode) || "getstatic".equals(opcode) || "invokevirtual".equals(opcode) ){//下两个字节是操作数
 				int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
 				String opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
