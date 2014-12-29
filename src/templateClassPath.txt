@@ -1,5 +1,5 @@
-家里电脑：
-D:\workspaces\myeclipse\pic\myjvm\bin\test
+家：
+D:\workspaces\myeclipse\pic\Jvm\bin\test\template\template02
 
-公司电脑：
+公司：
 D:\workspaces\myeclipse\wtms4\ztest\bin\test

@@ -14,6 +14,7 @@ import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
+import jvm.util.LogUtil;
 import jvm.util.MethodUtil;
 import jvm.util.StringUtil;
 
@@ -26,7 +27,11 @@ public abstract class AbsClassLoader implements IClassLoader {
 		
 		translateClassFile(classFile);
 		
+		LogUtil.println("print.classfile", classFile.toString());
+		
 		ClassInfo classInfo = copyClassFileToClassInfo(classFile);
+		
+		LogUtil.println("print.classinfo", classInfo.toString());
 		
 		entrancesMethodsFilter(classInfo);
 		
@@ -55,7 +60,6 @@ public abstract class AbsClassLoader implements IClassLoader {
 		//3、把转换好的类，加载到内存中
 		Memory.classPool.put(StringUtil.replacePathToClass(classFile.this_class), classInfo);
 		
-		System.out.println(classInfo.toString());
 		return classInfo;
 		
 	}

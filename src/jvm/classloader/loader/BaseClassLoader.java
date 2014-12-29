@@ -18,19 +18,15 @@ import jvm.util.StringUtil;
 public class BaseClassLoader extends AbsClassLoader {
 
 	public ClassFile loadClassFile(String className) {
-		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
-		String classpath = System.getProperty("java.class.path");
-
-		String subpath = StringUtil.replaceClassToPath(className);
-
-		String filepath = classpath + "/" + subpath + ".class";
+		
+		String classfilepath = getClassfilePath(className);
 
 		FileInputStream fis = null;
 		
 		ClassFile classFile = new ClassFile();
 
 		try {
-			fis = new FileInputStream(new File(filepath));
+			fis = new FileInputStream(new File(classfilepath));
 			//从常量池开始读
 			ClassReadCounter counter = new ClassReadCounter();
 			//下一元素
@@ -338,6 +334,17 @@ public class BaseClassLoader extends AbsClassLoader {
             }  
 		}
 		return classFile;
+	}
+
+	private String getClassfilePath(String className) {
+		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
+		String classpath = System.getProperty("java.class.path");
+
+		String subpath = StringUtil.replaceClassToPath(className);
+
+		String filepath = classpath + "/" + subpath + ".class";
+		
+		return filepath;
 	}
 	
 	

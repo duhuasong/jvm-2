@@ -1,6 +1,6 @@
 package test.template.template02;
 
-public class DateTest {
+public class DateMain {
 
 	public static void main(String[] args) {
 		People man = new People("zhaohuan", 25);
