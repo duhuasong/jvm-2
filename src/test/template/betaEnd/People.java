@@ -1,4 +1,4 @@
-package test.template.templateEnd;
+package test.template.betaEnd;
 
 public abstract class People {
 	

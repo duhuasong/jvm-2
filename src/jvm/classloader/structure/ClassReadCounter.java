@@ -1,4 +1,4 @@
-package jvm.classloader.classstruct;
+package jvm.classloader.structure;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -130,7 +130,9 @@ public class ClassFile {
 		sb.append("constant_pool_count : ").append(constant_pool_count).append("\n");
 		for(int i=1 ; i<constant_pool_count ; i++){
 			ConstantFile cf = this.constantFiles.get(i);
-			sb.append(i+" : ").append(cf.content).append("\n");
+			if(cf != null){
+				sb.append(i+" : ").append(cf.content).append("\n");
+			}
 		}
 		sb.append("\n");
 		//sb.append("------------------------------------").append("\n");

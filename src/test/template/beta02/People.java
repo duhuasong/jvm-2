@@ -1,4 +1,4 @@
-package test.template.template02;
+package test.template.beta02;
 
 public class People {
 

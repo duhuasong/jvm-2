@@ -1,4 +1,4 @@
-package test.template.templateEnd;
+package test.template.betaEnd;
 
 public class Man extends People {
 	

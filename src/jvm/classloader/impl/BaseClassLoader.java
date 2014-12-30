@@ -1,4 +1,4 @@
-package jvm.classloader.loader;
+package jvm.classloader.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,10 +9,11 @@ import jvm.classloader.AbsClassLoader;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
-import jvm.classloader.classstruct.ClassElement;
-import jvm.classloader.classstruct.ClassReadCounter;
+import jvm.classloader.structure.ClassElement;
+import jvm.classloader.structure.ClassReadCounter;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
+import jvm.util.LogUtil;
 import jvm.util.StringUtil;
 
 public class BaseClassLoader extends AbsClassLoader {
@@ -161,6 +162,8 @@ public class BaseClassLoader extends AbsClassLoader {
 					}
 					
 				}else if(readElement.name.equals("access_flags")){
+					LogUtil.println("print.classfile.constant_pool_array", classFile.toString());
+					
 					String  access_flags= ByteHexUtil.bytesToHexString(temp);
 					classFile.access_flags = access_flags;
 					
