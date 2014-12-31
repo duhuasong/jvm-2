@@ -162,7 +162,7 @@ public class BaseClassLoader extends AbsClassLoader {
 					}
 					
 				}else if(readElement.name.equals("access_flags")){
-					LogUtil.println("print.classfile.constant_pool_array", classFile.toString());
+					LogUtil.println("print.classfile.constant_pool_array", classFile.constantToString());
 					
 					String  access_flags= ByteHexUtil.bytesToHexString(temp);
 					classFile.access_flags = access_flags;

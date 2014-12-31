@@ -146,4 +146,28 @@ public class ClassFile {
 		return sb.toString();
 	}
 
+	public String constantToString() {
+		StringBuilder sb = new StringBuilder();
+		for(int i=1 ; i<constant_pool_count ; i++){
+			ConstantFile cf = this.constantFiles.get(i);
+			if(cf != null){
+				sb.append(i+" : ");
+				if(cf.uft8_index != 0){
+					sb.append("#").append(cf.uft8_index);
+				}
+				if(cf.pre_uft8_index != 0){
+					sb.append("#").append(cf.pre_uft8_index);
+				}
+				if(cf.last_uft8_index != 0){
+					sb.append("#").append(cf.last_uft8_index);
+				}
+				if(cf.content != null){
+					sb.append(cf.content);
+				}
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+	}
+
 }
