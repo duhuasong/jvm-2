@@ -1,9 +1,9 @@
-package jvm.classloader.structure;
+package jvm.classloader.help;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassReadCounter {
+public class ClassFileReadCounter {
 
 	public final static List<ClassElement> classElements = new ArrayList<ClassElement>();
 
@@ -24,11 +24,11 @@ public class ClassReadCounter {
 		classElements.add(new ClassElement("methods_array", 2));//先读取access_flags
 	}
 
-	public ClassReadCounter(int i) {
+	public ClassFileReadCounter(int i) {
 		counter = i;
 	}
 
-	public ClassReadCounter() {
+	public ClassFileReadCounter() {
 
 	}
 
@@ -37,5 +37,23 @@ public class ClassReadCounter {
 	public ClassElement getCurElement() {
 		return classElements.get(counter++);
 	}
+	
+	
+	
+	//内部类
+	public static class ClassElement {
+		
+		public String name;
+		//字节数，如果为0，则表示字节数不固定
+		public int size;
+		
+		public ClassElement(String name, int size) {
+			super();
+			this.name = name;
+			this.size = size;
+		}
+	}
+	
+	
 
 }

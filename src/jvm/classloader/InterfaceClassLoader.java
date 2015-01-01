@@ -4,7 +4,7 @@ package jvm.classloader;
  * @author yangrui
  *
  */
-public interface IClassLoader {
+public interface InterfaceClassLoader {
 	
 	void loadClass(String className);
 }

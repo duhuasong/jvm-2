@@ -5,18 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import jvm.classloader.AbsClassLoader;
+import jvm.classloader.AbstractClassLoader;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
-import jvm.classloader.structure.ClassElement;
-import jvm.classloader.structure.ClassReadCounter;
+import jvm.classloader.help.ClassFileReadCounter;
+import jvm.classloader.help.ClassFileReadCounter.ClassElement;
 import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
 import jvm.util.LogUtil;
 import jvm.util.StringUtil;
 
-public class BaseClassLoader extends AbsClassLoader {
+public class BaseClassLoader extends AbstractClassLoader {
 
 	public ClassFile loadClassFile(String className) {
 		
@@ -29,7 +29,7 @@ public class BaseClassLoader extends AbsClassLoader {
 		try {
 			fis = new FileInputStream(new File(classfilepath));
 			//从常量池开始读
-			ClassReadCounter counter = new ClassReadCounter();
+			ClassFileReadCounter counter = new ClassFileReadCounter();
 			//下一元素
 			ClassElement readElement = counter.getCurElement();
 			
@@ -72,8 +72,8 @@ public class BaseClassLoader extends AbsClassLoader {
 						constant_type = ByteHexUtil.bytesToHexString(new byte[]{temp[0]});
 					}
 					
-					if(Constants.ConstantType.ClassType.equals(constant_type)){//如果常量类型是07，class类型
-						//如果当前读取的是class常量的第一部分
+					if(Constants.ConstantType.classType.equals(constant_type) || Constants.ConstantType.stringType.equals(constant_type) ){//如果常量类型是07，class类型
+						//如果当前读取的是class、string常量的第一部分
 						if(constant_type_part == 1){
 							len = 2;
 							temp = new byte[len];
@@ -81,7 +81,7 @@ public class BaseClassLoader extends AbsClassLoader {
 							continue;
 						}else if(constant_type_part == 2){
 							int utf8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
-							ConstantFile cf = new ConstantFile(Constants.ConstantType.ClassType,utf8_index);
+							ConstantFile cf = new ConstantFile(constant_type,utf8_index);
 							classFile.constantFiles.put(constant_pool_pointer++, cf);
 							//如果常量池遍历结束，则执行下一个元素
 							if(constant_pool_pointer >= constant_pool_count){

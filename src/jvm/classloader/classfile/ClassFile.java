@@ -151,6 +151,7 @@ public class ClassFile {
 		for(int i=1 ; i<constant_pool_count ; i++){
 			ConstantFile cf = this.constantFiles.get(i);
 			if(cf != null){
+				sb.append("\n");
 				sb.append(i+" : ");
 				if(cf.uft8_index != 0){
 					sb.append("#").append(cf.uft8_index);
@@ -164,9 +165,9 @@ public class ClassFile {
 				if(cf.content != null){
 					sb.append(cf.content);
 				}
-				sb.append("\n");
 			}
 		}
+		sb.append("\n");
 		return sb.toString();
 	}
 

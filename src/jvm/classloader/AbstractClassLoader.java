@@ -8,6 +8,8 @@ import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.CodeAttributeFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
+import jvm.classloader.help.ByteCodeDesc;
+import jvm.classloader.help.ByteCodeMap;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
@@ -18,7 +20,7 @@ import jvm.util.LogUtil;
 import jvm.util.MethodUtil;
 import jvm.util.StringUtil;
 
-public abstract class AbsClassLoader implements IClassLoader {
+public abstract class AbstractClassLoader implements InterfaceClassLoader {
 
 	@Override
 	public void loadClass(String className) {
@@ -83,23 +85,22 @@ public abstract class AbsClassLoader implements IClassLoader {
 		List<Instruction> result = new ArrayList<Instruction>();
 		
 		for(int i=0;i<code_attribute.byteCodes.size();i++){
-			String opcode = Constants.InstructionMap.get(code_attribute.byteCodes.get(i));
-			if(null == opcode){
+			ByteCodeDesc byteCodeDesc = ByteCodeMap.get(code_attribute.byteCodes.get(i));
+			if(null == byteCodeDesc){
 				System.err.println(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述");
-			}
-			if("invokestatic".equals(opcode) || "getstatic".equals(opcode) || "invokevirtual".equals(opcode) ){//下两个字节是操作数
+			}else if(byteCodeDesc.index_number == 2){//下两个字节是操作数
 				int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
 				String opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
-				Instruction instr = new Instruction(opcode, opcodeNum);
+				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
 				result.add(instr);
 				i = i + 2;		
-			}else if("bipush".equals(opcode)){//下一个字节是操作数
+			}else if(byteCodeDesc.index_number == 1){//下一个字节是操作数
 				int next_u1 = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1));
-				Instruction instr = new Instruction(opcode, next_u1);
+				Instruction instr = new Instruction(byteCodeDesc.desc, next_u1);
 				result.add(instr);
 				i = i + 1;
 			}else{//没有操作数
-				Instruction instr = new Instruction(opcode);
+				Instruction instr = new Instruction(byteCodeDesc.desc);
 				result.add(instr);
 			}
 		}
@@ -118,7 +119,7 @@ public abstract class AbsClassLoader implements IClassLoader {
 		//（1）解析class常量
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
-			if(cf.type.equals(Constants.ConstantType.ClassType)){
+			if(cf.type.equals(Constants.ConstantType.classType)){
 				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
 			}
 		}
