@@ -8,7 +8,6 @@ import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.CodeAttributeFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
-import jvm.classloader.help.ByteCodeDesc;
 import jvm.classloader.help.ByteCodeMap;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
@@ -60,7 +59,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		}
 		classInfo.setMethods(methods);
 		//3、把转换好的类，加载到内存中
-		Memory.classPool.put(StringUtil.replacePathToClass(classFile.this_class), classInfo);
+		Memory.MethodArea.putClassInfo(StringUtil.replacePathToClass(classFile.this_class), classInfo);
 		
 		return classInfo;
 		
@@ -85,7 +84,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		List<Instruction> result = new ArrayList<Instruction>();
 		
 		for(int i=0;i<code_attribute.byteCodes.size();i++){
-			ByteCodeDesc byteCodeDesc = ByteCodeMap.get(code_attribute.byteCodes.get(i));
+			ByteCodeMap.ByteCodeDesc byteCodeDesc = ByteCodeMap.get(code_attribute.byteCodes.get(i));
 			if(null == byteCodeDesc){
 				System.err.println(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述");
 			}else if(byteCodeDesc.index_number == 2){//下两个字节是操作数
@@ -105,6 +104,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 			}
 		}
 		
+		LogUtil.println("print.method.instruction", MethodUtil.toStringWithInstructionList(result));
 		return result;
 	}
 	

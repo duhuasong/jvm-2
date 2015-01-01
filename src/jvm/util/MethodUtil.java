@@ -1,5 +1,8 @@
 package jvm.util;
 
+import java.util.List;
+
+import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
@@ -36,7 +39,7 @@ public class MethodUtil {
 	 */
 	public static MethodInfo searchMethod(String method_descripter) {
 		String className = parseClassName(method_descripter);
-		ClassInfo classInfo = Memory.classPool.get(className);
+		ClassInfo classInfo = Memory.MethodArea.getClassInfo(className);
 		
 		String methodName = parseMethodName(method_descripter);
 		String methodType = parseMethodType(method_descripter);
@@ -94,6 +97,15 @@ public class MethodUtil {
 			}
 		}
 		return input_class;
+	}
+	
+	
+	public static String toStringWithInstructionList(List<Instruction> list) {
+		StringBuilder sb = new StringBuilder();
+		for(Instruction ins : list){
+			sb.append("\n").append(ins.toString());
+		}
+		return sb.toString();
 	}
 
 	

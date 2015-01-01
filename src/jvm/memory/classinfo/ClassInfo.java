@@ -7,6 +7,8 @@ public class ClassInfo {
 	private String name;
 	
 	private List<MethodInfo> methods;
+	
+	private List<FieldInfo> fields;
 
 	public ClassInfo(String name, List<MethodInfo> methods) {
 		super();
@@ -65,6 +67,14 @@ public class ClassInfo {
 			sb.append(mi.toString()).append("\n");;
 		}
 		return sb.toString();
+	}
+
+	public List<FieldInfo> getFields() {
+		return fields;
+	}
+
+	public void setFields(List<FieldInfo> fields) {
+		this.fields = fields;
 	}
 
 	

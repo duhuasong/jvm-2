@@ -6,15 +6,7 @@ public class Instruction {
 	
 	public Object opcodeNum;
 	
-	public Object opcodeNum2;
-	
 
-	public Instruction(String opcode, Object opcodeNum, Object opcodeNum2) {
-		super();
-		this.opcode = opcode;
-		this.opcodeNum = opcodeNum;
-		this.opcodeNum2 = opcodeNum2;
-	}
 
 	public Instruction(String opcode, Object opcodeNum) {
 		super();
@@ -43,17 +35,16 @@ public class Instruction {
 		this.opcodeNum = opcodeNum;
 	}
 
-	public Object getOpcodeNum2() {
-		return opcodeNum2;
-	}
-
-	public void setOpcodeNum2(Object opcodeNum2) {
-		this.opcodeNum2 = opcodeNum2;
-	}
 
 	
 
-	
+	@Override
+	public String toString() {
+		if(opcodeNum == null){
+			return opcode;
+		}
+		return opcode + " : " + opcodeNum;
+	}
 	
 
 }
