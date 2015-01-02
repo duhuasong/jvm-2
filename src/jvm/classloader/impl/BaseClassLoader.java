@@ -11,10 +11,10 @@ import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.MethodFile;
 import jvm.classloader.help.ClassFileReadCounter;
 import jvm.classloader.help.ClassFileReadCounter.ClassElement;
-import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
-import jvm.util.LogUtil;
-import jvm.util.StringUtil;
+import jvm.util.common.ByteHexUtil;
+import jvm.util.common.LogUtil;
+import jvm.util.common.StringUtil;
 
 public class BaseClassLoader extends AbstractClassLoader {
 

@@ -1,14 +1,14 @@
-package jvm.engine.instruction;
+package jvm.util.factory;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import jvm.engine.InstructionProcessor;
 
 public class ProcessorFactory {
 	
 	private static Map<Class<?>,InstructionProcessor> map = new HashMap<Class<?>,InstructionProcessor>();
 	/**
-	 * TODO 测试
-	 * TODO 线程安全
 	 * @param processorClass
 	 * @return
 	 */

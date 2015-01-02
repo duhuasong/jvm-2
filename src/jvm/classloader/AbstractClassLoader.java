@@ -13,11 +13,11 @@ import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
-import jvm.util.ByteHexUtil;
 import jvm.util.Constants;
-import jvm.util.LogUtil;
 import jvm.util.MethodUtil;
-import jvm.util.StringUtil;
+import jvm.util.common.ByteHexUtil;
+import jvm.util.common.LogUtil;
+import jvm.util.common.StringUtil;
 
 public abstract class AbstractClassLoader implements InterfaceClassLoader {
 

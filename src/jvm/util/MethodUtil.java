@@ -6,6 +6,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
+import jvm.util.common.StringUtil;
 
 public class MethodUtil {
 	/**

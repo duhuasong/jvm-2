@@ -1,7 +1,7 @@
 package jvm.engine.processor;
 
+import jvm.engine.InstructionProcessor;
 import jvm.engine.instruction.Instruction;
-import jvm.engine.instruction.InstructionProcessor;
 import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.JavaStack;
 import jvm.util.MethodUtil;

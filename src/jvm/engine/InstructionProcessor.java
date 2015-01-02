@@ -1,5 +1,6 @@
-package jvm.engine.instruction;
+package jvm.engine;
 
+import jvm.engine.instruction.Instruction;
 import jvm.stack.JavaStack;
 
 public interface InstructionProcessor {

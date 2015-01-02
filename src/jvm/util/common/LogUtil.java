@@ -1,4 +1,4 @@
-package jvm.util;
+package jvm.util.common;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
