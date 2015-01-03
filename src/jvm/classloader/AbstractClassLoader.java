@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import jvm.classloader.classfile.ClassFile;
-import jvm.classloader.classfile.CodeAttributeFile;
 import jvm.classloader.classfile.ConstantFile;
-import jvm.classloader.classfile.MethodFile;
+import jvm.classloader.classfile.FieldMethodFile;
+import jvm.classloader.classfile.attribute.CodeAttributeFile;
+import jvm.classloader.classfile.attribute.CommonAttributeFile;
 import jvm.classloader.help.ByteCodeMap;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
@@ -47,7 +48,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		
 		//2¡¢¿½±´methodinfo
 		List<MethodInfo> methods = new ArrayList<MethodInfo>();
-		for(MethodFile methodfile : classFile.methods_array){
+		for(FieldMethodFile methodfile : classFile.methods_array){
 			MethodInfo methodinfo = new MethodInfo();
 			methodinfo.setClassInfo(classInfo);
 			methodinfo.setName(methodfile.name_index);
@@ -71,13 +72,13 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	 * @param classFile 
 	 * @return
 	 */
-	private List<Instruction> mergeByteCode(MethodFile methodFile, ClassFile classFile) {
+	private List<Instruction> mergeByteCode(FieldMethodFile methodFile, ClassFile classFile) {
 		
 		CodeAttributeFile code_attribute = null;
 		
-		for(CodeAttributeFile temp : methodFile.code_attributes){
+		for(CommonAttributeFile temp : methodFile.attributes){
 			if(temp.attribute_name.equals("Code")){
-				code_attribute = temp;
+				code_attribute = (CodeAttributeFile)temp;
 			}
 		}
 		
@@ -129,7 +130,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
 		
 		//2¡¢½âÎö·½·¨
-		for(MethodFile mf : classFile.methods_array){
+		for(FieldMethodFile mf : classFile.methods_array){
 			mf.name_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.name_index));
 			mf.descriptor_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.descriptor_index));
 		}

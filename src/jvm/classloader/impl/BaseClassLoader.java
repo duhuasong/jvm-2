@@ -8,8 +8,9 @@ import java.io.IOException;
 import jvm.classloader.AbstractClassLoader;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
-import jvm.classloader.classfile.MethodFile;
+import jvm.classloader.classfile.FieldMethodFile;
 import jvm.classloader.help.ClassFileReadCounter;
+import jvm.classloader.help.TempVariable;
 import jvm.classloader.help.ClassFileReadCounter.ClassElement;
 import jvm.util.Constants;
 import jvm.util.common.ByteHexUtil;
@@ -33,128 +34,117 @@ public class BaseClassLoader extends AbstractClassLoader {
 			//下一元素
 			ClassElement readElement = counter.getCurElement();
 			
-			int constant_pool_count = 0;
-			int constant_pool_pointer = 1;
-			//当前读取的常量类型
-			String constant_type = null;
-			//当前读取的常量类型对应的片段（utf8对应3，class类型对应2个部分等）
-			int constant_type_part = 1;
-			//当前读取的方法类型对应的片段（5个部分，access_flags，name_index，descriptor_index，attributes_count，attributes_info）
-			int method_info_part = 1;
-			//当前读取的属性类型对应的片段
-			int attribute_info_part = 1;
+			TempVariable obj = new TempVariable();
+			obj.len = readElement.size;
+			obj.temp = new byte[obj.len];
 			
-			
-			int len = readElement.size;
-			byte[] temp = new byte[len];
-			
-			while ((fis.read(temp, 0, len)) != -1) {
+			while ((fis.read(obj.temp, 0, obj.len)) != -1) {
 				
 				if(readElement.name.equals("magic")){
-					String hex = ByteHexUtil.bytesToHexString(temp);
+					String hex = ByteHexUtil.bytesToHexString(obj.temp);
 					classFile.setMagic(hex);
 					
 				}else if(readElement.name.equals("minor_version")){
-					String hex = ByteHexUtil.bytesToHexString(temp);
+					String hex = ByteHexUtil.bytesToHexString(obj.temp);
 					classFile.setMinor_version(hex);
 					
 				}else if(readElement.name.equals("major_version")){
-					String hex = ByteHexUtil.bytesToHexString(temp);
+					String hex = ByteHexUtil.bytesToHexString(obj.temp);
 					classFile.setMajor_version(hex);
 					
 				}else if(readElement.name.equals("constant_pool_count")){
-					constant_pool_count = ByteHexUtil.getInt(temp, false, temp.length);
-					classFile.setConstant_pool_count(constant_pool_count);
+					obj.constant_pool_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+					classFile.setConstant_pool_count(obj.constant_pool_count);
 					
 				}else if(readElement.name.equals("constant_pool_array")){
 					
-					if(null == constant_type){
-						constant_type = ByteHexUtil.bytesToHexString(new byte[]{temp[0]});
+					if(null == obj.constant_type){
+						obj.constant_type = ByteHexUtil.bytesToHexString(new byte[]{obj.temp[0]});
 					}
 					
-					if(Constants.ConstantType.classType.equals(constant_type) || Constants.ConstantType.stringType.equals(constant_type) ){//如果常量类型是07，class类型
+					if(Constants.ConstantType.classType.equals(obj.constant_type) || Constants.ConstantType.stringType.equals(obj.constant_type) ){//如果常量类型是07，class类型
 						//如果当前读取的是class、string常量的第一部分
-						if(constant_type_part == 1){
-							len = 2;
-							temp = new byte[len];
-							constant_type_part++;
+						if(obj.constant_type_part == 1){
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.constant_type_part++;
 							continue;
-						}else if(constant_type_part == 2){
-							int utf8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
-							ConstantFile cf = new ConstantFile(constant_type,utf8_index);
-							classFile.constantFiles.put(constant_pool_pointer++, cf);
+						}else if(obj.constant_type_part == 2){
+							int utf8_index = ByteHexUtil.getInt(new byte[]{obj.temp[0],obj.temp[1]}, false, 2);
+							ConstantFile cf = new ConstantFile(obj.constant_type,utf8_index);
+							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							//如果常量池遍历结束，则执行下一个元素
-							if(constant_pool_pointer >= constant_pool_count){
+							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								len = readElement.size;
-								temp = new byte[len];
+								obj.len = readElement.size;
+								obj.temp = new byte[obj.len];
 								continue;
 							}else{
 								//重置变量，读取下一个常量
-								constant_type = null;
-								constant_type_part = 1;
-								len = 1;
-								temp = new byte[len];
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								obj.len = 1;
+								obj.temp = new byte[obj.len];
 								continue;
 							}
 						}
-					}else if(Constants.ConstantType.utf8.equals(constant_type)){//如果常量类型是01
+					}else if(Constants.ConstantType.utf8.equals(obj.constant_type)){//如果常量类型是01
 						//如果当前读取的是常量的第一部分
-						if(constant_type_part == 1){
-							len = 2;
-							temp = new byte[len];
-							constant_type_part++;
+						if(obj.constant_type_part == 1){
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.constant_type_part++;
 							continue;
-						}else if(constant_type_part == 2){
-							len = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
-							temp = new byte[len];
-							constant_type_part++;
+						}else if(obj.constant_type_part == 2){
+							obj.len = ByteHexUtil.getInt(new byte[]{obj.temp[0],obj.temp[1]}, false, 2);
+							obj.temp = new byte[obj.len];
+							obj.constant_type_part++;
 							continue;
-						}else if(constant_type_part == 3){
-							String content = ByteHexUtil.getStringFromUtf8(temp);
+						}else if(obj.constant_type_part == 3){
+							String content = ByteHexUtil.getStringFromUtf8(obj.temp);
 							ConstantFile cf = new ConstantFile(Constants.ConstantType.utf8,content);
-							classFile.constantFiles.put(constant_pool_pointer++, cf);
+							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							
 							//如果常量池遍历结束，则执行下一个元素
-							if(constant_pool_pointer >= constant_pool_count){
+							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								len = readElement.size;
-								temp = new byte[len];
+								obj.len = readElement.size;
+								obj.temp = new byte[obj.len];
 								continue;
 							}else{
 								//重置变量，读取下一个常量
-								constant_type = null;
-								constant_type_part = 1;
-								len = 1;
-								temp = new byte[len];
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								obj.len = 1;
+								obj.temp = new byte[obj.len];
 								continue;
 							}
 						}
-					}else if(Constants.ConstantType.method.equals(constant_type) || Constants.ConstantType.field.equals(constant_type) || Constants.ConstantType.nameAndType.equals(constant_type)){//如果常量类型是0a
+					}else if(Constants.ConstantType.method.equals(obj.constant_type) || Constants.ConstantType.field.equals(obj.constant_type) || Constants.ConstantType.nameAndType.equals(obj.constant_type)){//如果常量类型是0a
 						//如果当前读取的是常量的第一部分
-						if(constant_type_part == 1){
-							len = 4;
-							temp = new byte[len];
-							constant_type_part++;
+						if(obj.constant_type_part == 1){
+							obj.len = 4;
+							obj.temp = new byte[obj.len];
+							obj.constant_type_part++;
 							continue;
-						}else if(constant_type_part == 2){
-							int pre_uft8_index = ByteHexUtil.getInt(new byte[]{temp[0],temp[1]}, false, 2);
-							int last_uft8_index = ByteHexUtil.getInt(new byte[]{temp[2],temp[3]}, false, 2);
-							ConstantFile cf = new ConstantFile(constant_type,pre_uft8_index,last_uft8_index);
-							classFile.constantFiles.put(constant_pool_pointer++, cf);
+						}else if(obj.constant_type_part == 2){
+							int pre_uft8_index = ByteHexUtil.getInt(new byte[]{obj.temp[0],obj.temp[1]}, false, 2);
+							int last_uft8_index = ByteHexUtil.getInt(new byte[]{obj.temp[2],obj.temp[3]}, false, 2);
+							ConstantFile cf = new ConstantFile(obj.constant_type,pre_uft8_index,last_uft8_index);
+							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							
 							//如果常量池遍历结束，则执行下一个元素
-							if(constant_pool_pointer >= constant_pool_count){
+							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								len = readElement.size;
-								temp = new byte[len];
+								obj.len = readElement.size;
+								obj.temp = new byte[obj.len];
 								continue;
 							}else{
 								//重置变量，读取下一个常量
-								constant_type = null;
-								constant_type_part = 1;
-								len = 1;
-								temp = new byte[len];
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								obj.len = 1;
+								obj.temp = new byte[obj.len];
 								continue;
 							}
 							
@@ -164,145 +154,197 @@ public class BaseClassLoader extends AbstractClassLoader {
 				}else if(readElement.name.equals("access_flags")){
 					LogUtil.println("print.classfile.constant_pool_array", classFile.constantToString());
 					
-					String  access_flags= ByteHexUtil.bytesToHexString(temp);
+					String  access_flags= ByteHexUtil.bytesToHexString(obj.temp);
 					classFile.access_flags = access_flags;
 					
 				}else if(readElement.name.equals("this_class")){
-					int  this_class_index= ByteHexUtil.getInt(temp, false, temp.length);
+					int  this_class_index= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 					classFile.this_class = this_class_index+"";
 					
 				}else if(readElement.name.equals("super_class")){
-					int  super_class_index= ByteHexUtil.getInt(temp, false, temp.length);
+					int  super_class_index= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 					classFile.super_class = super_class_index+"";
 					
 				}else if(readElement.name.equals("interfaces_count")){
-					int  interfaces_count= ByteHexUtil.getInt(temp, false, temp.length);
+					int  interfaces_count= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 					classFile.interfaces_count = interfaces_count;
 					
 					//如果接口数为0，那么接口interfaces_array没有，所以跳过
 					if(interfaces_count == 0){
 						readElement = counter.getCurElement();
 						readElement = counter.getCurElement();
-						len = readElement.size;
-						temp = new byte[len];
+						obj.len = readElement.size;
+						obj.temp = new byte[obj.len];
 						continue;
 					}
 					
 				}else if(readElement.name.equals("fields_count")){
-					int  fields_count= ByteHexUtil.getInt(temp, false, temp.length);
+					int  fields_count= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 					classFile.fields_count = fields_count;
 					
-					//如果字段数为0，那么接口interfaces_array没有，所以跳过
+					//如果字段数为0，那么接口fields_array没有，所以跳过
 					if(fields_count == 0){
 						readElement = counter.getCurElement();
 						readElement = counter.getCurElement();
-						len = readElement.size;
-						temp = new byte[len];
+						obj.len = readElement.size;
+						obj.temp = new byte[obj.len];
 						continue;
 					}
 					
-				}else if(readElement.name.equals("methods_count")){
-					int  methods_count= ByteHexUtil.getInt(temp, false, temp.length);
-					classFile.methods_count = methods_count;
-					
-				}else if(readElement.name.equals("methods_array")){
-					if(method_info_part == 1){
-						String  access_flags = ByteHexUtil.bytesToHexString(temp);
-						MethodFile mf = new MethodFile();
+				}else if(readElement.name.equals("fields_array")){
+					if(obj.field_or_method_info_part == 1){
+						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
+						FieldMethodFile mf = new FieldMethodFile();
 						mf.access_flags = access_flags;
 						classFile.methods_array.add(mf);
 						
-					}else if(method_info_part == 2){
-						int name_index = ByteHexUtil.getInt(temp, false, temp.length);
-						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+					}else if(obj.field_or_method_info_part == 2){
+						int name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.name_index = name_index + "";
 						
-					}else if(method_info_part == 3){
-						int descriptor_index = ByteHexUtil.getInt(temp, false, temp.length);
-						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+					}else if(obj.field_or_method_info_part == 3){
+						int descriptor_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.descriptor_index = descriptor_index + "";
 						
-					}else if(method_info_part == 4){
-						int attributes_count = ByteHexUtil.getInt(temp, false, temp.length);
-						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+					}else if(obj.field_or_method_info_part == 4){
+						int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.attributes_count = attributes_count;
 						
-					}else if(method_info_part == 5){//说明开始读取属性信息
-						MethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-						if(attribute_info_part == 1){
-							int attribute_name_index = ByteHexUtil.getInt(temp, false, temp.length);
+					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						if(obj.attribute_info_part == 1){
+							int attribute_name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 							String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
 							mf.current_attributes_type = attribute_name;
-							mf.setAttributeType(attribute_name);
+							mf.setAttributeName(attribute_name);
 							
-							len = 4;
-							temp = new byte[len];
-							attribute_info_part++;
+							obj.len = 4;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
 							continue;
-						}else if(attribute_info_part == 2){
-							int attribute_length = ByteHexUtil.getInt(temp, false, temp.length);
+						}else if(obj.attribute_info_part == 2){
+							int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 							mf.setAttributeLength(attribute_length);
 							
-							len = 2;
-							temp = new byte[len];
-							attribute_info_part++;
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
 							continue;
-						}else if(attribute_info_part == 3){
-							int max_stack = ByteHexUtil.getInt(temp, false, temp.length);
+						}else if(obj.attribute_info_part == 3){
+							int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 							mf.setAttributeMaxStack(max_stack);
 							
-							len = 2;
-							temp = new byte[len];
-							attribute_info_part++;
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
 							continue;
-						}else if(attribute_info_part == 4){
-							int max_locals = ByteHexUtil.getInt(temp, false, temp.length);
+						}
+					}
+				}else if(readElement.name.equals("methods_count")){
+					int  methods_count= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+					classFile.methods_count = methods_count;
+					
+				}else if(readElement.name.equals("methods_array")){
+					if(obj.field_or_method_info_part == 1){
+						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
+						FieldMethodFile mf = new FieldMethodFile();
+						mf.access_flags = access_flags;
+						classFile.methods_array.add(mf);
+						
+					}else if(obj.field_or_method_info_part == 2){
+						int name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.name_index = name_index + "";
+						
+					}else if(obj.field_or_method_info_part == 3){
+						int descriptor_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.descriptor_index = descriptor_index + "";
+						
+					}else if(obj.field_or_method_info_part == 4){
+						int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.attributes_count = attributes_count;
+						
+					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						if(obj.attribute_info_part == 1){
+							int attribute_name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
+							mf.current_attributes_type = attribute_name;
+							mf.setAttributeName(attribute_name);
+							
+							obj.len = 4;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 2){
+							int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeLength(attribute_length);
+							
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 3){
+							int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeMaxStack(max_stack);
+							
+							obj.len = 2;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 4){
+							int max_locals = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 							mf.setAttributeMaxLocals(max_locals);
 							
-							len = 4;
-							temp = new byte[len];
-							attribute_info_part++;
+							obj.len = 4;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
 							continue;
-						}else if(attribute_info_part == 5){
-							int code_length = ByteHexUtil.getInt(temp, false, temp.length);
+						}else if(obj.attribute_info_part == 5){
+							int code_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 							mf.setAttributeCodeLength(code_length);
 							
-							len = 1;
-							temp = new byte[len];
-							attribute_info_part++;
+							obj.len = 1;
+							obj.temp = new byte[obj.len];
+							obj.attribute_info_part++;
 							continue;
-						}else if(attribute_info_part == 6){//开始读取指令，一个指令一个字节
+						}else if(obj.attribute_info_part == 6){//开始读取指令，一个指令一个字节
 							if(mf.isLastByteCode()){
-								String byteCode = ByteHexUtil.bytesToHexString(temp);
+								String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
 								mf.setAttributeByteCode(byteCode);
 								
 								//一次读完该属性剩余的字节
-								len = mf.getAttributeRemainBytes();
-								temp = new byte[len];
-								attribute_info_part++;
+								obj.len = mf.getAttributeRemainBytes();
+								obj.temp = new byte[obj.len];
+								obj.attribute_info_part++;
 								continue;
 								
 							}else{
-								String byteCode = ByteHexUtil.bytesToHexString(temp);
+								String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
 								mf.setAttributeByteCode(byteCode);
 								
-								len = 1;
-								temp = new byte[len];
+								obj.len = 1;
+								obj.temp = new byte[obj.len];
 								continue;
 							}
-						}else if(attribute_info_part == 7){
+						}else if(obj.attribute_info_part == 7){
 								//TODO 读取剩余的字节 目前不需要
 							
 								if(mf.hasRemainAttrs()){//此方法还有属性
-									attribute_info_part = 1;
-									len = 2;
-									temp = new byte[len];
+									obj.attribute_info_part = 1;
+									obj.len = 2;
+									obj.temp = new byte[obj.len];
 									continue;
 								}else if(classFile.hasRemainMethods()){//还有下一个方法
-									attribute_info_part = 1;
-									method_info_part = 1;
-									len = 2;
-									temp = new byte[len];
+									obj.attribute_info_part = 1;
+									obj.field_or_method_info_part = 1;
+									obj.len = 2;
+									obj.temp = new byte[obj.len];
 									continue;
 								}else{
 									break;
@@ -310,17 +352,17 @@ public class BaseClassLoader extends AbstractClassLoader {
 						}
 					}
 					
-					//-------------默认读取2个字节，并且method_info_part++
-					len = 2;
-					temp = new byte[len];
-					method_info_part++;
+					//-------------默认读取2个字节，并且tempVariable.method_info_part++
+					obj.len = 2;
+					obj.temp = new byte[obj.len];
+					obj.field_or_method_info_part++;
 					continue;
 				}
 				
 				//--------每个分支默认设置readElement、len和temp----------
 				readElement = counter.getCurElement();
-				len = readElement.size;
-				temp = new byte[len];
+				obj.len = readElement.size;
+				obj.temp = new byte[obj.len];
 				
 			}
 		} catch (FileNotFoundException e) {

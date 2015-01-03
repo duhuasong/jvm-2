@@ -2,7 +2,11 @@ package jvm.classloader.help;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * 16进制数字和字节码描述之间的映射
+ * @author yangrui
+ *
+ */
 public class ByteCodeMap {
 	
 	public final static Map<String,ByteCodeDesc> map = new HashMap<String,ByteCodeDesc>();
@@ -40,9 +44,6 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("b6", "invokevirtual",2));
 		putByteCodeDesc(new ByteCodeDesc("bb", "new",2));
 		putByteCodeDesc(new ByteCodeDesc("b7", "invokespecial",2));
-		
-		
-		
 		
 		
 	}

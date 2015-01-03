@@ -36,7 +36,7 @@ public class ClassFile {
 	
 	public int methods_count;
 	
-	public List<MethodFile> methods_array = new ArrayList<MethodFile>();
+	public List<FieldMethodFile> methods_array = new ArrayList<FieldMethodFile>();
 	
 	
 	public String getMagic() {
@@ -140,7 +140,7 @@ public class ClassFile {
 		sb.append("this_class : ").append(this_class).append("\n");
 		sb.append("super_class : ").append(super_class).append("\n");
 		sb.append("methods_count : ").append(methods_count).append("\n").append("\n");;
-		for(MethodFile mf : methods_array){
+		for(FieldMethodFile mf : methods_array){
 			sb.append(mf.toString()).append("\n");;
 		}
 		return sb.toString();

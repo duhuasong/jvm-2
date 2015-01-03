@@ -5,13 +5,18 @@ import java.util.Map;
 
 public class Constants {
 	
+	public final static Map<String,String> typeClassMap = new HashMap<String,String>();
+	
+	static{
+		typeClassMap.put(VarType.Integer_Type, "java.lang.Integer");
+	}
+	
 	public static class Scope {
 
 		public final static String PUBLIC = "public";
 
 	}
 	
-	public final static Map<String,String> varTypeMap = new HashMap<String,String>();
 	
 	public static class VarType {
 
@@ -62,34 +67,14 @@ public class Constants {
 		
 	}
 	
-	//public final static Map<String,String> instructionMap = new HashMap<String,String>();
-	
-	static{
-		/*instructionMap.put("03", "iconst_0");
-		instructionMap.put("04", "iconst_1");
-		instructionMap.put("05", "iconst_2");
-		instructionMap.put("06", "iconst_3");
-		instructionMap.put("07", "iconst_4");
-		instructionMap.put("08", "iconst_5");
-		
-		instructionMap.put("1a", "iload_0");
-		instructionMap.put("1b", "iload_1");
-		instructionMap.put("1c", "iload_2");
-		instructionMap.put("1d", "iload_3");
-		instructionMap.put("3c", "istore_1");
-		instructionMap.put("3d", "istore_2");
-		instructionMap.put("3e", "istore_3");
-		instructionMap.put("10", "bipush");//后一个字节是整数值
-		instructionMap.put("b8", "invokestatic");//后两个字节是方法名称的index
-		instructionMap.put("b2", "getstatic");//类的静态属性入栈 
-		instructionMap.put("b6", "invokevirtual");//后两个字节是方法名称的index
-		instructionMap.put("60", "iadd");
-		instructionMap.put("b1", "return");
-		instructionMap.put("ac", "ireturn");
-		instructionMap.put("bb", "new");*/
-		//----------------------------------VarTypeMap----------------------------
-		varTypeMap.put(VarType.Integer_Type, "java.lang.Integer");
-	}
+	public static class AttributeType {
 
+		public final static String code = "Code";
+		
+		public final static String constantValueTyep = "constantValueTyep";
+		
+	}
+	
+	
 }
 

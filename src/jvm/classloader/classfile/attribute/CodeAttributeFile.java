@@ -1,13 +1,9 @@
-package jvm.classloader.classfile;
+package jvm.classloader.classfile.attribute;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeAttributeFile {
-	
-	public String attribute_name;
-	
-	public int attribute_length;
+public class CodeAttributeFile extends CommonAttributeFile {
 	
 	public int max_stack;
 	

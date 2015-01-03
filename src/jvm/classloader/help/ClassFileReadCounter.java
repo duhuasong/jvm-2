@@ -19,7 +19,7 @@ public class ClassFileReadCounter {
 		classElements.add(new ClassElement("interfaces_count", 2));
 		classElements.add(new ClassElement("interfaces_array", 0));
 		classElements.add(new ClassElement("fields_count", 2));
-		classElements.add(new ClassElement("fields_array", 0));
+		classElements.add(new ClassElement("fields_array", 2));//先读取access_flags
 		classElements.add(new ClassElement("methods_count", 2));
 		classElements.add(new ClassElement("methods_array", 2));//先读取access_flags
 	}
