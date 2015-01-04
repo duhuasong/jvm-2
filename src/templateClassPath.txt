@@ -1,5 +1,5 @@
 ¼Ò£º
-D:\workspaces\myeclipse\pic\Jvm\bin\test\template\beta02
+D:\workspaces\myeclipse\pic\Jvm1\bin\test\template\beta02
 
 ¹«Ë¾£º
 D:\workspaces\myeclipse\wtms4\ztest\bin\test\template\beta02

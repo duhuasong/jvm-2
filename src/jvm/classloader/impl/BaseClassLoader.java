@@ -152,6 +152,8 @@ public class BaseClassLoader extends AbstractClassLoader {
 					}
 					
 				}else if(readElement.name.equals("access_flags")){
+					//解析常量
+					translateConstantFile(classFile);
 					LogUtil.println("print.classfile.constant_pool_array", classFile.constantToString());
 					
 					String  access_flags= ByteHexUtil.bytesToHexString(obj.temp);
@@ -191,63 +193,11 @@ public class BaseClassLoader extends AbstractClassLoader {
 						continue;
 					}
 					
-				}else if(readElement.name.equals("fields_array")){
-					if(obj.field_or_method_info_part == 1){
-						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
-						FieldMethodFile mf = new FieldMethodFile();
-						mf.access_flags = access_flags;
-						classFile.methods_array.add(mf);
-						
-					}else if(obj.field_or_method_info_part == 2){
-						int name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-						mf.name_index = name_index + "";
-						
-					}else if(obj.field_or_method_info_part == 3){
-						int descriptor_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-						mf.descriptor_index = descriptor_index + "";
-						
-					}else if(obj.field_or_method_info_part == 4){
-						int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-						mf.attributes_count = attributes_count;
-						
-					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
-						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-						if(obj.attribute_info_part == 1){
-							int attribute_name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-							String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
-							mf.current_attributes_type = attribute_name;
-							mf.setAttributeName(attribute_name);
-							
-							obj.len = 4;
-							obj.temp = new byte[obj.len];
-							obj.attribute_info_part++;
-							continue;
-						}else if(obj.attribute_info_part == 2){
-							int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-							mf.setAttributeLength(attribute_length);
-							
-							obj.len = 2;
-							obj.temp = new byte[obj.len];
-							obj.attribute_info_part++;
-							continue;
-						}else if(obj.attribute_info_part == 3){
-							int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-							mf.setAttributeMaxStack(max_stack);
-							
-							obj.len = 2;
-							obj.temp = new byte[obj.len];
-							obj.attribute_info_part++;
-							continue;
-						}
-					}
 				}else if(readElement.name.equals("methods_count")){
 					int  methods_count= ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 					classFile.methods_count = methods_count;
 					
-				}else if(readElement.name.equals("methods_array")){
+				}else if(readElement.name.equals("methods_array") || readElement.name.equals("fields_array")){
 					if(obj.field_or_method_info_part == 1){
 						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
 						FieldMethodFile mf = new FieldMethodFile();
@@ -352,7 +302,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 						}
 					}
 					
-					//-------------默认读取2个字节，并且tempVariable.method_info_part++
+					//-------------默认读取2个字节，并且obj.method_info_part++
 					obj.len = 2;
 					obj.temp = new byte[obj.len];
 					obj.field_or_method_info_part++;

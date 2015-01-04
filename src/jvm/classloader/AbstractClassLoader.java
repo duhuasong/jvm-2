@@ -116,14 +116,8 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	private void translateClassFile(ClassFile classFile) {
 		
 		//1、解析常量
-		Set<Integer> set = classFile.constantFiles.keySet();
-		//（1）解析class常量
-		for(Integer key : set){
-			ConstantFile cf = classFile.constantFiles.get(key);
-			if(cf.type.equals(Constants.ConstantType.classType)){
-				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
-			}
-		}
+		translateConstantFile(classFile);
+		
 		//（2）解析NameAndType类型的常量
 		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
 		//（3）解析method和field类型的常量
@@ -136,6 +130,18 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		}
 		//3、解析classFile中其他字段
 		classFile.this_class =  classFile.getUtf8ConstantContentByIndex(Integer.parseInt(classFile.this_class));
+		
+	}
+
+	public void translateConstantFile(ClassFile classFile) {
+		Set<Integer> set = classFile.constantFiles.keySet();
+		//（1）解析class常量
+		for(Integer key : set){
+			ConstantFile cf = classFile.constantFiles.get(key);
+			if(cf.type.equals(Constants.ConstantType.classType)){
+				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
+			}
+		}
 		
 	}
 
