@@ -259,7 +259,9 @@ public class BaseClassLoader extends AbstractClassLoader {
 					setLenAndTemp(obj,2);
 					return "continue";
 				}else{
-					readElement = counter.getCurElement();
+					obj.attribute_info_part = 1;
+					obj.field_or_method_info_part = 1;
+					setNextElement(readElement,counter);
 					setLenAndTemp(obj,readElement.size);
 					return "continue";
 				}
@@ -348,6 +350,18 @@ public class BaseClassLoader extends AbstractClassLoader {
 		obj.field_or_method_info_part++;
 		return "continue";
 	}
+	/**
+	 * 设置当前节点的值为下一个节点
+	 * @param readElement
+	 * @param counter
+	 */
+	private void setNextElement(ClassElement readElement,
+			ClassFileReadCounter counter) {
+		ClassElement nextElement = counter.getCurElement();
+		readElement.name = nextElement.name;
+		readElement.size = nextElement.size;
+	}
+
 	/**
 	 * 设置len和temp
 	 * @param obj 

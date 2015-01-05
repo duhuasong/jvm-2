@@ -35,6 +35,7 @@ public class FieldMethodFile {
 		}else if(current_attributes_type.equals(Constants.AttributeType.constantValueTyep)){
 			attr = new ConstantValueAttributeFile();
 		}
+		System.out.println(attribute_name);
 		attr.attribute_name = attribute_name;
 		attributes.add(attr);
 	}
@@ -96,7 +97,8 @@ public class FieldMethodFile {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("method_name : ").append(name_index).append("\n");
+		String name = type=='M' ? "method_name" : "field_name";
+		sb.append(name).append(" : ").append(name_index).append("\n");
 		for(int i=0;i<attributes.size();i++){
 			Object code = attributes.get(i);
 			sb.append(code.toString());
