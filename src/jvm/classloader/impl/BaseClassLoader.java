@@ -35,8 +35,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 			ClassElement readElement = counter.getCurElement();
 			
 			TempVariable obj = new TempVariable();
-			obj.len = readElement.size;
-			obj.temp = new byte[obj.len];
+			setLenAndTemp(obj,readElement.size);
 			
 			while ((fis.read(obj.temp, 0, obj.len)) != -1) {
 				
@@ -65,8 +64,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 					if(Constants.ConstantType.classType.equals(obj.constant_type) || Constants.ConstantType.stringType.equals(obj.constant_type) ){//如果常量类型是07，class类型
 						//如果当前读取的是class、string常量的第一部分
 						if(obj.constant_type_part == 1){
-							obj.len = 2;
-							obj.temp = new byte[obj.len];
+							setLenAndTemp(obj,2);
 							obj.constant_type_part++;
 							continue;
 						}else if(obj.constant_type_part == 2){
@@ -76,23 +74,20 @@ public class BaseClassLoader extends AbstractClassLoader {
 							//如果常量池遍历结束，则执行下一个元素
 							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								obj.len = readElement.size;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,readElement.size);
 								continue;
 							}else{
 								//重置变量，读取下一个常量
 								obj.constant_type = null;
 								obj.constant_type_part = 1;
-								obj.len = 1;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,1);
 								continue;
 							}
 						}
 					}else if(Constants.ConstantType.utf8.equals(obj.constant_type)){//如果常量类型是01
 						//如果当前读取的是常量的第一部分
 						if(obj.constant_type_part == 1){
-							obj.len = 2;
-							obj.temp = new byte[obj.len];
+							setLenAndTemp(obj,2);
 							obj.constant_type_part++;
 							continue;
 						}else if(obj.constant_type_part == 2){
@@ -108,23 +103,20 @@ public class BaseClassLoader extends AbstractClassLoader {
 							//如果常量池遍历结束，则执行下一个元素
 							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								obj.len = readElement.size;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,readElement.size);
 								continue;
 							}else{
 								//重置变量，读取下一个常量
 								obj.constant_type = null;
 								obj.constant_type_part = 1;
-								obj.len = 1;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,1);
 								continue;
 							}
 						}
 					}else if(Constants.ConstantType.method.equals(obj.constant_type) || Constants.ConstantType.field.equals(obj.constant_type) || Constants.ConstantType.nameAndType.equals(obj.constant_type)){//如果常量类型是0a
 						//如果当前读取的是常量的第一部分
 						if(obj.constant_type_part == 1){
-							obj.len = 4;
-							obj.temp = new byte[obj.len];
+							setLenAndTemp(obj,4);
 							obj.constant_type_part++;
 							continue;
 						}else if(obj.constant_type_part == 2){
@@ -136,22 +128,18 @@ public class BaseClassLoader extends AbstractClassLoader {
 							//如果常量池遍历结束，则执行下一个元素
 							if(obj.constant_pool_pointer >= obj.constant_pool_count){
 								readElement = counter.getCurElement();
-								obj.len = readElement.size;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,readElement.size);
 								continue;
 							}else{
 								//重置变量，读取下一个常量
 								obj.constant_type = null;
 								obj.constant_type_part = 1;
-								obj.len = 1;
-								obj.temp = new byte[obj.len];
+								setLenAndTemp(obj,1);
 								continue;
 							}
 							
 						}
 					}
-					
-					
 					
 				}else if(readElement.name.equals("access_flags")){
 					//解析常量
@@ -177,8 +165,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 					if(interfaces_count == 0){
 						readElement = counter.getCurElement();
 						readElement = counter.getCurElement();
-						obj.len = readElement.size;
-						obj.temp = new byte[obj.len];
+						setLenAndTemp(obj,readElement.size);
 						continue;
 					}
 					
@@ -190,8 +177,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 					if(fields_count == 0){
 						readElement = counter.getCurElement();
 						readElement = counter.getCurElement();
-						obj.len = readElement.size;
-						obj.temp = new byte[obj.len];
+						setLenAndTemp(obj,readElement.size);
 						continue;
 					}
 					
@@ -210,8 +196,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 				
 				//--------每个分支默认设置readElement、len和temp----------
 				readElement = counter.getCurElement();
-				obj.len = readElement.size;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,readElement.size);
 				
 			}
 		} catch (FileNotFoundException e) {
@@ -230,7 +215,14 @@ public class BaseClassLoader extends AbstractClassLoader {
 		return classFile;
 	}
 
-
+	/**
+	 * 加载field和method元素
+	 * @param readElement
+	 * @param counter
+	 * @param obj
+	 * @param classFile
+	 * @return
+	 */
 	private String loadFieldMethodFile(ClassElement readElement,
 			ClassFileReadCounter counter, TempVariable obj, ClassFile classFile) {
 		
@@ -264,13 +256,11 @@ public class BaseClassLoader extends AbstractClassLoader {
 				if((readElement.name.equals("fields_array") && classFile.hasRemainFields()) || (readElement.name.equals("methods_array") && classFile.hasRemainMethods()) ){
 					obj.attribute_info_part = 1;
 					obj.field_or_method_info_part = 1;
-					obj.len = 2;
-					obj.temp = new byte[obj.len];
+					setLenAndTemp(obj,2);
 					return "continue";
 				}else{
 					readElement = counter.getCurElement();
-					obj.len = readElement.size;
-					obj.temp = new byte[obj.len];
+					setLenAndTemp(obj,readElement.size);
 					return "continue";
 				}
 			}else{
@@ -286,40 +276,35 @@ public class BaseClassLoader extends AbstractClassLoader {
 				mf.current_attributes_type = attribute_name;
 				mf.setAttributeName(attribute_name);
 				
-				obj.len = 4;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,4);
 				obj.attribute_info_part++;
 				return "continue";
 			}else if(obj.attribute_info_part == 2){
 				int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 				mf.setAttributeLength(attribute_length);
 				
-				obj.len = 2;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,2);
 				obj.attribute_info_part++;
 				return "continue";
 			}else if(obj.attribute_info_part == 3){
 				int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 				mf.setAttributeMaxStack(max_stack);
 				
-				obj.len = 2;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,2);
 				obj.attribute_info_part++;
 				return "continue";
 			}else if(obj.attribute_info_part == 4){
 				int max_locals = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 				mf.setAttributeMaxLocals(max_locals);
 				
-				obj.len = 4;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,4);
 				obj.attribute_info_part++;
 				return "continue";
 			}else if(obj.attribute_info_part == 5){
 				int code_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 				mf.setAttributeCodeLength(code_length);
 				
-				obj.len = 1;
-				obj.temp = new byte[obj.len];
+				setLenAndTemp(obj,1);
 				obj.attribute_info_part++;
 				return "continue";
 			}else if(obj.attribute_info_part == 6){//开始读取指令，一个指令一个字节
@@ -337,8 +322,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 					String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
 					mf.setAttributeByteCode(byteCode);
 					
-					obj.len = 1;
-					obj.temp = new byte[obj.len];
+					setLenAndTemp(obj,1);
 					return "continue";
 				}
 			}else if(obj.attribute_info_part == 7){
@@ -346,14 +330,12 @@ public class BaseClassLoader extends AbstractClassLoader {
 				
 					if(mf.hasRemainAttrs()){//此方法还有属性
 						obj.attribute_info_part = 1;
-						obj.len = 2;
-						obj.temp = new byte[obj.len];
+						setLenAndTemp(obj,2);
 						return "continue";
 					}else if(classFile.hasRemainMethods()){//还有下一个方法
 						obj.attribute_info_part = 1;
 						obj.field_or_method_info_part = 1;
-						obj.len = 2;
-						obj.temp = new byte[obj.len];
+						setLenAndTemp(obj,2);
 						return "continue";
 					}else{
 						return "break";
@@ -362,12 +344,24 @@ public class BaseClassLoader extends AbstractClassLoader {
 		}
 		
 		//-------------默认读取2个字节，并且obj.method_info_part++
-		obj.len = 2;
-		obj.temp = new byte[obj.len];
+		setLenAndTemp(obj,2);
 		obj.field_or_method_info_part++;
 		return "continue";
 	}
+	/**
+	 * 设置len和temp
+	 * @param obj 
+	 */
+	private void setLenAndTemp(TempVariable obj, int i) {
+		obj.len = i;
+		obj.temp = new byte[obj.len];
+	}
 
+	/**
+	 * 获取className的文件路径
+	 * @param className
+	 * @return
+	 */
 	private String getClassfilePath(String className) {
 		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
 		String classpath = System.getProperty("java.class.path");
