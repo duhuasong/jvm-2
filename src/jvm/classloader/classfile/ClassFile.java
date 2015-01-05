@@ -117,7 +117,19 @@ public class ClassFile {
 	}
 
 	public boolean hasRemainMethods() {
-		return methods_array.size() != methods_count;
+		return hasRemainFieldAndMethod('M',methods_count);
+	}
+	public boolean hasRemainFields() {
+		return hasRemainFieldAndMethod('F',fields_count);
+	}
+	public boolean hasRemainFieldAndMethod(char type, int total) {
+		int count = 0;
+		for(FieldMethodFile fm : methods_array){
+			if(fm.type == type){
+				count++;
+			}
+		}
+		return count != total;
 	}
 
 	@Override

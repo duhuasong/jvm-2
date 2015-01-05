@@ -201,6 +201,9 @@ public class BaseClassLoader extends AbstractClassLoader {
 					if(obj.field_or_method_info_part == 1){
 						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
 						FieldMethodFile mf = new FieldMethodFile();
+						if(readElement.name.equals("fields_array")){
+							mf.type = 'F';
+						}
 						mf.access_flags = access_flags;
 						classFile.methods_array.add(mf);
 						
@@ -218,6 +221,23 @@ public class BaseClassLoader extends AbstractClassLoader {
 						int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
 						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
 						mf.attributes_count = attributes_count;
+						
+						//如果attributes_count为0，判断当前field、method是否读完
+						if(mf.attributes_count == 0){
+							//如果没有读完，开始读取下一个field或method
+							if((readElement.name.equals("fields_array") && classFile.hasRemainFields()) || (readElement.name.equals("methods_array") && classFile.hasRemainMethods()) ){
+								obj.attribute_info_part = 1;
+								obj.field_or_method_info_part = 1;
+								obj.len = 2;
+								obj.temp = new byte[obj.len];
+								continue;
+							}else{
+								readElement = counter.getCurElement();
+								obj.len = readElement.size;
+								obj.temp = new byte[obj.len];
+								continue;
+							}
+						}
 						
 					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
 						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
