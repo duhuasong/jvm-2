@@ -115,8 +115,8 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	 */
 	private void translateClassFile(ClassFile classFile) {
 		
-		//1、解析常量
-		translateConstantFile(classFile);
+		//1、解析常量 ，该方法已经放到classFile阶段
+		//translateConstantFile(classFile);
 		
 		//（2）解析NameAndType类型的常量
 		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
