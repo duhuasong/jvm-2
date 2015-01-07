@@ -24,7 +24,7 @@ import jvm.util.common.StringUtil;
 public abstract class AbstractClassLoader implements InterfaceClassLoader {
 
 	@Override
-	public void loadClass(String className) {
+	public ClassInfo loadClass(String className) {
 		
 		ClassFile classFile = loadClassFile(className);
 		
@@ -37,6 +37,8 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		LogUtil.println("print.classinfo", classInfo.toString());
 		
 		entrancesMethodsFilter(classInfo);
+		
+		return classInfo;
 		
 	}
 	

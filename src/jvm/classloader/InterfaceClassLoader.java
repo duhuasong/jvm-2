@@ -1,4 +1,7 @@
 package jvm.classloader;
+
+import jvm.memory.classinfo.ClassInfo;
+
 /**
  * º”‘ÿ°¢—È÷§...
  * @author yangrui
@@ -6,5 +9,5 @@ package jvm.classloader;
  */
 public interface InterfaceClassLoader {
 	
-	void loadClass(String className);
+	public ClassInfo loadClass(String className);
 }

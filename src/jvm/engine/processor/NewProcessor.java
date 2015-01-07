@@ -28,10 +28,10 @@ public class NewProcessor implements InstructionProcessor {
 		//如果内存中还没有加载class，则加载该class
 		if(targetClassIno == null){
 			InterfaceClassLoader loader = ClassLoaderFactory.createClassLoader(BaseClassLoader.class);
-			loader.loadClass(className);
+			targetClassIno = loader.loadClass(className);
 		}
 		//根据该class创建一个实例，初始化成员变量（0或null）
-		
+		System.out.println(targetClassIno.toString());
 		//调用实例默认的init方法
 		
 		//把实例加入oprand stack

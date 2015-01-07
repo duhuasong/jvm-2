@@ -35,7 +35,6 @@ public class FieldMethodFile {
 		}else if(current_attributes_type.equals(Constants.AttributeType.constantValueTyep)){
 			attr = new ConstantValueAttributeFile();
 		}
-		System.out.println(attribute_name);
 		attr.attribute_name = attribute_name;
 		attributes.add(attr);
 	}
