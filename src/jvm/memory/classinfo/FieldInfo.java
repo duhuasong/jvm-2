@@ -2,9 +2,46 @@ package jvm.memory.classinfo;
 
 public class FieldInfo {
 	
-	public String name;
+	private String name;
 	
-	public String type;
+	private String descriptor;
+	
+	private Object defaultValue;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescriptor() {
+		return descriptor;
+	}
+
+	public void setDescriptor(String descriptor) {
+		this.descriptor = descriptor;
+	}
+
+	public FieldInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public FieldInfo(String name, String descriptor) {
+		super();
+		this.name = name;
+		this.descriptor = descriptor;
+	}
+
+	public Object getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(Object defaultValue) {
+		this.defaultValue = defaultValue;
+	}
 	
 	
 }

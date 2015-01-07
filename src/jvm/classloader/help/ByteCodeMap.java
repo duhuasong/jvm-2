@@ -24,6 +24,7 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("1b", "iload_1"));
 		putByteCodeDesc(new ByteCodeDesc("1c", "iload_2"));
 		putByteCodeDesc(new ByteCodeDesc("1d", "iload_3"));
+		putByteCodeDesc(new ByteCodeDesc("2a", "aload_0"));
 		putByteCodeDesc(new ByteCodeDesc("2b", "aload_1"));
 		
 		putByteCodeDesc(new ByteCodeDesc("3c", "istore_1"));
@@ -39,11 +40,15 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("10", "bipush",1));
 		putByteCodeDesc(new ByteCodeDesc("12", "ldc",1));
 		
-		putByteCodeDesc(new ByteCodeDesc("b8", "invokestatic",2));
+		putByteCodeDesc(new ByteCodeDesc("b0", "areturn"));
 		putByteCodeDesc(new ByteCodeDesc("b2", "getstatic",2));
+		putByteCodeDesc(new ByteCodeDesc("b4", "getfield",2));
+		putByteCodeDesc(new ByteCodeDesc("b5", "putfield",2));
 		putByteCodeDesc(new ByteCodeDesc("b6", "invokevirtual",2));
-		putByteCodeDesc(new ByteCodeDesc("bb", "new",2));
 		putByteCodeDesc(new ByteCodeDesc("b7", "invokespecial",2));
+		putByteCodeDesc(new ByteCodeDesc("b8", "invokestatic",2));
+		putByteCodeDesc(new ByteCodeDesc("bb", "new",2));
+		
 		
 		
 	}

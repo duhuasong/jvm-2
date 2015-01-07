@@ -13,6 +13,7 @@ import jvm.classloader.help.ByteCodeMap;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
+import jvm.memory.classinfo.FieldInfo;
 import jvm.memory.classinfo.MethodInfo;
 import jvm.util.Constants;
 import jvm.util.MethodUtil;
@@ -40,23 +41,36 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	}
 	
 	public abstract ClassFile loadClassFile(String className) ;
-
+	/**
+	 * 从ClassFile拷贝到ClassInfo
+	 * @param classFile
+	 * @return
+	 */
 	private ClassInfo copyClassFileToClassInfo(ClassFile classFile) {
 		//1、拷贝classinfo
 		ClassInfo classInfo = new ClassInfo();
 		classInfo.setName(StringUtil.replacePathToClass(classFile.this_class));
 		
-		//2、拷贝methodinfo
+		//2、拷贝methodinfo和fieldinfo
 		List<MethodInfo> methods = new ArrayList<MethodInfo>();
 		for(FieldMethodFile methodfile : classFile.methods_array){
-			MethodInfo methodinfo = new MethodInfo();
-			methodinfo.setClassInfo(classInfo);
-			methodinfo.setName(methodfile.name_index);
-			methodinfo.setDescriptor(methodfile.descriptor_index);
-			//转换instruction
-			List<Instruction> instr = mergeByteCode(methodfile,classFile);
-			methodinfo.setMethodInstructions(instr);
-			methods.add(methodinfo);
+			if(methodfile.type == 'M'){
+				MethodInfo methodinfo = new MethodInfo();
+				methodinfo.setClassInfo(classInfo);
+				methodinfo.setName(methodfile.name_index);
+				methodinfo.setDescriptor(methodfile.descriptor_index);
+				//转换instruction
+				List<Instruction> instr = mergeByteCode(methodfile,classFile);
+				methodinfo.setMethodInstructions(instr);
+				methods.add(methodinfo);
+			}else{
+				//拷贝fieldinfo
+				FieldInfo fieldinfo = new FieldInfo();
+				fieldinfo.setName(methodfile.name_index);
+				fieldinfo.setDescriptor(methodfile.descriptor_index);
+				//TODO
+				fieldinfo.setDefaultValue(null);
+			}
 		}
 		classInfo.setMethods(methods);
 		//3、把转换好的类，加载到内存中
