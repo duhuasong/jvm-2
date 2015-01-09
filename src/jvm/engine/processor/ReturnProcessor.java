@@ -3,6 +3,7 @@ package jvm.engine.processor;
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * 1¡¢pop a int from current frame
  * 2¡¢push it into preFrame
@@ -10,6 +11,7 @@ import jvm.stack.JavaStack;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "return")
 public class ReturnProcessor implements InstructionProcessor {
 
 	@Override

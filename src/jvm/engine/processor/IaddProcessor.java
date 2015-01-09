@@ -5,12 +5,14 @@ import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * 1、pop操作数栈中的两个数(int类型)
  * 2、相加后push进操作数栈
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "iadd")
 public class IaddProcessor  implements InstructionProcessor{
 
 	@Override

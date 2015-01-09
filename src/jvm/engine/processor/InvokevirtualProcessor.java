@@ -8,6 +8,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.util.MethodUtil;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * getstatic  java/lang/System.out:Ljava/io/PrintStream;
    invokevirtual  java/io/PrintStream.println:(I)V
@@ -18,6 +19,7 @@ import jvm.util.MethodUtil;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "invokevirtual")
 public class InvokevirtualProcessor implements InstructionProcessor {
 
 	@Override

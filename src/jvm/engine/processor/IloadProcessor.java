@@ -3,12 +3,14 @@ package jvm.engine.processor;
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * ָ�iload_<n>
  * iload_0 : push integer in local variable 0 onto the stack
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "iload_")
 public class IloadProcessor implements InstructionProcessor {
 
 	@Override

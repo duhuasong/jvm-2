@@ -377,12 +377,10 @@ public class BaseClassLoader extends AbstractClassLoader {
 	 * @return
 	 */
 	private String getClassfilePath(String className) {
-		//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
-		String classpath = System.getProperty("java.class.path");
 
 		String subpath = StringUtil.replaceClassToPath(className);
 
-		String filepath = classpath + "/" + subpath + ".class";
+		String filepath = Constants.classpath + "/" + subpath + ".class";
 		
 		return filepath;
 	}

@@ -5,6 +5,7 @@ import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.FieldUtil;
+import jvm.util.annotation.ProcessorAnnotation;
 
 
 /**
@@ -13,6 +14,7 @@ import jvm.util.FieldUtil;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "getstatic")
 public class GetstaticProcessor implements InstructionProcessor {
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
+	//当前工程的class根路径，如：D:\workspaces\myeclipse\wtms3\ztest\bin
+	public final static String classpath = System.getProperty("java.class.path");
 	
 	public final static Map<String,String> typeClassMap = new HashMap<String,String>();
 	

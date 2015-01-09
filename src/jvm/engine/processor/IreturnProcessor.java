@@ -5,6 +5,7 @@ import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * 1¡¢pop a int from current frame
  * 2¡¢push it into preFrame
@@ -12,6 +13,7 @@ import jvm.util.Constants;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "ireturn")
 public class IreturnProcessor implements InstructionProcessor {
 
 	@Override

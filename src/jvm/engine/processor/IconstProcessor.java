@@ -5,10 +5,12 @@ import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * iconst_<n>指令，把常数n push到操作数栈（大于5的int值会用到 bipush <i> 指令）
  * @author yangrui
  */
+@ProcessorAnnotation(byteCode = "iconst_")
 public class IconstProcessor implements InstructionProcessor{
 
 	@Override

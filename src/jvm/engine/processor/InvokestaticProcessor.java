@@ -5,6 +5,7 @@ import jvm.engine.instruction.InstructionProcessor;
 import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.JavaStack;
 import jvm.util.MethodUtil;
+import jvm.util.annotation.ProcessorAnnotation;
 /**
  * 
  * ָ�invokestatic <method-spec>
@@ -14,6 +15,7 @@ import jvm.util.MethodUtil;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "invokestatic")
 public class InvokestaticProcessor implements InstructionProcessor {
 
 	@Override

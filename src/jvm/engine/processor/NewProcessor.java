@@ -10,6 +10,7 @@ import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
+import jvm.util.annotation.ProcessorAnnotation;
 import jvm.util.common.StringUtil;
 import jvm.util.factory.ClassLoaderFactory;
 /**
@@ -20,6 +21,7 @@ import jvm.util.factory.ClassLoaderFactory;
  * @author yangrui
  *
  */
+@ProcessorAnnotation(byteCode = "new")
 public class NewProcessor implements InstructionProcessor {
 
 	@Override
