@@ -55,6 +55,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		
 		//2、拷贝methodinfo和fieldinfo
 		List<MethodInfo> methods = new ArrayList<MethodInfo>();
+		List<FieldInfo> fields = new ArrayList<FieldInfo>();
 		for(FieldMethodFile methodfile : classFile.methods_array){
 			if(methodfile.type == 'M'){
 				MethodInfo methodinfo = new MethodInfo();
@@ -70,11 +71,13 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				FieldInfo fieldinfo = new FieldInfo();
 				fieldinfo.setName(methodfile.name_index);
 				fieldinfo.setDescriptor(methodfile.descriptor_index);
-				//TODO
+				//TODO 默认值
 				fieldinfo.setDefaultValue(null);
+				fields.add(fieldinfo);
 			}
 		}
 		classInfo.setMethods(methods);
+		classInfo.setFields(fields);
 		//3、把转换好的类，加载到内存中
 		Memory.MethodArea.putClassInfo(StringUtil.replacePathToClass(classFile.this_class), classInfo);
 		

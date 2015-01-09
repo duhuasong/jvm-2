@@ -7,7 +7,7 @@ import jvm.memory.classinfo.FieldInfo;
 
 public class InstanceInfo {
 	
-	public String type;
+	public String classType;
 	
 	public Map<FieldInfo, Object> fieldValues = new HashMap<FieldInfo, Object>();
 	
