@@ -1,7 +1,7 @@
 package jvm.engine.instruction;
 
-import jvm.engine.InstructionProcessor;
 import jvm.engine.processor.BipushProcessor;
+import jvm.engine.processor.DupProcessor;
 import jvm.engine.processor.GetstaticProcessor;
 import jvm.engine.processor.IaddProcessor;
 import jvm.engine.processor.IconstProcessor;
@@ -13,6 +13,7 @@ import jvm.engine.processor.IstoreProcessor;
 import jvm.engine.processor.NewProcessor;
 import jvm.engine.processor.ReturnProcessor;
 import jvm.stack.JavaStack;
+import jvm.util.exception.JvmException;
 import jvm.util.factory.ProcessorFactory;
 /**
  * @author yangrui
@@ -20,10 +21,10 @@ import jvm.util.factory.ProcessorFactory;
  */
 public class InstructionInterpreter {
 
-	public static void explain(Instruction instruct, JavaStack javaStack) {
+	public static void explain(Instruction instruct, JavaStack javaStack) throws JvmException {
 		InstructionProcessor processor = findProcessor(instruct);
 		if(processor == null){
-			System.err.println("["+instruct.getOpcode()+"]没有对应的Processor");
+			throw new JvmException("["+instruct.getOpcode()+"]没有对应的Processor");
 		}
 		processor.execute(instruct,javaStack);
 	}
@@ -62,6 +63,9 @@ public class InstructionInterpreter {
 		}
 		if(opcode.startsWith("new")){
 			return ProcessorFactory.createProcessor(NewProcessor.class);
+		}
+		if(opcode.startsWith("dup")){
+			return ProcessorFactory.createProcessor(DupProcessor.class);
 		}
 		return null;
 	}

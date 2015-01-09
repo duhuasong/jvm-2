@@ -1,11 +1,16 @@
 package jvm.stack.operandStack;
+
+import jvm.util.Constants;
+
 /**
  * ²Ù×÷Êý
  * @author yangrui
  *
  */
 public class OperandVariable {
-	
+	/**
+	 * ²Î¿¼£ºConstants.VarType.Integer_Type
+	 */
 	private String type;
 	
 	private Object value;

@@ -2,11 +2,14 @@ package jvm.engine.processor;
 
 import jvm.classloader.InterfaceClassLoader;
 import jvm.classloader.impl.BaseClassLoader;
-import jvm.engine.InstructionProcessor;
 import jvm.engine.instruction.Instruction;
+import jvm.engine.instruction.InstructionProcessor;
 import jvm.memory.Memory.MethodArea;
 import jvm.memory.classinfo.ClassInfo;
+import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.JavaStack;
+import jvm.stack.operandStack.OperandVariable;
+import jvm.util.Constants;
 import jvm.util.common.StringUtil;
 import jvm.util.factory.ClassLoaderFactory;
 /**
@@ -30,11 +33,10 @@ public class NewProcessor implements InstructionProcessor {
 			InterfaceClassLoader loader = ClassLoaderFactory.createClassLoader(BaseClassLoader.class);
 			targetClassIno = loader.loadClass(className);
 		}
-		//根据该class创建一个实例，初始化成员变量（0或null）
-		System.out.println(targetClassIno.toString());
-		//调用实例默认的init方法
-		
+		InstanceInfo instance = new InstanceInfo(targetClassIno);
 		//把实例加入oprand stack
+		OperandVariable opNum = new OperandVariable(Constants.VarType.Object_Type,instance);
+		javaStack.pushCurrentFrameOprandStack(opNum);
 	}
 
 }

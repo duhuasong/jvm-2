@@ -1,7 +1,7 @@
 package jvm.engine.processor;
 
-import jvm.engine.InstructionProcessor;
 import jvm.engine.instruction.Instruction;
+import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 /**
  * 1¡¢pop a int from current frame

@@ -3,7 +3,7 @@ package jvm.util.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import jvm.engine.InstructionProcessor;
+import jvm.engine.instruction.InstructionProcessor;
 
 public class ProcessorFactory {
 	

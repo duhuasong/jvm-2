@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import jvm.engine.InstructionProcessor;
 import jvm.engine.instruction.Instruction;
+import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.util.MethodUtil;
 /**

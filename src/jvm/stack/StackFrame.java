@@ -9,6 +9,7 @@ import jvm.memory.classinfo.MethodInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.varTable.LocalVariable;
 import jvm.stack.varTable.LocalVariableTable;
+import jvm.util.exception.JvmException;
 /**
  * StackFrame只能由JavaStack创建和操作
  * @author yangrui
@@ -36,7 +37,12 @@ public class StackFrame {
 	public void execute() {
 		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
-			InstructionInterpreter.explain(instruct,javaStack);
+			try {
+				InstructionInterpreter.explain(instruct,javaStack);
+			} catch (JvmException e) {
+				e.printStackTrace();
+				return;  
+			}
 		//	programCounter++;
 		}
 		//当前frame退出javaStack
