@@ -1,7 +1,9 @@
 package jvm.classloader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jvm.classloader.classfile.ClassFile;
@@ -53,7 +55,16 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		ClassInfo classInfo = new ClassInfo();
 		classInfo.setName(StringUtil.replacePathToClass(classFile.this_class));
 		
-		//2、拷贝methodinfo和fieldinfo
+		//2、拷贝constants
+		Map<Integer, ConstantFile> classFile_constants = classFile.getConstantFiles();
+		Map<Integer, String> classInfo_constants = new HashMap<Integer, String>();
+		Set<Integer> set = classFile_constants.keySet();
+		for(Integer key : set){
+			classInfo_constants.put(key, classFile_constants.get(key).content);
+		}
+		classInfo.setConstants(classInfo_constants);
+		
+		//3、拷贝methodinfo和fieldinfo
 		List<MethodInfo> methods = new ArrayList<MethodInfo>();
 		List<FieldInfo> fields = new ArrayList<FieldInfo>();
 		for(FieldMethodFile methodfile : classFile.methods_array){
@@ -78,7 +89,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		}
 		classInfo.setMethods(methods);
 		classInfo.setFields(fields);
-		//3、把转换好的类，加载到内存中
+		//4、把转换好的类，加载到内存中
 		Memory.MethodArea.putClassInfo(StringUtil.replacePathToClass(classFile.this_class), classInfo);
 		
 		return classInfo;
@@ -134,13 +145,8 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	 */
 	private void translateClassFile(ClassFile classFile) {
 		
-		//1、解析常量 ，该方法已经放到classFile阶段
+		//1、解析常量 ，该方法已经放到classFile加载阶段
 		//translateConstantFile(classFile);
-		
-		//（2）解析NameAndType类型的常量
-		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
-		//（3）解析method和field类型的常量
-		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
 		
 		//2、解析方法
 		for(FieldMethodFile mf : classFile.methods_array){
@@ -153,14 +159,18 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	}
 
 	public void translateConstantFile(ClassFile classFile) {
+		//（1）解析class、String常量
 		Set<Integer> set = classFile.constantFiles.keySet();
-		//（1）解析class常量
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
-			if(cf.type.equals(Constants.ConstantType.classType)){
+			if(cf.type.equals(Constants.ConstantType.classType) || cf.type.equals(Constants.ConstantType.stringType)){
 				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
 			}
 		}
+		//（2）解析NameAndType类型的常量
+		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
+		//（3）解析method和field类型的常量
+		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
 		
 	}
 

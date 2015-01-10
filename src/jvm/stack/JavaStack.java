@@ -100,4 +100,9 @@ public class JavaStack {
 		previousStackFrame = null;
 	}
 
+
+	public String getCurrentClassConstant(int i) {
+		return currentStackFrame.getCurrentClassConstant(i);
+	}
+
 }

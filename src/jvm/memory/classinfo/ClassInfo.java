@@ -1,10 +1,16 @@
 package jvm.memory.classinfo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import jvm.util.exception.JvmException;
 
 public class ClassInfo {
 	
 	private String name;
+	
+	private Map<Integer,String> constants = new HashMap<Integer, String>();
 	
 	private List<MethodInfo> methods;
 	
@@ -77,11 +83,21 @@ public class ClassInfo {
 		this.fields = fields;
 	}
 
-	
-	
-	
+	public Map<Integer,String> getConstants() {
+		return constants;
+	}
 
+	public void setConstants(Map<Integer,String> constants) {
+		this.constants = constants;
+	}
 
-	
+	public String getConstantByIndex(int i) throws JvmException {
+		String content = constants.get(i);
+		if(content == null){
+			throw new JvmException("当前类["+name+"]索引为["+i+"]的常量没有从classFile中copy过来，该常量可能是新的常量类型，检查translateConstantFile方法。");
+		}
+		return constants.get(i);
+	}
+
 
 }

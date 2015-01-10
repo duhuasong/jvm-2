@@ -85,5 +85,14 @@ public class StackFrame {
 		operandStack.push(operandVar);
 	}
 
+	public String getCurrentClassConstant(int i) {
+		try {
+			return method.getClassInfo().getConstantByIndex(i);
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 }
