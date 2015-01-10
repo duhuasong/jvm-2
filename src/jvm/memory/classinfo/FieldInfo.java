@@ -26,7 +26,6 @@ public class FieldInfo {
 
 	public FieldInfo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public FieldInfo(String name, String descriptor) {

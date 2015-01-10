@@ -85,15 +85,31 @@ public class MethodUtil {
 	public static Class[] parseMethodInputType(String method_descripter) {
 		Class[] input_class = null;
 		String methodType = parseMethodType(method_descripter);
-		String inputType = methodType.split("\\)")[0].substring(1);
-		if(inputType.length() > 0){
-			input_class = new Class[inputType.length()];
-			for(int i=0;i<inputType.length();i++){
-				String type = new String(new char[]{inputType.charAt(i)});
+		String inputType1 = methodType.split("\\)")[0].substring(1);
+		String[] inputTypeArray = inputType1.split(";");
+		if(inputTypeArray.length > 0){
+			input_class = new Class[inputTypeArray.length];
+			for(int i=0;i<inputTypeArray.length;i++){
+				String type = inputTypeArray[i];
 				if(type.equals(Constants.VarType.Integer_Type)){
 					input_class[i] = int.class;
 				}else if(type.equals(Constants.VarType.Long_Type)){
 					input_class[i] = long.class;
+				}else if(type.equals(Constants.VarType.Boolean_Type)){
+					input_class[i] = boolean.class;
+				}else if(type.equals(Constants.VarType.Byte_Type)){
+					input_class[i] = byte.class;
+				}else if(type.equals(Constants.VarType.Char_Type)){
+					input_class[i] = char.class;
+				}else if(type.equals(Constants.VarType.Void_Type)){
+					input_class[i] = void.class;
+				}else if(type.startsWith(Constants.VarType.Object_Type)){
+					String className = type.substring(1);
+					try {
+						input_class[i] = Class.forName(className);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

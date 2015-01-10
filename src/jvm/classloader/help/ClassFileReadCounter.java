@@ -38,8 +38,6 @@ public class ClassFileReadCounter {
 		return classElements.get(counter++);
 	}
 	
-	
-	
 	//ÄÚ²¿Àà
 	public static class ClassElement {
 		

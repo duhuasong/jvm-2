@@ -1,6 +1,5 @@
 package jvm.stack.operandStack;
 
-import jvm.util.Constants;
 
 /**
  * ²Ù×÷Êý
