@@ -11,7 +11,7 @@ public class FieldUtil {
 	 */
 	public static String parseClassName(String method_descripter) {
 		String[] arr = method_descripter.split("\\.");
-		return StringUtil.replacePathToClass(arr[0]);
+		return StringUtil.replacePathToPoint(arr[0]);
 	}
 	/**
 	 * java/lang/System.out:Ljava/io/PrintStream;
@@ -20,7 +20,7 @@ public class FieldUtil {
 	 */
 	public static String parseFieldType(String method_descripter) {
 		String[] arr = method_descripter.split(":");
-		return StringUtil.replacePathToClass(arr[1]).replace(";", "");
+		return StringUtil.replacePathToPoint(arr[1]).replace(";", "");
 	}
 	/**
 	 * java/lang/System.out:Ljava/io/PrintStream;
@@ -29,7 +29,7 @@ public class FieldUtil {
 	 */
 	public static String parseFieldFullName(String method_descripter) {
 		String[] arr = method_descripter.split(":");
-		return StringUtil.replacePathToClass(arr[0]);
+		return StringUtil.replacePathToPoint(arr[0]);
 	}
 
 	

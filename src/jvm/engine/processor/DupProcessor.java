@@ -16,10 +16,10 @@ public class DupProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//pop出操作数栈中
-		OperandVariable ov = javaStack.popCurrentFrameOprandStack();
+		OperandVariable ov = javaStack.popOprand();
 		//push到操作数栈两次
-		javaStack.pushCurrentFrameOprandStack(ov);
-		javaStack.pushCurrentFrameOprandStack(ov);
+		javaStack.pushOprand(ov);
+		javaStack.pushOprand(ov);
 	}
 
 }

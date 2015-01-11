@@ -19,12 +19,12 @@ public class StackWorker implements Runnable{
 	 */
 	private void initStack(MethodInfo mainMethod) {
 		javaStack = new JavaStack();
-		javaStack.createAndPushFrameByMethod(mainMethod);
+		javaStack.createAndPushFrame(mainMethod);
 	}
 
 	@Override
 	public void run() {
-		javaStack.executeCurFrame();
+		javaStack.executeFrame();
 	}
 
 }

@@ -2,7 +2,7 @@ package jvm.util.common;
 
 public class StringUtil {
 	
-	public static String replacePathToClass(String src) {
+	public static String replacePathToPoint(String src) {
 		return  src.replace("/", ".");
 	}
 	

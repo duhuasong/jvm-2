@@ -21,7 +21,7 @@ public class BipushProcessor implements InstructionProcessor {
 		//创建操作数
 		OperandVariable operVar = new OperandVariable(Constants.VarType.Integer_Type,opcodeNum);
 		//push到栈帧的操作数栈
-		javaStack.pushCurrentFrameOprandStack(operVar);
+		javaStack.pushOprand(operVar);
 	}
 
 }

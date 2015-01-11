@@ -43,7 +43,7 @@ public class MethodUtil {
 		ClassInfo classInfo = Memory.MethodArea.getClassInfo(className);
 		
 		String methodName = parseMethodName(method_descripter);
-		String methodType = parseMethodType(method_descripter);
+		String methodType = parseMethodTypeWithPath(method_descripter);
 		MethodInfo methodInfo = classInfo.getMethod(methodName,methodType);
 		return methodInfo;
 	}
@@ -55,17 +55,25 @@ public class MethodUtil {
 	 */
 	public static String parseClassName(String method_descripter) {
 		String[] arr = method_descripter.split("\\.");
-		return StringUtil.replacePathToClass(arr[0]);
+		return StringUtil.replacePathToPoint(arr[0]);
 	}
 	/**
-	 * method_descripter : test/MyTest.add:(II)I
-	 * 						(II)I
+	 * method_descripter : java/lang/StringBuilder.<init>:(Ljava/lang/String;)V------->(Ljava.lang.String;)V
 	 * @param method_descripter
 	 * @return	
 	 */
-	public static String parseMethodType(String method_descripter) {
+	public static String parseMethodTypeWithPoint(String method_descripter) {
 		String[] arr = method_descripter.split(":");
-		return StringUtil.replacePathToClass(arr[1]);
+		return StringUtil.replacePathToPoint(arr[1]);
+	}
+	/**
+	 * method_descripter : java/lang/StringBuilder.<init>:(Ljava/lang/String;)V------->(Ljava/lang/String;)V
+	 * @param method_descripter
+	 * @return	
+	 */
+	public static String parseMethodTypeWithPath(String method_descripter) {
+		String[] arr = method_descripter.split(":");
+		return arr[1];
 	}
 	/**
 	 * method_descripter : test/MyTest.add:(II)I
@@ -84,9 +92,9 @@ public class MethodUtil {
 	 */
 	public static Class[] parseMethodInputType(String method_descripter) {
 		Class[] input_class = null;
-		String methodType = parseMethodType(method_descripter);
-		String inputType1 = methodType.split("\\)")[0].substring(1);
-		String[] inputTypeArray = inputType1.split(";");
+		String methodType = parseMethodTypeWithPoint(method_descripter);
+		String inputType = methodType.split("\\)")[0].substring(1);
+		String[] inputTypeArray = inputType.split(";");
 		if(inputTypeArray.length > 0){
 			input_class = new Class[inputTypeArray.length];
 			for(int i=0;i<inputTypeArray.length;i++){
@@ -123,6 +131,17 @@ public class MethodUtil {
 			sb.append("\n").append(ins.toString());
 		}
 		return sb.toString();
+	}
+	/**
+	 * 获取方法入参个数
+	 * @param method_descripter
+	 * @return
+	 */
+	public static int parseMethodInputSize(String method_descripter) {
+		String methodType = parseMethodTypeWithPoint(method_descripter);
+		String inputType = methodType.split("\\)")[0].substring(1);
+		String[] inputTypeArray = inputType.split(";");
+		return inputTypeArray.length;
 	}
 
 	

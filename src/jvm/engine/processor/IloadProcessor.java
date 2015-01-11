@@ -19,7 +19,7 @@ public class IloadProcessor implements InstructionProcessor {
 		//指令下划线后面的常量数字
 		String index_str = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
 		int index = Integer.parseInt(index_str);
-		javaStack.loadCurFrameTableToStack(index);
+		javaStack.loadTableToStack(index);
 	}
 
 }

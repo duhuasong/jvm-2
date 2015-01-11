@@ -53,7 +53,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	private ClassInfo copyClassFileToClassInfo(ClassFile classFile) {
 		//1、拷贝classinfo
 		ClassInfo classInfo = new ClassInfo();
-		classInfo.setName(StringUtil.replacePathToClass(classFile.this_class));
+		classInfo.setName(StringUtil.replacePathToPoint(classFile.this_class));
 		
 		//2、拷贝constants
 		Map<Integer, ConstantFile> classFile_constants = classFile.getConstantFiles();
@@ -90,7 +90,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		classInfo.setMethods(methods);
 		classInfo.setFields(fields);
 		//4、把转换好的类，加载到内存中
-		Memory.MethodArea.putClassInfo(StringUtil.replacePathToClass(classFile.this_class), classInfo);
+		Memory.MethodArea.putClassInfo(StringUtil.replacePathToPoint(classFile.this_class), classInfo);
 		
 		return classInfo;
 		

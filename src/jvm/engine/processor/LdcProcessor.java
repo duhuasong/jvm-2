@@ -20,9 +20,9 @@ public class LdcProcessor implements InstructionProcessor {
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//获取当前类的常量
 		int index = (int)instruct.getOpcodeNum(); 
-		String content = javaStack.getCurrentClassConstant(index);
+		String content = javaStack.getCurClassConstant(index);
 		//把该常量push到操作数栈
-		javaStack.pushCurrentFrameOprandStack(new OperandVariable(Constants.VarType.Object_Type,content));
+		javaStack.pushOprand(new OperandVariable(Constants.VarType.Object_Type,content));
 		
 	}
 

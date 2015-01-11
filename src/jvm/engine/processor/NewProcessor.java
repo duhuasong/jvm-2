@@ -28,7 +28,7 @@ public class NewProcessor implements InstructionProcessor {
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//从内存中尝试获取class
 		String opcodeNum = (String)instruct.getOpcodeNum();
-		String className = StringUtil.replacePathToClass(opcodeNum);
+		String className = StringUtil.replacePathToPoint(opcodeNum);
 		ClassInfo targetClassIno = MethodArea.getClassInfo(className);
 		//如果内存中还没有加载class，则加载该class
 		if(targetClassIno == null){
@@ -38,7 +38,7 @@ public class NewProcessor implements InstructionProcessor {
 		InstanceInfo instance = new InstanceInfo(targetClassIno);
 		//把实例加入oprand stack
 		OperandVariable opNum = new OperandVariable(Constants.VarType.Object_Type,instance);
-		javaStack.pushCurrentFrameOprandStack(opNum);
+		javaStack.pushOprand(opNum);
 	}
 
 }

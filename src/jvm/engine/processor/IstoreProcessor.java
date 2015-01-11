@@ -19,9 +19,9 @@ public class IstoreProcessor implements InstructionProcessor{
 		String opcode = instruct.getOpcode();
 		String localIndex = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
 		//pop栈顶元素
-		OperandVariable operVar = javaStack.popCurrentFrameOprandStack();
+		OperandVariable operVar = javaStack.popOprand();
 		LocalVariable localVar = new LocalVariable(operVar.getType(),operVar.getValue());//TODO name如何确定？
-		javaStack.putCurrentFrameLocalVarTable(Integer.parseInt(localIndex),localVar);
+		javaStack.putLocalVarTable(Integer.parseInt(localIndex),localVar);
 	}
 
 }

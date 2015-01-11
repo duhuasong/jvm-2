@@ -26,14 +26,12 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		
 		String method_descripter = (String)instruct.getOpcodeNum();
-		
 		String methodName = MethodUtil.parseMethodName(method_descripter);
-		Class<?>[] methodParamaterClass = MethodUtil.parseMethodInputType(method_descripter);
 		
 		//pop出参数
-		Object[] methodParamaterValue = popMethodParamaters(methodParamaterClass.length,javaStack);
+		Object[] methodParamaterValue = javaStack.popObjectArray(MethodUtil.parseMethodInputSize(method_descripter));
 		//pop出field_full_Name
-		String field_full_Name = (String)javaStack.popCurrentFrameOprandStack().getValue();
+		String field_full_Name = (String)javaStack.popOprand().getValue();
 		//根据field_descripter得到field_name
 		String fieldName = getFieldName(field_full_Name);
 		String className = getClassName(field_full_Name);
@@ -65,12 +63,5 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 		return arr[arr.length-1];
 	}
 
-	private Object[] popMethodParamaters(int length, JavaStack javaStack) {
-		Object[] result = new Object[length];
-		for(int i=0;i<length;i++){
-			result[i] = javaStack.popCurrentFrameOprandStack().getValue();
-		}
-		return result;
-	}
 
 }

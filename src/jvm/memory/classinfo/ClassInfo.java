@@ -53,8 +53,12 @@ public class ClassInfo {
 				return method;
 			}
 		}
+		try {
+			throw new JvmException("在classInfo["+name+"]中没有找到方法名为["+methodName+"]，方法类型为["+methodType+"]的方法");
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
 		return null;
-		
 	}
 
 	public String getName() {

@@ -19,10 +19,10 @@ public class IreturnProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//1、pop一个 int操作数从current frame
-		int num = (int)javaStack.popCurrentFrameOprandStack().getValue();
+		int num = (int)javaStack.popOprand().getValue();
 		//2、把它push进preFrame
 		OperandVariable addNum = new OperandVariable(Constants.VarType.Integer_Type,num);
-		javaStack.pushPreviousStackFrameOprandStack(addNum);
+		javaStack.pushOprand2PreFrame(addNum);
 		//3、当前frame退出JavaStack，在StackFrame中的execute方法中实现
 	}
 

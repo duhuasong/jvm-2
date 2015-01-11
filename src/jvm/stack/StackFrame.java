@@ -37,6 +37,14 @@ public class StackFrame {
 		this.method = method;
 	}
 	
+	public StackFrame(MethodInfo method, InstanceInfo instance,
+			JavaStack javaStack) {
+		super();
+		this.javaStack = javaStack;
+		this.instanceInfo = instance;
+		this.method = method;
+	}
+
 	public void execute() {
 		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
@@ -49,7 +57,7 @@ public class StackFrame {
 		//	programCounter++;
 		}
 		//µ±Ç°frameÍË³öjavaStack
-		javaStack.discardCurrentFrame();
+		javaStack.discardCurFrame();
 	}
 	
 	public LocalVariableTable getLocalVariableTable() {

@@ -22,7 +22,7 @@ public class IconstProcessor implements InstructionProcessor{
 		//创建操作数
 		OperandVariable operVar = new OperandVariable(Constants.VarType.Integer_Type,num);
 		//push到栈帧的操作数栈
-		javaStack.pushCurrentFrameOprandStack(operVar);
+		javaStack.pushOprand(operVar);
 	}
 
 } 
