@@ -27,7 +27,7 @@ public class InvokestaticProcessor implements InstructionProcessor {
 		//创建的新的栈帧
 		javaStack.createAndPushFrame(mi);
 		//把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
-		javaStack.preOprandStack2CurLocalTable();
+		javaStack.putPreOprand2CurVarTable();
 		//开始执行新栈帧的指令
 		javaStack.executeFrame();
 	}

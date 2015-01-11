@@ -6,6 +6,8 @@ import jvm.memory.classinfo.MethodInfo;
 import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
+import jvm.stack.variableTable.LocalVariable;
+import jvm.util.Constants;
 import jvm.util.MethodUtil;
 import jvm.util.annotation.ProcessorAnnotation;
 /**
@@ -26,11 +28,22 @@ public class InvokespecialProcessor implements InstructionProcessor {
 	
 		//根据方法的descripter，从classFile中找到对应的方法
 		MethodInfo methodInfo = MethodUtil.searchMethod(method_descripter); 
-		//把该方法、instanceInfo，push到当前帧中
-		javaStack.createAndPushFrame(methodInfo,instanceInfo);
-		//把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
-		javaStack.pushOprandArray(paramaters);
+		javaStack.createAndPushFrame(methodInfo);
+		
+		LocalVariable[] localVars = getLocalVarArray(instanceInfo,paramaters); 
+		javaStack.putVarTable(localVars);
+		
 		javaStack.executeFrame();
+	}
+
+	private LocalVariable[] getLocalVarArray(InstanceInfo instanceInfo,
+			OperandVariable[] paramaters) {
+		LocalVariable[] array = new LocalVariable[paramaters.length+1];
+		array[0] = new LocalVariable(Constants.VarType.Object_Type,instanceInfo);
+		for(int i=1;i<array.length;i++){
+			array[i] = MethodUtil.convertOperand2LocalVar(paramaters[paramaters.length-i]);
+		}
+		return array;
 	}
 
 }

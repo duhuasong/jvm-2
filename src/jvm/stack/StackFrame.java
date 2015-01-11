@@ -6,10 +6,9 @@ import java.util.Stack;
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionInterpreter;
 import jvm.memory.classinfo.MethodInfo;
-import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.operandStack.OperandVariable;
-import jvm.stack.varTable.LocalVariable;
-import jvm.stack.varTable.LocalVariableTable;
+import jvm.stack.variableTable.LocalVariable;
+import jvm.stack.variableTable.LocalVariableTable;
 import jvm.util.exception.JvmException;
 /**
  * StackFrame只能由JavaStack创建和操作
@@ -17,8 +16,6 @@ import jvm.util.exception.JvmException;
  *
  */
 public class StackFrame {
-	//栈帧对应的方法所在的实例
-	private InstanceInfo instanceInfo;
 	//栈帧对应的方法
 	private MethodInfo method;
 	//局部变量表
@@ -37,13 +34,6 @@ public class StackFrame {
 		this.method = method;
 	}
 	
-	public StackFrame(MethodInfo method, InstanceInfo instance,
-			JavaStack javaStack) {
-		super();
-		this.javaStack = javaStack;
-		this.instanceInfo = instance;
-		this.method = method;
-	}
 
 	public void execute() {
 		List<Instruction> instructions = method.getMethodInstructions();
@@ -52,9 +42,7 @@ public class StackFrame {
 				InstructionInterpreter.explain(instruct,javaStack);
 			} catch (JvmException e) {
 				e.printStackTrace();
-				return;  
 			}
-		//	programCounter++;
 		}
 		//当前frame退出javaStack
 		javaStack.discardCurFrame();
@@ -96,7 +84,7 @@ public class StackFrame {
 		operandStack.push(operandVar);
 	}
 
-	public String getCurrentClassConstant(int i) {
+	public String getCurClassConstant(int i) {
 		try {
 			return method.getClassInfo().getConstantByIndex(i);
 		} catch (JvmException e) {
@@ -104,14 +92,5 @@ public class StackFrame {
 		}
 		return null;
 	}
-
-	public InstanceInfo getInstanceInfo() {
-		return instanceInfo;
-	}
-
-	public void setInstanceInfo(InstanceInfo instanceInfo) {
-		this.instanceInfo = instanceInfo;
-	}
-
 
 }

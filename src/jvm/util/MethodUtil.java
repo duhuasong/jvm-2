@@ -6,6 +6,8 @@ import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
+import jvm.stack.operandStack.OperandVariable;
+import jvm.stack.variableTable.LocalVariable;
 import jvm.util.common.StringUtil;
 
 public class MethodUtil {
@@ -142,6 +144,11 @@ public class MethodUtil {
 		String inputType = methodType.split("\\)")[0].substring(1);
 		String[] inputTypeArray = inputType.split(";");
 		return inputTypeArray.length;
+	}
+	
+	public static LocalVariable convertOperand2LocalVar(
+			OperandVariable operandVariable) {
+		return new LocalVariable(operandVariable.getType(),operandVariable.getValue());
 	}
 
 	

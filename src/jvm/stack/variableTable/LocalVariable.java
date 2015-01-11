@@ -1,4 +1,4 @@
-package jvm.stack.varTable;
+package jvm.stack.variableTable;
 
 import jvm.stack.operandStack.OperandVariable;
 

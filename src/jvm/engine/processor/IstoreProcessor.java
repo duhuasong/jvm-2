@@ -4,7 +4,8 @@ import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
-import jvm.stack.varTable.LocalVariable;
+import jvm.stack.variableTable.LocalVariable;
+import jvm.util.MethodUtil;
 import jvm.util.annotation.ProcessorAnnotation;
 /**
  * istore_<i>: pop 顶int元素，存储到index=i的本地变量。
@@ -20,8 +21,8 @@ public class IstoreProcessor implements InstructionProcessor{
 		String localIndex = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
 		//pop栈顶元素
 		OperandVariable operVar = javaStack.popOprand();
-		LocalVariable localVar = new LocalVariable(operVar.getType(),operVar.getValue());//TODO name如何确定？
-		javaStack.putLocalVarTable(Integer.parseInt(localIndex),localVar);
+		LocalVariable localVar = MethodUtil.convertOperand2LocalVar(operVar);//TODO name如何确定？
+		javaStack.putVarTable(Integer.parseInt(localIndex),localVar);
 	}
 
 }

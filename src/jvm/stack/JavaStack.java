@@ -3,9 +3,9 @@ package jvm.stack;
 import java.util.Stack;
 
 import jvm.memory.classinfo.MethodInfo;
-import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.operandStack.OperandVariable;
-import jvm.stack.varTable.LocalVariable;
+import jvm.stack.variableTable.LocalVariable;
+import jvm.util.MethodUtil;
 
 public class JavaStack {
 	
@@ -22,12 +22,6 @@ public class JavaStack {
 	public void createAndPushFrame(MethodInfo method) {
 		previousFrame = currentFrame;
 		currentFrame = new StackFrame(method, this);
-		stack.push(currentFrame);
-	}
-	public void createAndPushFrame(MethodInfo method,
-			InstanceInfo instance) {
-		previousFrame = currentFrame;
-		currentFrame = new StackFrame(method,instance, this);
 		stack.push(currentFrame);
 	}
 
@@ -99,9 +93,29 @@ public class JavaStack {
 	 * @param localIndex
 	 * @param localVar
 	 */
-	public void putLocalVarTable(int localIndex,
+	public void putVarTable(int localIndex,
 			LocalVariable localVar) {
 		currentFrame.putLocalVarTable(localIndex,localVar);
+	}
+	/**
+	 * 把参数数组，加载到本地变量表中
+	 * @param operandVariables
+	 */
+	public void putVarTable(LocalVariable[] vars) {
+		for(int i=0;i<vars.length;i++){
+			putVarTable(i, vars[i]);
+		}
+	}
+	/**
+	 * 把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
+	 */
+	public void putPreOprand2CurVarTable() {
+		int size = previousFrame.getOprandStackSize();
+		for(int i=0;i<size;i++){
+			OperandVariable operVar = previousFrame.popOprandStack();
+			LocalVariable localVar = MethodUtil.convertOperand2LocalVar(operVar);
+			currentFrame.putLocalVarTable(i, localVar);
+		}
 	}
 
 	/**
@@ -112,17 +126,7 @@ public class JavaStack {
 		currentFrame.loadTableToStack(index);
 	}
 
-	/**
-	 * 把之前栈帧操作数中的所有数据pop，存放在新栈帧的本地变量表的0、1、2...
-	 */
-	public void preOprandStack2CurLocalTable() {
-		int size = previousFrame.getOprandStackSize();
-		for(int i=0;i<size;i++){
-			OperandVariable operVar = previousFrame.popOprandStack();
-			LocalVariable localVar = new LocalVariable(operVar.getType(), operVar.getValue());
-			currentFrame.putLocalVarTable(i, localVar);
-		}
-	}
+	
 
 	
 
@@ -134,8 +138,10 @@ public class JavaStack {
 
 
 	public String getCurClassConstant(int i) {
-		return currentFrame.getCurrentClassConstant(i);
+		return currentFrame.getCurClassConstant(i);
 	}
+
+	
 
 	
 	
