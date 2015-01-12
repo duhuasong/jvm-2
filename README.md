@@ -1,2 +1,2 @@
-gitxj is my second github project
+使开发、维护更轻松
 =====
