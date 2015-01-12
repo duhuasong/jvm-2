@@ -21,6 +21,10 @@ public class InvokespecialProcessor implements InstructionProcessor {
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		
 		String method_descripter = (String)instruct.getOpcodeNum();
+		//如果调用的方法是java/lang/Object.<init>:()V等，则跳过
+		if(filterMethod(method_descripter,javaStack)){
+			return;
+		}
 		//pop出参数
 		OperandVariable[] paramaters = javaStack.popOprandArray(MethodUtil.parseMethodInputSize(method_descripter));
 		//pop出InstanceInfo
@@ -36,6 +40,7 @@ public class InvokespecialProcessor implements InstructionProcessor {
 		javaStack.executeFrame();
 	}
 
+
 	private LocalVariable[] getLocalVarArray(InstanceInfo instanceInfo,
 			OperandVariable[] paramaters) {
 		LocalVariable[] array = new LocalVariable[paramaters.length+1];
@@ -44,6 +49,14 @@ public class InvokespecialProcessor implements InstructionProcessor {
 			array[i] = MethodUtil.convertOperand2LocalVar(paramaters[paramaters.length-i]);
 		}
 		return array;
+	}
+	
+	private boolean filterMethod(String method_descripter, JavaStack javaStack) {
+		if(method_descripter.equals("java/lang/Object.<init>:()V")){
+			javaStack.popOprand();
+			return true;
+		}
+		return false;
 	}
 
 }

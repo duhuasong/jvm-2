@@ -13,7 +13,7 @@ public class InstructionProcessorProxy implements InstructionProcessor {
 	
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		System.out.println("********开始执行方法["+javaStack.getCurMethodName()+"]中的字节码 ["+instruct.getOpcode()+"]");;
+		System.out.println("********开始执行方法["+javaStack.getCurMethodName()+"]中的字节码 ["+instruct.getOpcode()+"]"+(instruct.getOpcodeNum()==null?"":"["+instruct.getOpcodeNum()+"]"));;
 		instructionProcessor.execute(instruct, javaStack);
 	}
 

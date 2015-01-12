@@ -9,9 +9,6 @@ import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
 
 public class Memory {
-	
-	
-	
 	/**
 	 * jvm执行的入口方法
 	 */

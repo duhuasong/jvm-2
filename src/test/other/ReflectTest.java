@@ -6,13 +6,6 @@ import java.lang.reflect.Method;
 
 public class ReflectTest {
 	
-	private String faultName;
-	private String proc_instance_id ;
-	private String proc_instance_name ;
-	private String status;
-	private String time;
-	
-	
 	public static void main(String[] args) {
 		
 		String className = "java.lang.System";
