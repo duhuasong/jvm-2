@@ -14,6 +14,6 @@ public class InstructionInterpreter {
 		if(processor == null){
 			throw new JvmException("["+instruct.getOpcode()+"]没有对应的Processor");
 		}
-		processor.execute(instruct,javaStack);
+		new InstructionProcessorProxy(processor).execute(instruct,javaStack);
 	}
 }

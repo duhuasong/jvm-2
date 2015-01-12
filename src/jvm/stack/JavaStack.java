@@ -126,11 +126,6 @@ public class JavaStack {
 		currentFrame.loadTableToStack(index);
 	}
 
-	
-
-	
-
-
 	public void discardCurFrame() {
 		currentFrame = previousFrame;
 		previousFrame = null;
@@ -141,11 +136,8 @@ public class JavaStack {
 		return currentFrame.getCurClassConstant(i);
 	}
 
-	
-
-	
-	
-	
-	
+	public String getCurMethodName() {
+		return currentFrame.getMethod().getClassInfo().getName()+"." + currentFrame.getMethod().getName();
+	}
 
 }

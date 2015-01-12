@@ -18,6 +18,15 @@ import jvm.util.exception.JvmException;
 public class StackFrame {
 	//栈帧对应的方法
 	private MethodInfo method;
+	public MethodInfo getMethod() {
+		return method;
+	}
+
+
+	public void setMethod(MethodInfo method) {
+		this.method = method;
+	}
+
 	//局部变量表
 	//TODO 直接用map？
 	private LocalVariableTable localVariableTable = new LocalVariableTable();

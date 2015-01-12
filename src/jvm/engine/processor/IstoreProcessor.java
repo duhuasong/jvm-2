@@ -12,7 +12,7 @@ import jvm.util.annotation.ProcessorAnnotation;
  * @author yangrui
  *
  */
-@ProcessorAnnotation(byteCode = "istore_")
+@ProcessorAnnotation(byteCode = "istore")
 public class IstoreProcessor implements InstructionProcessor{
 
 	@Override

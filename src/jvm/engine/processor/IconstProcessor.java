@@ -10,7 +10,7 @@ import jvm.util.annotation.ProcessorAnnotation;
  * iconst_<n>指令，把常数n push到操作数栈（大于5的int值会用到 bipush <i> 指令）
  * @author yangrui
  */
-@ProcessorAnnotation(byteCode = "iconst_")
+@ProcessorAnnotation(byteCode = "iconst")
 public class IconstProcessor implements InstructionProcessor{
 
 	@Override

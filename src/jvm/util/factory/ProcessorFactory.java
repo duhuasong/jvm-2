@@ -37,7 +37,11 @@ public class ProcessorFactory {
 	public static InstructionProcessor createProcessor(String byteCode) {
 		InstructionProcessor processor = map.get(byteCode);
 		if(null == processor){
-			byteCode = byteCode.split("\\_")[0]+"_";
+			byteCode = byteCode.split("\\_")[0];
+			processor = map.get(byteCode);
+		}
+		if(null == processor){
+			byteCode = byteCode + "_";
 			processor = map.get(byteCode);
 		}
 		return processor;

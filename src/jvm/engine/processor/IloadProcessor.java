@@ -10,7 +10,7 @@ import jvm.util.annotation.ProcessorAnnotation;
  * @author yangrui
  *
  */
-@ProcessorAnnotation(byteCode = "iload_")
+@ProcessorAnnotation(byteCode = "iload")
 public class IloadProcessor implements InstructionProcessor {
 
 	@Override
