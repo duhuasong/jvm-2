@@ -20,7 +20,7 @@ public class GetstaticProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		String method_descripter = (String)instruct.getOpcodeNum();
-		String type = FieldUtil.parseFieldType(method_descripter);
+		String type = FieldUtil.parseFieldTypeWithPoint(method_descripter);
 		String fullName = FieldUtil.parseFieldFullName(method_descripter);
 		//创建操作数
 		OperandVariable operVar = new OperandVariable(type,fullName);

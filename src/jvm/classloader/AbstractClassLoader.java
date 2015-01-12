@@ -81,7 +81,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				//¿½±´fieldinfo
 				FieldInfo fieldinfo = new FieldInfo();
 				fieldinfo.setName(methodfile.name_index);
-				fieldinfo.setDescriptor(methodfile.descriptor_index);
+				fieldinfo.setDescriptor(methodfile.descriptor_index.replace(";", ""));
 				//TODO Ä¬ÈÏÖµ
 				fieldinfo.setDefaultValue(null);
 				fields.add(fieldinfo);

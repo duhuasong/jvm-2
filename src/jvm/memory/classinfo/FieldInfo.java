@@ -3,7 +3,7 @@ package jvm.memory.classinfo;
 public class FieldInfo {
 	
 	private String name;
-	
+	//¼ò½àµÄdescriptor£¬Èç£ºI
 	private String descriptor;
 	
 	private Object defaultValue;
