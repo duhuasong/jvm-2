@@ -1,4 +1,4 @@
-package jvm.classloader.help;
+package jvm.classloader.tool;
 
 import java.util.HashMap;
 import java.util.Map;

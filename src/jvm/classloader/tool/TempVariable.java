@@ -1,4 +1,4 @@
-package jvm.classloader.help;
+package jvm.classloader.tool;
 /**
  * 读取class文件用到的一些辅助变量
  * @author yangrui

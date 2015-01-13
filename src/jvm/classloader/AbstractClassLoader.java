@@ -11,7 +11,7 @@ import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.FieldMethodFile;
 import jvm.classloader.classfile.attribute.CodeAttributeFile;
 import jvm.classloader.classfile.attribute.CommonAttributeFile;
-import jvm.classloader.help.ByteCodeMap;
+import jvm.classloader.tool.ByteCodeMap;
 import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
