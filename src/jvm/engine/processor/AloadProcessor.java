@@ -11,7 +11,7 @@ import jvm.util.exception.JvmException;
  * @author yangrui
  *
  */
-@ProcessorAnnotation(byteCode = "aload")
+@ProcessorAnnotation(byteCode = "aload,iload")
 public class AloadProcessor implements InstructionProcessor {
 
 	@Override

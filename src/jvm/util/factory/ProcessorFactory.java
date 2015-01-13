@@ -28,7 +28,10 @@ public class ProcessorFactory {
 				c = Class.forName(fullClassName);
 				Annotation[] annos = c.getAnnotations();
 				String byteCodeLike = ((ProcessorAnnotation)annos[0]).byteCode();
-				map.put(byteCodeLike, (InstructionProcessor)c.newInstance());
+				String[] array = byteCodeLike.split(",");
+				for(String byteCode : array){
+					map.put(byteCode, (InstructionProcessor)c.newInstance());
+				}
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

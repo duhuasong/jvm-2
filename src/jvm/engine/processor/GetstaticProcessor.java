@@ -22,7 +22,7 @@ public class GetstaticProcessor implements InstructionProcessor {
 		String method_descripter = (String)instruct.getOpcodeNum();
 		String type = FieldUtil.parseFieldTypeWithPoint(method_descripter);
 		String fullName = FieldUtil.parseFieldFullName(method_descripter);
-		//创建操作数
+		//创建操作数 TODO type有什么标准？
 		OperandVariable operVar = new OperandVariable(type,fullName);
 		//push到栈帧的操作数栈
 		javaStack.pushOprand(operVar);
