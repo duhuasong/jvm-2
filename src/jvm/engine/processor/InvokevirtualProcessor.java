@@ -26,6 +26,30 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		
 		String method_descripter = (String)instruct.getOpcodeNum();
+		//如果调用的是java自己的方法，使用反射
+		if(isOwnJava(method_descripter)){
+			executeByReflect(instruct,javaStack);
+		}else{
+			executeCustom(instruct,javaStack);
+		}
+	}
+
+	private void executeCustom(Instruction instruct, JavaStack javaStack) {
+		/*String method_descripter = (String)instruct.getOpcodeNum();
+		String methodName = MethodUtil.parseMethodName(method_descripter);
+		
+		//pop出参数
+		Object[] methodParamaterValue = javaStack.popObjectArray(MethodUtil.parseMethodInputSize(method_descripter));
+		//pop出field_full_Name
+		String field_full_Name = (String)javaStack.popOprand().getValue();
+		//根据field_descripter得到field_name
+		String fieldName = getFieldName(field_full_Name);
+		String className = getClassName(field_full_Name);*/
+		
+	}
+
+	private void executeByReflect(Instruction instruct, JavaStack javaStack) {
+		String method_descripter = (String)instruct.getOpcodeNum();
 		String methodName = MethodUtil.parseMethodName(method_descripter);
 		
 		//pop出参数
@@ -50,7 +74,14 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 				| InvocationTargetException e) {
 			e.printStackTrace();
 		}
-			
+		
+	}
+
+	private boolean isOwnJava(String method_descripter) {
+		if(method_descripter.startsWith("java")){
+			return true;
+		}
+		return false;
 	}
 
 	private String getClassName(String field_full_Name) {
