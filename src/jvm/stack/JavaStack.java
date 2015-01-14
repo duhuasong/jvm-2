@@ -125,10 +125,17 @@ public class JavaStack {
 	public void loadTableToStack(int index) {
 		currentFrame.loadTableToStack(index);
 	}
-
-	public void discardCurFrame() {
+	/**
+	 * µ±Ç°Õ»Ö¡ÍË³östack
+	 */
+	public void exitCurFrame() {
 		currentFrame = previousFrame;
-		previousFrame = null;
+		if(stack.size() - 3 >= 0){
+			previousFrame = stack.get(stack.size() - 3);
+		}else{
+			previousFrame = null;
+		}
+		stack.pop();
 	}
 
 

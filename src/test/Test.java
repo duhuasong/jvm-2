@@ -1,11 +1,19 @@
 package test;
 
+import java.util.Stack;
+
 public class Test {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Integer.parseInt("ff");
-		System.out.println("11");
+		Stack<String> st = new Stack<String>();
+		st.push("name1");
+		st.push("name2");
+		st.push("name3");
+		if(st.size() - 3 >= 0){
+			System.out.println();
+		}
+		
+		
 	}
 
 }

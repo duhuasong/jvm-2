@@ -54,7 +54,7 @@ public class StackFrame {
 			}
 		}
 		//µ±Ç°frameÍË³öjavaStack
-		javaStack.discardCurFrame();
+		javaStack.exitCurFrame();
 	}
 	
 	public LocalVariableTable getLocalVariableTable() {
