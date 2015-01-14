@@ -31,7 +31,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 		
 		String method_descripter = (String)instruct.getOpcodeNum();
 		//如果调用的是java自己的方法，使用反射
-		if(isOfficial(method_descripter)){
+		if(MethodUtil.isOfficial(method_descripter)){
 			executeOfficial(instruct,javaStack);
 		}else{
 			executeCustom(instruct,javaStack);
@@ -88,12 +88,6 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 		
 	}
 
-	private boolean isOfficial(String method_descripter) {
-		if(method_descripter.startsWith("java")){
-			return true;
-		}
-		return false;
-	}
 
 	private String getClassName(String field_full_Name) {
 		String[] arr = field_full_Name.split("\\.");

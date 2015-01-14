@@ -47,11 +47,7 @@ public class StackFrame {
 	public void execute() {
 		List<Instruction> instructions = method.getMethodInstructions();
 		for(Instruction instruct : instructions){
-			try {
-				InstructionInterpreter.explain(instruct,javaStack);
-			} catch (JvmException e) {
-				e.printStackTrace();
-			}
+			InstructionInterpreter.explain(instruct,javaStack);
 		}
 		//µ±Ç°frameÍË³öjavaStack
 		javaStack.exitCurFrame();

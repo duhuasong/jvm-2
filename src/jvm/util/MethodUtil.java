@@ -170,6 +170,17 @@ public class MethodUtil {
 		}
 		return array;
 	}
+	/**
+	 * ÊÇ·ñÊÇjavaµÄapi
+	 * @param method_descripter
+	 * @return
+	 */
+	public static boolean isOfficial(String method_descripter) {
+		if(method_descripter.startsWith("java")){
+			return true;
+		}
+		return false;
+	}
 
 	
 

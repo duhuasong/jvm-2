@@ -10,6 +10,7 @@ import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.JavaStack;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
+import jvm.util.MethodUtil;
 import jvm.util.annotation.ProcessorAnnotation;
 import jvm.util.common.StringUtil;
 import jvm.util.factory.ClassLoaderFactory;
@@ -27,18 +28,32 @@ public class NewProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//从内存中尝试获取class
-		String opcodeNum = (String)instruct.getOpcodeNum();
-		String className = StringUtil.replacePathToPoint(opcodeNum);
-		ClassInfo targetClassIno = MethodArea.getClassInfo(className);
+		String classNameWithPath = (String)instruct.getOpcodeNum();
+		String classNameWithPoint = StringUtil.replacePathToPoint(classNameWithPath);
+		//如果调用的是java自己的方法，使用反射
+		if(MethodUtil.isOfficial(classNameWithPoint)){
+			executeOfficial(classNameWithPoint,javaStack);
+		}else{
+			executeCustom(classNameWithPoint,javaStack);
+		}
+	}
+
+	private void executeCustom(String classNameWithPoint, JavaStack javaStack) {
+		ClassInfo targetClassIno = MethodArea.getClassInfo(classNameWithPoint);
 		//如果内存中还没有加载class，则加载该class
 		if(targetClassIno == null){
 			InterfaceClassLoader loader = ClassLoaderFactory.createClassLoader(BaseClassLoader.class);
-			targetClassIno = loader.loadClass(className);
+			targetClassIno = loader.loadClass(classNameWithPoint);
 		}
 		InstanceInfo instance = new InstanceInfo(targetClassIno);
 		//把实例加入oprand stack
 		OperandVariable opNum = new OperandVariable(Constants.VarType.Object_Type,instance);
 		javaStack.pushOprand(opNum);
+		
+	}
+
+	private void executeOfficial(String className, JavaStack javaStack) {
+		
 	}
 
 }
