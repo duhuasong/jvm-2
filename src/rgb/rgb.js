@@ -1,6 +1,7 @@
 $(function(){
 	
 	setColor($("#template"),randomColor());
+	setColorWithInput($("#worker"));
 	
 	$("#template").click(function(){
 		setColor($(this),randomColor());
@@ -14,14 +15,8 @@ $(function(){
 		$("#answer_span").text(arr[0]+","+arr[1]+","+arr[2]);
 	});
 	
-	
-	
 	$("input").keyup(function(){
-		var r = $("#r_in").val();
-		var g = $("#g_in").val();
-		var b = $("#b_in").val();
-		var color = randomColorWithNumber(new Number(r),new Number(g),new Number(b));
-		setColor($("#worker"),color);
+		setColorWithInput($("#worker"));
 	});
 	
 });
@@ -29,6 +24,15 @@ $(function(){
 function setColor(jObj,colorNum){
 	jObj.css({ "background-color": colorNum });
 }
+function setColorWithInput(jObj){
+	var r = $("#r_in").val();
+	var g = $("#g_in").val();
+	var b = $("#b_in").val();
+	var color = randomColorWithNumber(new Number(r),new Number(g),new Number(b));
+	setColor(jObj,color);
+}
+
+
 /**
  * 10进制的string类型的r，g，b
  */
