@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MyHtml.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<style>
+.node_table {
+	float: left;
+}
+
+.color_block {
+	width: 250px;
+	height: 250px;
+}
+
+.color_input {
+	width: 50px;
+}
+</style>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="rgb.js"></script>
+
+</head>
+<body>
+
+
+	<table class="node_table">
+		<tr>
+			<td class="first_td">
+				<div class="color_block" id="template"></div>
+			</td>
+		</tr>
+		<tr>
+			<td class="second_td">
+				<button id="show_answer">show</button><span id="answer_span"></span>
+			</td>
+		</tr>
+	</table>
+
+	<table class="node_table">
+		<tr>
+			<td class="first_td">
+				<div class="color_block" id="worker"></div>
+			</td>
+		</tr>
+		<tr>
+			<td class="second_td">
+				<div>
+					R<input class="color_input" id="r_in" /> G<input
+						class="color_input" id="g_in" /> B<input class="color_input"
+						id="b_in" />
+				</div>
+			</td>
+		</tr>
+	</table>
+
+
+</body>
+</html>
