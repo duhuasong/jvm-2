@@ -34,22 +34,13 @@ public class InvokespecialProcessor implements InstructionProcessor {
 		MethodInfo methodInfo = MethodUtil.searchMethod(method_descripter); 
 		javaStack.createAndPushFrame(methodInfo);
 		
-		LocalVariable[] localVars = getLocalVarArray(instanceInfo,paramaters); 
+		LocalVariable[] localVars = MethodUtil.getLocalVarArray(instanceInfo,paramaters); 
 		javaStack.putVarTable(localVars);
 		
 		javaStack.executeFrame();
 	}
 
 
-	private LocalVariable[] getLocalVarArray(InstanceInfo instanceInfo,
-			OperandVariable[] paramaters) {
-		LocalVariable[] array = new LocalVariable[paramaters.length+1];
-		array[0] = new LocalVariable(Constants.VarType.Object_Type,instanceInfo);
-		for(int i=1;i<array.length;i++){
-			array[i] = MethodUtil.convertOperand2LocalVar(paramaters[paramaters.length-i]);
-		}
-		return array;
-	}
 	
 	private boolean filterMethod(String method_descripter, JavaStack javaStack) {
 		if(method_descripter.equals("java/lang/Object.<init>:()V")){

@@ -9,4 +9,11 @@ public class StringUtil {
 	public static String replaceClassToPath(String src) {
 		return  src.replace(".", "/");
 	}
+
+	public static boolean isBlank(String inputType) {
+		if(inputType == null || "".equals(inputType)){
+			return true;
+		}
+		return false;
+	}
 }

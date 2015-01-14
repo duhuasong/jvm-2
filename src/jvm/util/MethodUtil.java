@@ -6,6 +6,7 @@ import jvm.engine.instruction.Instruction;
 import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.MethodInfo;
+import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.variableTable.LocalVariable;
 import jvm.util.common.StringUtil;
@@ -142,6 +143,9 @@ public class MethodUtil {
 	public static int parseMethodInputSize(String method_descripter) {
 		String methodType = parseMethodTypeWithPoint(method_descripter);
 		String inputType = methodType.split("\\)")[0].substring(1);
+		if(StringUtil.isBlank(inputType)){
+			return 0;
+		}
 		String[] inputTypeArray = inputType.split(";");
 		return inputTypeArray.length;
 	}
@@ -149,6 +153,22 @@ public class MethodUtil {
 	public static LocalVariable convertOperand2LocalVar(
 			OperandVariable operandVariable) {
 		return new LocalVariable(operandVariable.getType(),operandVariable.getValue());
+	}
+	/**
+	 * 调用实例方法是，获取localVar
+	 * 
+	 * @param instanceInfo
+	 * @param paramaters
+	 * @return
+	 */
+	public static LocalVariable[] getLocalVarArray(InstanceInfo instanceInfo,
+			OperandVariable[] paramaters) {
+		LocalVariable[] array = new LocalVariable[paramaters.length+1];
+		array[0] = new LocalVariable(Constants.VarType.Object_Type,instanceInfo);
+		for(int i=1;i<array.length;i++){
+			array[i] = MethodUtil.convertOperand2LocalVar(paramaters[paramaters.length-i]);
+		}
+		return array;
 	}
 
 	
