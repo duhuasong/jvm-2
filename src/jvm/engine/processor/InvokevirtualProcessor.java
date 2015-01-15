@@ -62,9 +62,9 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	private void executeOfficial(Instruction instruct, JavaStack javaStack) {
 		String method_descripter = (String)instruct.getOpcodeNum();
 		String methodName = MethodUtil.parseMethodName(method_descripter);
-		
+		Class[] paramaterClass = MethodUtil.parseMethodInputType(method_descripter);
 		//pop出参数
-		Object[] methodParamaterValue = javaStack.popObjectArray(MethodUtil.parseMethodInputSize(method_descripter));
+		Object[] methodParamaterValue = javaStack.popObjectArray(paramaterClass.length);
 		//pop出field_full_Name
 		String field_full_Name = (String)javaStack.popOprand().getValue();
 		//根据field_descripter得到field_name
@@ -76,7 +76,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 			Field fieldMsg = classMsg.getField(fieldName);
 			Object actualField = fieldMsg.get(classMsg);
 			Class<?> print_stream_class = fieldMsg.getType();
-			Method methodMsg = print_stream_class.getMethod(methodName,new Class[]{int.class});
+			Method methodMsg = print_stream_class.getMethod(methodName,paramaterClass);
 			methodMsg.invoke(actualField,methodParamaterValue);
 			
 		} catch (ClassNotFoundException | NoSuchFieldException

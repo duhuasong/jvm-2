@@ -30,10 +30,14 @@ public class People {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
+	/**
+	 * return name+","+age; 调用的是StringBuilder的append方法，这里简化为：
+	 * return name;
+	 */
 	@Override
 	public String toString() {
-		return name + "," + age;
+		return name;
 	}
 
 }
