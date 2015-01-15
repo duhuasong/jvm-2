@@ -1,4 +1,4 @@
-package test;
+package test.template.beta01;
 
 import jvm.bootstrap.MyJvm;
 

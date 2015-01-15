@@ -1,21 +1,20 @@
-package test.template.betaEnd;
+package test.template.beta03;
 
-public abstract class People {
+public class People {
 	
 	public String name;
 	
 	public int age;
 	
-	public People mate;
-	
-	public abstract void pee();
+	public void pee(){
+		System.out.println("pipi");
+	};
 	
 	public People(String name, int age) {
 		super();
 		this.name = name;
 		this.age = age;
 	}
-
 
 	public People(String name) {
 		this.name = name;
@@ -34,12 +33,5 @@ public abstract class People {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public People getMate() {
-		return mate;
-	}
-	public void setMate(People mate) {
-		this.mate = mate;
-	}
-	
 
 }

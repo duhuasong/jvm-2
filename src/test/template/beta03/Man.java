@@ -1,21 +1,21 @@
-package test.template.betaEnd;
+package test.template.beta03;
 
 public class Man extends People {
 	
-	public int dickLength;
+	public long dickLength;
 	
 	public Man(String name, int age) {
 		super(name,age);
 	}
 	@Override
 	public void pee() {
-		System.out.println("Õ¾×ÅÄòÄò");
+		System.out.println("up pee");
 	}
-	public int getDickLength() {
+	
+	public long getDickLength() {
 		return dickLength;
 	}
-
-	public void setDickLength(int dickLength) {
+	public void setDickLength(long dickLength) {
 		this.dickLength = dickLength;
 	}
 
