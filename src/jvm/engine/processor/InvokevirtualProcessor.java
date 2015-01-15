@@ -62,7 +62,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	private void executeOfficial(Instruction instruct, JavaStack javaStack) {
 		String method_descripter = (String)instruct.getOpcodeNum();
 		String methodName = MethodUtil.parseMethodName(method_descripter);
-		Class[] paramaterClass = MethodUtil.parseMethodInputType(method_descripter);
+		Class<?>[] paramaterClass = MethodUtil.parseMethodInputType(method_descripter);
 		//pop出参数
 		Object[] methodParamaterValue = javaStack.popObjectArray(paramaterClass.length);
 		//pop出field_full_Name

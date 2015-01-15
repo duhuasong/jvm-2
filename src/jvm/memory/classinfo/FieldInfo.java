@@ -42,5 +42,13 @@ public class FieldInfo {
 		this.defaultValue = defaultValue;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("fieldName : ").append(name).append("\n");
+		sb.append("descriptor : ").append(descriptor).append("\n");
+		sb.append("defaultValue : ").append(defaultValue).append("\n");
+		return sb.toString();
+	}
 	
 }

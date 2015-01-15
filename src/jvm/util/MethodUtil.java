@@ -93,8 +93,8 @@ public class MethodUtil {
 	 * @param method_descripter
 	 * @return
 	 */
-	public static Class[] parseMethodInputType(String method_descripter) {
-		Class[] input_class = null;
+	public static Class<?>[] parseMethodInputType(String method_descripter) {
+		Class<?>[] input_class = null;
 		String methodType = parseMethodTypeWithPoint(method_descripter);
 		String inputType = methodType.split("\\)")[0].substring(1);
 		String[] inputTypeArray = inputType.split(";");

@@ -7,7 +7,7 @@ import java.util.Map;
 import jvm.util.exception.JvmException;
 
 public class ClassInfo {
-	
+	//´ø°üÃû
 	private String name;
 	
 	private Map<Integer,String> constants = new HashMap<Integer, String>();
@@ -75,6 +75,9 @@ public class ClassInfo {
 		sb.append("className : ").append(name).append("\n").append("\n");
 		for(MethodInfo mi : methods){
 			sb.append(mi.toString()).append("\n");;
+		}
+		for(FieldInfo fi : fields){
+			sb.append(fi.toString()).append("\n");;
 		}
 		return sb.toString();
 	}
