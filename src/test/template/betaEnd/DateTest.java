@@ -1,4 +1,4 @@
-package test.template.beta03;
+package test.template.betaEnd;
 
 public class DateTest {
 	
