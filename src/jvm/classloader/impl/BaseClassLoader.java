@@ -63,7 +63,6 @@ public class BaseClassLoader extends AbstractClassLoader {
 						obj.constant_type = ByteHexUtil.bytesToHexString(new byte[]{obj.temp[0]});
 						System.out.println("*******开始读取第["+obj.constant_pool_pointer+"]个常量，类型为["+ConstantTypeEnum.getName(obj.constant_type)+"]");
 					}
-					
 					if(ConstantTypeEnum.classType.getCode().equals(obj.constant_type) || ConstantTypeEnum.stringType.getCode().equals(obj.constant_type) ){//如果常量类型是07，class类型
 						//如果当前读取的是class、string常量的第一部分
 						if(obj.constant_type_part == 1){
@@ -127,6 +126,32 @@ public class BaseClassLoader extends AbstractClassLoader {
 							int last_uft8_index = ByteHexUtil.getInt(new byte[]{obj.temp[2],obj.temp[3]}, false, 2);
 							ConstantFile cf = new ConstantFile(obj.constant_type,pre_uft8_index,last_uft8_index);
 							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
+							
+							//如果常量池遍历结束，则执行下一个元素
+							if(obj.constant_pool_pointer >= obj.constant_pool_count){
+								readElement = counter.getCurElement();
+								setLenAndTemp(obj,readElement.size);
+								continue;
+							}else{
+								//重置变量，读取下一个常量
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								setLenAndTemp(obj,1);
+								continue;
+							}
+							
+						}
+					}else if(ConstantTypeEnum.longType.getCode().equals(obj.constant_type)){
+						//如果当前读取的是常量的第一部分
+						if(obj.constant_type_part == 1){
+							setLenAndTemp(obj,8);
+							obj.constant_type_part++;
+							continue;
+						}else if(obj.constant_type_part == 2){
+							long value = ByteHexUtil.byteArrayToInt(obj.temp);
+							ConstantFile cf = new ConstantFile(obj.constant_type,""+value);
+							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
+							obj.constant_pool_pointer++;//long类型占用两个索引
 							
 							//如果常量池遍历结束，则执行下一个元素
 							if(obj.constant_pool_pointer >= obj.constant_pool_count){

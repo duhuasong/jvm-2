@@ -7,6 +7,7 @@ public enum ConstantTypeEnum {
 	method("method", "0a"), 
 	stringType("stringType", "08"), 
 	nameAndType("nameAndType", "0c"),
+	longType("longType", "05"),
 	utf8("utf8", "01");
 
 	private String name;

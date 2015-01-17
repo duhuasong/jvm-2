@@ -124,7 +124,11 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		for(int i=0;i<code_attribute.byteCodes.size();i++){
 			ByteCodeMap.ByteCodeDesc byteCodeDesc = ByteCodeMap.get(code_attribute.byteCodes.get(i));
 			if(null == byteCodeDesc){
-				System.err.println(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述");
+				try {
+					throw new JvmException(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述");
+				} catch (JvmException e) {
+					e.printStackTrace();
+				}
 			}else if(byteCodeDesc.index_number == 2){//下两个字节是操作数
 				int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
 				String opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
