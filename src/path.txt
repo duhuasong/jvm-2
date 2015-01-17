@@ -2,7 +2,7 @@
 D:\workspaces\myeclipse\pic\Jvm1\bin\test\template\beta03
 
 ¹«Ë¾£º
-D:\workspaces\myeclipse\wtms4\ztest\bin\test\template\beta03
+D:\workspaces\myeclipse\wtms5\z1\bin\test\template\beta03
 
 javap -verbose DateMain
 javap -verbose People
