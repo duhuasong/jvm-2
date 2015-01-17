@@ -75,8 +75,17 @@ public class BaseClassLoader extends AbstractClassLoader {
 							ConstantFile cf = new ConstantFile(obj.constant_type,utf8_index);
 							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							//如果常量池遍历结束，则执行下一个元素
-							isConstantFinish(obj,readElement,counter);
-							continue;
+							if(obj.constant_pool_pointer >= obj.constant_pool_count){
+								readElement = counter.getCurElement();
+								setLenAndTemp(obj,readElement.size);
+								continue;
+							}else{
+								//重置变量，读取下一个常量
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								setLenAndTemp(obj,1);
+								continue;
+							}
 						}
 					}else if(ConstantTypeEnum.utf8.getCode().equals(obj.constant_type)){//如果常量类型是01
 						//如果当前读取的是常量的第一部分
@@ -101,7 +110,9 @@ public class BaseClassLoader extends AbstractClassLoader {
 								continue;
 							}else{
 								//重置变量，读取下一个常量
-								isConstantFinish(obj,readElement,counter);
+								obj.constant_type = null;
+								obj.constant_type_part = 1;
+								setLenAndTemp(obj,1);
 								continue;
 							}
 						}
@@ -209,18 +220,6 @@ public class BaseClassLoader extends AbstractClassLoader {
 		return classFile;
 	}
 
-	private void isConstantFinish(TempVariable obj, ClassElement readElement,
-			ClassFileReadCounter counter) {
-		if(obj.constant_pool_pointer >= obj.constant_pool_count){
-			setNextElement(readElement, counter);
-			setLenAndTemp(obj,readElement.size);
-		}else{
-			//重置变量，读取下一个常量
-			obj.constant_type = null;
-			obj.constant_type_part = 1;
-			setLenAndTemp(obj,1);
-		}
-	}
 
 	/**
 	 * 加载field和method元素
