@@ -45,22 +45,6 @@ public class Constants {
 	}
 	
 	
-	public static class ConstantType {
-
-		public final static String classType = "07";
-		
-		public final static String utf8 = "01";
-		
-		public final static String field = "09";
-		
-		public final static String method = "0a";
-		
-		public final static String nameAndType = "0c";
-		
-		public final static String stringType = "08";
-
-	}
-	
 	public static class ConstantLinkSymbol {
 
 		public final static String nameAndType = ":";

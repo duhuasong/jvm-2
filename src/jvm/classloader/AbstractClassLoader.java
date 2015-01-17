@@ -22,13 +22,20 @@ import jvm.util.MethodUtil;
 import jvm.util.common.ByteHexUtil;
 import jvm.util.common.LogUtil;
 import jvm.util.common.StringUtil;
+import jvm.util.enums.ConstantTypeEnum;
+import jvm.util.exception.JvmException;
 
 public abstract class AbstractClassLoader implements InterfaceClassLoader {
 
 	@Override
 	public ClassInfo loadClass(String className) {
 		
-		ClassFile classFile = loadClassFile(className);
+		ClassFile classFile = null;
+		try {
+			classFile = loadClassFile(className);
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
 		
 		translateClassFile(classFile);
 		
@@ -44,7 +51,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		
 	}
 	
-	public abstract ClassFile loadClassFile(String className) ;
+	public abstract ClassFile loadClassFile(String className) throws JvmException ;
 	/**
 	 * 从ClassFile拷贝到ClassInfo
 	 * @param classFile
@@ -163,14 +170,14 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		Set<Integer> set = classFile.constantFiles.keySet();
 		for(Integer key : set){
 			ConstantFile cf = classFile.constantFiles.get(key);
-			if(cf.type.equals(Constants.ConstantType.classType) || cf.type.equals(Constants.ConstantType.stringType)){
+			if(cf.type.equals(ConstantTypeEnum.classType.getCode()) || cf.type.equals(ConstantTypeEnum.stringType.getCode())){
 				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
 			}
 		}
 		//（2）解析NameAndType类型的常量
-		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.nameAndType},Constants.ConstantLinkSymbol.nameAndType);
+		translateConstantWithTwoIndex(classFile,new String[]{ConstantTypeEnum.nameAndType.getCode()},Constants.ConstantLinkSymbol.nameAndType);
 		//（3）解析method和field类型的常量
-		translateConstantWithTwoIndex(classFile,new String[]{Constants.ConstantType.method,Constants.ConstantType.field},Constants.ConstantLinkSymbol.methodAndField);
+		translateConstantWithTwoIndex(classFile,new String[]{ConstantTypeEnum.method.getCode(),ConstantTypeEnum.field.getCode()},Constants.ConstantLinkSymbol.methodAndField);
 		
 	}
 

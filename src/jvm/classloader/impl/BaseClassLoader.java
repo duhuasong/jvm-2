@@ -16,10 +16,12 @@ import jvm.util.Constants;
 import jvm.util.common.ByteHexUtil;
 import jvm.util.common.LogUtil;
 import jvm.util.common.StringUtil;
+import jvm.util.enums.ConstantTypeEnum;
+import jvm.util.exception.JvmException;
 
 public class BaseClassLoader extends AbstractClassLoader {
 
-	public ClassFile loadClassFile(String className) {
+	public ClassFile loadClassFile(String className) throws JvmException {
 		
 		String classfilepath = getClassfilePath(className);
 
@@ -59,9 +61,10 @@ public class BaseClassLoader extends AbstractClassLoader {
 					
 					if(null == obj.constant_type){
 						obj.constant_type = ByteHexUtil.bytesToHexString(new byte[]{obj.temp[0]});
+						System.out.println("*******开始读取第["+obj.constant_pool_pointer+"]个常量，类型为["+ConstantTypeEnum.getName(obj.constant_type)+"]");
 					}
 					
-					if(Constants.ConstantType.classType.equals(obj.constant_type) || Constants.ConstantType.stringType.equals(obj.constant_type) ){//如果常量类型是07，class类型
+					if(ConstantTypeEnum.classType.getCode().equals(obj.constant_type) || ConstantTypeEnum.stringType.getCode().equals(obj.constant_type) ){//如果常量类型是07，class类型
 						//如果当前读取的是class、string常量的第一部分
 						if(obj.constant_type_part == 1){
 							setLenAndTemp(obj,2);
@@ -72,19 +75,10 @@ public class BaseClassLoader extends AbstractClassLoader {
 							ConstantFile cf = new ConstantFile(obj.constant_type,utf8_index);
 							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							//如果常量池遍历结束，则执行下一个元素
-							if(obj.constant_pool_pointer >= obj.constant_pool_count){
-								readElement = counter.getCurElement();
-								setLenAndTemp(obj,readElement.size);
-								continue;
-							}else{
-								//重置变量，读取下一个常量
-								obj.constant_type = null;
-								obj.constant_type_part = 1;
-								setLenAndTemp(obj,1);
-								continue;
-							}
+							isConstantFinish(obj,readElement,counter);
+							continue;
 						}
-					}else if(Constants.ConstantType.utf8.equals(obj.constant_type)){//如果常量类型是01
+					}else if(ConstantTypeEnum.utf8.getCode().equals(obj.constant_type)){//如果常量类型是01
 						//如果当前读取的是常量的第一部分
 						if(obj.constant_type_part == 1){
 							setLenAndTemp(obj,2);
@@ -97,7 +91,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 							continue;
 						}else if(obj.constant_type_part == 3){
 							String content = ByteHexUtil.getStringFromUtf8(obj.temp);
-							ConstantFile cf = new ConstantFile(Constants.ConstantType.utf8,content);
+							ConstantFile cf = new ConstantFile(ConstantTypeEnum.utf8.getCode(),content);
 							classFile.constantFiles.put(obj.constant_pool_pointer++, cf);
 							
 							//如果常量池遍历结束，则执行下一个元素
@@ -107,13 +101,11 @@ public class BaseClassLoader extends AbstractClassLoader {
 								continue;
 							}else{
 								//重置变量，读取下一个常量
-								obj.constant_type = null;
-								obj.constant_type_part = 1;
-								setLenAndTemp(obj,1);
+								isConstantFinish(obj,readElement,counter);
 								continue;
 							}
 						}
-					}else if(Constants.ConstantType.method.equals(obj.constant_type) || Constants.ConstantType.field.equals(obj.constant_type) || Constants.ConstantType.nameAndType.equals(obj.constant_type)){//如果常量类型是0a
+					}else if(ConstantTypeEnum.method.getCode().equals(obj.constant_type) || ConstantTypeEnum.field.getCode().equals(obj.constant_type) || ConstantTypeEnum.nameAndType.getCode().equals(obj.constant_type)){//如果常量类型是0a
 						//如果当前读取的是常量的第一部分
 						if(obj.constant_type_part == 1){
 							setLenAndTemp(obj,4);
@@ -139,6 +131,8 @@ public class BaseClassLoader extends AbstractClassLoader {
 							}
 							
 						}
+					}else{
+						throw new JvmException("第["+obj.constant_pool_pointer+"]个常量的类型["+obj.constant_type+"]的读取还未处理。");
 					}
 					
 				}else if(readElement.name.equals("access_flags")){
@@ -213,6 +207,19 @@ public class BaseClassLoader extends AbstractClassLoader {
             }  
 		}
 		return classFile;
+	}
+
+	private void isConstantFinish(TempVariable obj, ClassElement readElement,
+			ClassFileReadCounter counter) {
+		if(obj.constant_pool_pointer >= obj.constant_pool_count){
+			setNextElement(readElement, counter);
+			setLenAndTemp(obj,readElement.size);
+		}else{
+			//重置变量，读取下一个常量
+			obj.constant_type = null;
+			obj.constant_type_part = 1;
+			setLenAndTemp(obj,1);
+		}
 	}
 
 	/**
