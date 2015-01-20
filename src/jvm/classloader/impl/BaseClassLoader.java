@@ -61,7 +61,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 					
 					if(null == obj.constant_type){
 						obj.constant_type = ByteHexUtil.bytesToHexString(new byte[]{obj.temp[0]});
-						System.out.println("*******开始读取第["+obj.constant_pool_pointer+"]个常量，类型为["+ConstantTypeEnum.getName(obj.constant_type)+"]");
+						LogUtil.println("print.classfile.every_pool", "*******开始读取第["+obj.constant_pool_pointer+"]个常量，类型为["+ConstantTypeEnum.getName(obj.constant_type)+"]");
 					}
 					if(ConstantTypeEnum.classType.getCode().equals(obj.constant_type) || ConstantTypeEnum.stringType.getCode().equals(obj.constant_type) ){//如果常量类型是07，class类型
 						//如果当前读取的是class、string常量的第一部分

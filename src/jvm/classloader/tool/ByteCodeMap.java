@@ -20,10 +20,12 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("07", "iconst_4"));
 		putByteCodeDesc(new ByteCodeDesc("08", "iconst_5"));
 		
+		putByteCodeDesc(new ByteCodeDesc("14", "ldc2_w",2));
 		putByteCodeDesc(new ByteCodeDesc("1a", "iload_0"));
 		putByteCodeDesc(new ByteCodeDesc("1b", "iload_1"));
 		putByteCodeDesc(new ByteCodeDesc("1c", "iload_2"));
 		putByteCodeDesc(new ByteCodeDesc("1d", "iload_3"));
+		putByteCodeDesc(new ByteCodeDesc("1f", "lload_1"));
 		putByteCodeDesc(new ByteCodeDesc("2a", "aload_0"));
 		putByteCodeDesc(new ByteCodeDesc("2b", "aload_1"));
 		
@@ -35,6 +37,7 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("60", "iadd"));
 		putByteCodeDesc(new ByteCodeDesc("b1", "return"));
 		putByteCodeDesc(new ByteCodeDesc("ac", "ireturn"));
+		putByteCodeDesc(new ByteCodeDesc("ad", "lreturn"));
 		putByteCodeDesc(new ByteCodeDesc("59", "dup"));
 		
 		putByteCodeDesc(new ByteCodeDesc("10", "bipush",1));
