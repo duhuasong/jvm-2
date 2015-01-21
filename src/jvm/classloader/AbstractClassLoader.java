@@ -39,6 +39,8 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		
 		translateClassFile(classFile);
 		
+		loadSuperClassInfo(classFile);
+		
 		LogUtil.println("print.classfile", classFile.toString());
 		
 		ClassInfo classInfo = copyClassFileToClassInfo(classFile);
@@ -50,7 +52,18 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		return classInfo;
 		
 	}
-	
+	/**
+	 * 如果有父类的话，加载父类
+	 * @param classInfo
+	 */
+	private void loadSuperClassInfo(ClassFile classFile) {
+		try {
+			throw new JvmException(1);
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public abstract ClassFile loadClassFile(String className) throws JvmException ;
 	/**
 	 * 从ClassFile拷贝到ClassInfo
@@ -61,6 +74,13 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		//1、拷贝classinfo
 		ClassInfo classInfo = new ClassInfo();
 		classInfo.setName(StringUtil.replacePathToPoint(classFile.this_class));
+		
+		//拷贝superClass
+		try {
+			throw new JvmException("设置superClass");
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
 		
 		//2、拷贝constants
 		Map<Integer, ConstantFile> classFile_constants = classFile.getConstantFiles();

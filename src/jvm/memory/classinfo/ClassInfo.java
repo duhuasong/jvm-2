@@ -7,7 +7,10 @@ import java.util.Map;
 import jvm.util.exception.JvmException;
 
 public class ClassInfo {
-	//带包名
+	
+	private ClassInfo superClassInfo;
+	
+	//带包名:xxx.xxx.ClassName
 	private String name;
 	
 	private Map<Integer,String> constants = new HashMap<Integer, String>();
@@ -104,6 +107,14 @@ public class ClassInfo {
 			throw new JvmException("当前类["+name+"]索引为["+i+"]的常量没有从classFile中copy过来，该常量可能是新的常量类型，检查translateConstantFile方法。");
 		}
 		return constants.get(i);
+	}
+
+	public ClassInfo getSuperClassInfo() {
+		return superClassInfo;
+	}
+
+	public void setSuperClassInfo(ClassInfo superClassInfo) {
+		this.superClassInfo = superClassInfo;
 	}
 
 
