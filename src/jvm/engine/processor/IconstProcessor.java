@@ -15,9 +15,9 @@ public class IconstProcessor implements InstructionProcessor{
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		String opcode = instruct.getOpcode();
+		String opcode = instruct.opcode;
 		//指令下划线后面的常量数字
-		String num_str = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
+		String num_str = instruct.opcode.substring(opcode.length()-1, opcode.length());
 		int num = Integer.parseInt(num_str);
 		//创建操作数
 		OperandVariable operVar = new OperandVariable(Constants.VarType.Integer_Type,num);

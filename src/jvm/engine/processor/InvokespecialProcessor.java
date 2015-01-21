@@ -18,7 +18,7 @@ public class InvokespecialProcessor implements InstructionProcessor {
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		if(MethodUtil.isOfficial(method_descripter)){
 			executeOfficial(method_descripter,javaStack);
 		}else{

@@ -130,14 +130,20 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 					e.printStackTrace();
 				}
 			}else if(byteCodeDesc.index_number == 2){//下两个字节是操作数
-				int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
-				String opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
+				String opcodeNum = null;
+				if(byteCodeDesc.type.equals("int")){
+					int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
+					opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
+				}
 				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
 				result.add(instr);
 				i = i + 2;		
 			}else if(byteCodeDesc.index_number == 1){//下一个字节是操作数
-				int next_u1 = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1));
-				Instruction instr = new Instruction(byteCodeDesc.desc, next_u1);
+				String opcodeNum = null;
+				if(byteCodeDesc.type.equals("int")){
+					opcodeNum = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)) + "";
+				}
+				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
 				result.add(instr);
 				i = i + 1;
 			}else{//没有操作数

@@ -21,7 +21,7 @@ public class InvokestaticProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		
 		MethodInfo mi = MethodUtil.searchMethod(method_descripter);
 		//创建的新的栈帧

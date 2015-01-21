@@ -29,7 +29,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		//如果调用的是java自己的方法，使用反射
 		if(MethodUtil.isOfficial(method_descripter)){
 			executeOfficial(instruct,javaStack);
@@ -44,7 +44,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	 */
 	private void executeCustom(Instruction instruct, JavaStack javaStack) {
 		
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		//pop出参数
 		OperandVariable[] methodParamaterValue = javaStack.popOprandArray(MethodUtil.parseMethodInputSize(method_descripter));
 		//pop出instanceInfo
@@ -60,7 +60,7 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 	}
 
 	private void executeOfficial(Instruction instruct, JavaStack javaStack) {
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		String methodName = MethodUtil.parseMethodName(method_descripter);
 		Class<?>[] paramaterClass = MethodUtil.parseMethodInputType(method_descripter);
 		//pop出参数

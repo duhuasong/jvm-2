@@ -11,13 +11,13 @@ import jvm.util.exception.JvmException;
  * @author yangrui
  *
  */
-@ProcessorAnnotation(byteCode = "aload,iload")
+@ProcessorAnnotation(byteCode = "aload,iload,lload")
 public class AloadProcessor implements InstructionProcessor {
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		String opcode = instruct.getOpcode();
-		if(instruct.getOpcodeNum()!=null){
+		String opcode = instruct.opcode;
+		if(instruct.opcodeNum!=null){
 			try {
 				throw new JvmException("TODO [aload n]´ý´¦Àí");
 			} catch (JvmException e) {

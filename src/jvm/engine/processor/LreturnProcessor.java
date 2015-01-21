@@ -7,21 +7,18 @@ import jvm.stack.operandStack.OperandVariable;
 import jvm.util.Constants;
 import jvm.util.annotation.ProcessorAnnotation;
 /**
- * 1、pop a int from current frame
- * 2、push it into preFrame
- * 3、discard current frame
  * @author yangrui
  *
  */
-@ProcessorAnnotation(byteCode = "ireturn")
-public class IreturnProcessor implements InstructionProcessor {
+@ProcessorAnnotation(byteCode = "lreturn")
+public class LreturnProcessor implements InstructionProcessor {
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		//1、从current frame中pop一个 int操作数
-		int num = (int)javaStack.popOprand().getValue();
+		//1、从current frame中pop一个 long操作数
+		long num = (long)javaStack.popOprand().getValue();
 		//2、把它push进preFrame
-		OperandVariable addNum = new OperandVariable(Constants.VarType.Integer_Type,num);
+		OperandVariable addNum = new OperandVariable(Constants.VarType.Long_Type,num);
 		javaStack.pushOprand2PreFrame(addNum);
 		//3、当前frame退出JavaStack，在StackFrame中的execute方法中实现
 	}

@@ -4,11 +4,11 @@ public class Instruction {
 	
 	public String opcode;
 	
-	public Object opcodeNum;
-	
+	//mergeByteCode全部先转化为string类型
+	public String opcodeNum;
 
 
-	public Instruction(String opcode, Object opcodeNum) {
+	public Instruction(String opcode, String opcodeNum) {
 		super();
 		this.opcode = opcode;
 		this.opcodeNum = opcodeNum;
@@ -18,25 +18,6 @@ public class Instruction {
 		super();
 		this.opcode = opcode;
 	}
-
-	public String getOpcode() {
-		return opcode;
-	}
-
-	public void setOpcode(String opcode) {
-		this.opcode = opcode;
-	}
-
-	public Object getOpcodeNum() {
-		return opcodeNum;
-	}
-
-	public void setOpcodeNum(Object opcodeNum) {
-		this.opcodeNum = opcodeNum;
-	}
-
-
-	
 
 	@Override
 	public String toString() {

@@ -10,10 +10,10 @@ import jvm.util.factory.ProcessorFactory;
 public class InstructionInterpreter {
 
 	public static void explain(Instruction instruct, JavaStack javaStack) {
-		InstructionProcessor processor = ProcessorFactory.createProcessor(instruct.getOpcode().toLowerCase());
+		InstructionProcessor processor = ProcessorFactory.createProcessor(instruct.opcode.toLowerCase());
 		if(processor == null){
 			try {
-				throw new JvmException("["+instruct.getOpcode()+"]没有对应的Processor");
+				throw new JvmException("["+instruct.opcode+"]没有对应的Processor");
 			} catch (JvmException e) {
 				e.printStackTrace();
 			}

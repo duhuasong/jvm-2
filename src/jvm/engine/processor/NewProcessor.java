@@ -29,7 +29,7 @@ public class NewProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//从内存中尝试获取class
-		String classNameWithPath = (String)instruct.getOpcodeNum();
+		String classNameWithPath = (String)instruct.opcodeNum;
 		String classNameWithPoint = StringUtil.replacePathToPoint(classNameWithPath);
 		//如果调用的是java自己的方法，使用反射
 		if(MethodUtil.isOfficial(classNameWithPoint)){

@@ -19,7 +19,7 @@ public class GetstaticProcessor implements InstructionProcessor {
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		String method_descripter = (String)instruct.getOpcodeNum();
+		String method_descripter = (String)instruct.opcodeNum;
 		String type = FieldUtil.parseFieldTypeWithPoint(method_descripter);
 		String fullName = FieldUtil.parseFieldFullName(method_descripter);
 		//创建操作数 TODO type有什么标准？

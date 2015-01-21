@@ -12,7 +12,9 @@ public class ByteCodeMap {
 	public final static Map<String,ByteCodeDesc> map = new HashMap<String,ByteCodeDesc>();
 	
 	static{
-		
+		/**
+		 * ***************************添加的时候，注意ByteCodeDesc的type***************************
+		 */
 		putByteCodeDesc(new ByteCodeDesc("03", "iconst_0"));
 		putByteCodeDesc(new ByteCodeDesc("04", "iconst_1"));
 		putByteCodeDesc(new ByteCodeDesc("05", "iconst_2"));
@@ -79,6 +81,8 @@ public class ByteCodeMap {
 		public String desc;
 		//操作码后面操作数的字节数
 		public int index_number;
+		//操作码后面操作数的字节数应该翻译成什么类型（基本上都是int类型，所以这里默认是int类型）
+		public String type = "int";
 		
 		public ByteCodeDesc(String hex, String desc, int index_number) {
 			super();

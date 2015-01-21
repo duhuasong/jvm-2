@@ -18,8 +18,8 @@ public class IstoreProcessor implements InstructionProcessor{
 
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
-		String opcode = instruct.getOpcode();
-		String localIndex = instruct.getOpcode().substring(opcode.length()-1, opcode.length());
+		String opcode = instruct.opcode;
+		String localIndex = instruct.opcode.substring(opcode.length()-1, opcode.length());
 		try {
 			int index = Integer.parseInt(localIndex);
 			//popÕ»¶¥ÔªËØ

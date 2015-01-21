@@ -14,7 +14,7 @@ public class GetfieldProcessor implements InstructionProcessor {
 	@Override
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		//根据field_descriptor获取field
-		String field_descriptor = (String)instruct.getOpcodeNum();
+		String field_descriptor = (String)instruct.opcodeNum;
 		//pop出instanceInfo
 		InstanceInfo instanceInfo = (InstanceInfo)javaStack.popOprand().getValue();
 		FieldInfo key = instanceInfo.getFieldKey(field_descriptor);
