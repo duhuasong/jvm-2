@@ -6,7 +6,7 @@ public class StringUtil {
 		return  src.replace("/", ".");
 	}
 	
-	public static String replaceClassToPath(String src) {
+	public static String replacePointToPath(String src) {
 		return  src.replace(".", "/");
 	}
 

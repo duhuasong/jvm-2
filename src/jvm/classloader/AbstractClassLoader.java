@@ -57,10 +57,9 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	 * @param classInfo
 	 */
 	private void loadSuperClassInfo(ClassFile classFile) {
-		try {
-			throw new JvmException(1);
-		} catch (JvmException e) {
-			e.printStackTrace();
+		String superClass = classFile.getSuper_class();
+		if(MethodUtil.isNotObject(superClass)){
+			this.loadClass(StringUtil.replacePathToPoint(superClass));
 		}
 	}
 
@@ -76,10 +75,9 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 		classInfo.setName(StringUtil.replacePathToPoint(classFile.this_class));
 		
 		//拷贝superClass
-		try {
-			throw new JvmException("设置superClass");
-		} catch (JvmException e) {
-			e.printStackTrace();
+		if(MethodUtil.isNotObject(classFile.super_class)){
+			ClassInfo superClassInfo = Memory.MethodArea.getClassInfo(StringUtil.replacePathToPoint(classFile.super_class));
+			classInfo.setSuperClassInfo(superClassInfo);
 		}
 		
 		//2、拷贝constants
@@ -182,17 +180,17 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 	 */
 	private void translateClassFile(ClassFile classFile) {
 		
-		//1、解析常量 ，该方法已经放到classFile加载阶段
+		//解析常量 ，该方法已经放到classFile加载阶段
 		//translateConstantFile(classFile);
 		
-		//2、解析方法
+		//1、解析方法
 		for(FieldMethodFile mf : classFile.methods_array){
 			mf.name_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.name_index));
 			mf.descriptor_index = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(mf.descriptor_index));
 		}
-		//3、解析classFile中其他字段
+		//2、解析classFile中其他字段
 		classFile.this_class =  classFile.getUtf8ConstantContentByIndex(Integer.parseInt(classFile.this_class));
-		
+		classFile.super_class = classFile.getUtf8ConstantContentByIndex(Integer.parseInt(classFile.super_class));
 	}
 
 	public void translateConstantFile(ClassFile classFile) {

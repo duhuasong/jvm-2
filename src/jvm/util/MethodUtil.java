@@ -181,6 +181,9 @@ public class MethodUtil {
 		}
 		return false;
 	}
+	public static boolean isNotObject(String superClass) {
+		return !"java/lang/Object".equals(superClass);
+	}
 
 	
 
