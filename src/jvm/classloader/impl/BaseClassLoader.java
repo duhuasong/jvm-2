@@ -216,12 +216,129 @@ public class BaseClassLoader extends AbstractClassLoader {
 					classFile.methods_count = methods_count;
 					
 				}else if(readElement.name.equals("methods_array") || readElement.name.equals("fields_array")){
-					String result = loadFieldMethodFile(readElement,counter,obj,classFile);
-					if("continue".equals(result)){
-						continue;
-					}else if("break".equals(result)){
-						break;
+					if(obj.field_or_method_info_part == 1){
+						String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
+						FieldMethodFile mf = new FieldMethodFile();
+						if(readElement.name.equals("fields_array")){
+							mf.type = 'F';
+						}
+						mf.access_flags = access_flags;
+						classFile.methods_array.add(mf);
+						
+					}else if(obj.field_or_method_info_part == 2){
+						int name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.name_index = name_index + "";
+						
+					}else if(obj.field_or_method_info_part == 3){
+						int descriptor_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.descriptor_index = descriptor_index + "";
+						
+					}else if(obj.field_or_method_info_part == 4){
+						int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						mf.attributes_count = attributes_count;
+						
+						//如果attributes_count为0，判断当前field、method是否读完
+						if(mf.attributes_count == 0){
+							//如果没有读完，开始读取下一个field或method
+							if((readElement.name.equals("fields_array") && classFile.hasRemainFields()) || (readElement.name.equals("methods_array") && classFile.hasRemainMethods()) ){
+								obj.attribute_info_part = 1;
+								obj.field_or_method_info_part = 1;
+								setLenAndTemp(obj,2);
+								continue;
+							}else{
+								obj.attribute_info_part = 1;
+								obj.field_or_method_info_part = 1;
+								readElement = counter.getCurElement();
+								setLenAndTemp(obj,readElement.size);
+								continue;
+							}
+						}else{
+							//TODO 开始读取字段属性
+							throw new JvmException("字段属性读取还未实现。");
+						}
+						
+					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
+						FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
+						if(obj.attribute_info_part == 1){
+							int attribute_name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
+							mf.current_attributes_type = attribute_name;
+							mf.setAttributeName(attribute_name);
+							
+							setLenAndTemp(obj,4);
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 2){
+							int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeLength(attribute_length);
+							
+							setLenAndTemp(obj,2);
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 3){
+							int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeMaxStack(max_stack);
+							
+							setLenAndTemp(obj,2);
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 4){
+							int max_locals = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeMaxLocals(max_locals);
+							
+							setLenAndTemp(obj,4);
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 5){
+							int code_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
+							mf.setAttributeCodeLength(code_length);
+							
+							setLenAndTemp(obj,1);
+							obj.attribute_info_part++;
+							continue;
+						}else if(obj.attribute_info_part == 6){//开始读取指令，一个指令一个字节
+							if(mf.isLastByteCode()){
+								String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
+								mf.setAttributeByteCode(byteCode);
+								
+								//一次读完该属性剩余的字节
+								obj.len = mf.getAttributeRemainBytes();
+								obj.temp = new byte[obj.len];
+								obj.attribute_info_part++;
+								continue;
+								
+							}else{
+								String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
+								mf.setAttributeByteCode(byteCode);
+								
+								setLenAndTemp(obj,1);
+								continue;
+							}
+						}else if(obj.attribute_info_part == 7){
+								//TODO 读取剩余的字节 目前不需要
+							
+								if(mf.hasRemainAttrs()){//此方法还有属性
+									obj.attribute_info_part = 1;
+									setLenAndTemp(obj,2);
+									continue;
+								}else if(classFile.hasRemainMethods()){//还有下一个方法
+									obj.attribute_info_part = 1;
+									obj.field_or_method_info_part = 1;
+									setLenAndTemp(obj,2);
+									continue;
+								}else{
+									break;
+								}
+						}
 					}
+					
+					//-------------默认读取2个字节，并且obj.method_info_part++
+					setLenAndTemp(obj,2);
+					obj.field_or_method_info_part++;
+					continue;
 				}
 				
 				//--------每个分支默认设置readElement、len和temp----------
@@ -246,152 +363,6 @@ public class BaseClassLoader extends AbstractClassLoader {
 	}
 
 
-	/**
-	 * 加载field和method元素
-	 * @param readElement
-	 * @param counter
-	 * @param obj
-	 * @param classFile
-	 * @return
-	 */
-	private String loadFieldMethodFile(ClassElement readElement,
-			ClassFileReadCounter counter, TempVariable obj, ClassFile classFile) {
-		
-		if(obj.field_or_method_info_part == 1){
-			String  access_flags = ByteHexUtil.bytesToHexString(obj.temp);
-			FieldMethodFile mf = new FieldMethodFile();
-			if(readElement.name.equals("fields_array")){
-				mf.type = 'F';
-			}
-			mf.access_flags = access_flags;
-			classFile.methods_array.add(mf);
-			
-		}else if(obj.field_or_method_info_part == 2){
-			int name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-			FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-			mf.name_index = name_index + "";
-			
-		}else if(obj.field_or_method_info_part == 3){
-			int descriptor_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-			FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-			mf.descriptor_index = descriptor_index + "";
-			
-		}else if(obj.field_or_method_info_part == 4){
-			int attributes_count = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-			FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-			mf.attributes_count = attributes_count;
-			
-			//如果attributes_count为0，判断当前field、method是否读完
-			if(mf.attributes_count == 0){
-				//如果没有读完，开始读取下一个field或method
-				if((readElement.name.equals("fields_array") && classFile.hasRemainFields()) || (readElement.name.equals("methods_array") && classFile.hasRemainMethods()) ){
-					obj.attribute_info_part = 1;
-					obj.field_or_method_info_part = 1;
-					setLenAndTemp(obj,2);
-					return "continue";
-				}else{
-					obj.attribute_info_part = 1;
-					obj.field_or_method_info_part = 1;
-					setNextElement(readElement,counter);
-					setLenAndTemp(obj,readElement.size);
-					return "continue";
-				}
-			}else{
-				//TODO 开始读取字段属性
-				
-			}
-			
-		}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
-			FieldMethodFile mf = classFile.methods_array.get(classFile.methods_array.size()-1);
-			if(obj.attribute_info_part == 1){
-				int attribute_name_index = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-				String attribute_name = classFile.getUtf8ConstantContentByIndex(attribute_name_index);
-				mf.current_attributes_type = attribute_name;
-				mf.setAttributeName(attribute_name);
-				
-				setLenAndTemp(obj,4);
-				obj.attribute_info_part++;
-				return "continue";
-			}else if(obj.attribute_info_part == 2){
-				int attribute_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-				mf.setAttributeLength(attribute_length);
-				
-				setLenAndTemp(obj,2);
-				obj.attribute_info_part++;
-				return "continue";
-			}else if(obj.attribute_info_part == 3){
-				int max_stack = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-				mf.setAttributeMaxStack(max_stack);
-				
-				setLenAndTemp(obj,2);
-				obj.attribute_info_part++;
-				return "continue";
-			}else if(obj.attribute_info_part == 4){
-				int max_locals = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-				mf.setAttributeMaxLocals(max_locals);
-				
-				setLenAndTemp(obj,4);
-				obj.attribute_info_part++;
-				return "continue";
-			}else if(obj.attribute_info_part == 5){
-				int code_length = ByteHexUtil.getInt(obj.temp, false, obj.temp.length);
-				mf.setAttributeCodeLength(code_length);
-				
-				setLenAndTemp(obj,1);
-				obj.attribute_info_part++;
-				return "continue";
-			}else if(obj.attribute_info_part == 6){//开始读取指令，一个指令一个字节
-				if(mf.isLastByteCode()){
-					String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
-					mf.setAttributeByteCode(byteCode);
-					
-					//一次读完该属性剩余的字节
-					obj.len = mf.getAttributeRemainBytes();
-					obj.temp = new byte[obj.len];
-					obj.attribute_info_part++;
-					return "continue";
-					
-				}else{
-					String byteCode = ByteHexUtil.bytesToHexString(obj.temp);
-					mf.setAttributeByteCode(byteCode);
-					
-					setLenAndTemp(obj,1);
-					return "continue";
-				}
-			}else if(obj.attribute_info_part == 7){
-					//TODO 读取剩余的字节 目前不需要
-				
-					if(mf.hasRemainAttrs()){//此方法还有属性
-						obj.attribute_info_part = 1;
-						setLenAndTemp(obj,2);
-						return "continue";
-					}else if(classFile.hasRemainMethods()){//还有下一个方法
-						obj.attribute_info_part = 1;
-						obj.field_or_method_info_part = 1;
-						setLenAndTemp(obj,2);
-						return "continue";
-					}else{
-						return "break";
-					}
-			}
-		}
-		
-		//-------------默认读取2个字节，并且obj.method_info_part++
-		setLenAndTemp(obj,2);
-		obj.field_or_method_info_part++;
-		return "continue";
-	}
-	/**
-	 * 设置当前节点的值为下一个节点
-	 * @param readElement
-	 * @param counter
-	 */
-	private void setNextElement(ClassElement readElement,
-			ClassFileReadCounter counter) {
-		ClassElement nextElement = counter.getCurElement();
-		readElement.name = nextElement.name;
-		readElement.size = nextElement.size;
-	}
 
 	/**
 	 * 设置len和temp
