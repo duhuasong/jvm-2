@@ -257,7 +257,9 @@ public class BaseClassLoader extends AbstractClassLoader {
 							}
 						}else{
 							//TODO 开始读取字段属性
-							throw new JvmException("字段属性读取还未实现。");
+							if(mf.type == 'F'){
+								throw new JvmException("字段属性读取还未实现。");
+							}
 						}
 						
 					}else if(obj.field_or_method_info_part == 5){//说明开始读取属性信息
