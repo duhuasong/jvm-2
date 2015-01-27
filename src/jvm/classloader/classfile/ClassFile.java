@@ -175,7 +175,7 @@ public class ClassFile {
 					sb.append("#").append(cf.last_uft8_index);
 				}
 				if(cf.content != null){
-					sb.append(cf.content);
+					sb.append(" ").append(cf.content);
 				}
 			}
 		}

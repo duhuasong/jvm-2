@@ -10,6 +10,8 @@ public class LogUtil {
 	
 	public static String filepath = System.getProperty("java.class.path")+"/jvm/log.properties";
 	
+	public static final boolean printLine = false;
+	
 	public static void main(String[] args) {
 		LogUtil.println("print.classfile", "222222");
 		println("print.classinfo", "1111111");
@@ -18,7 +20,14 @@ public class LogUtil {
 	public static void println(String keys,String msg) {
 		boolean isOut = isOut(keys);
 		if(isOut){
-			System.out.println(msg);
+			StringBuilder sb = new StringBuilder();
+			if(printLine){
+				StackTraceElement stack[] = (new Throwable()).getStackTrace();
+				StackTraceElement s = stack[1];
+				sb.append("*****["+s.getClassName()+"]["+s.getMethodName()+"]["+s.getLineNumber()+"]ÐÐ : ");
+			}
+			sb.append(msg);
+			System.out.println(sb.toString());
 		}
 	}
 
