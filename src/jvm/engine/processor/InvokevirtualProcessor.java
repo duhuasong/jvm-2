@@ -51,7 +51,8 @@ public class InvokevirtualProcessor implements InstructionProcessor {
 		InstanceInfo instanceInfo = (InstanceInfo)javaStack.popOprand().getValue();
 		
 		//根据方法的descripter，从classFile中找到对应的方法
-		MethodInfo methodInfo = MethodUtil.searchMethod(method_descripter); 
+		//MethodInfo methodInfo = MethodUtil.searchMethod(method_descripter); 
+		MethodInfo methodInfo = MethodUtil.searchMethod(instanceInfo,method_descripter); 
 		javaStack.createAndPushFrame(methodInfo);
 		
 		LocalVariable[] localVars = MethodUtil.getLocalVarArray(instanceInfo,methodParamaterValue); 

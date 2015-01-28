@@ -4,10 +4,10 @@ public class DateTest {
 	
 	public static void main(String[] args) {
 		
-		People people = new Man("zhaohuan",25);
-		people.pee();
+		People p = new Man("zhaohuan",25);
+		p.pee();
 		
-		Man man = (Man)people;
+		Man man = (Man)p;
 		man.setDickLength(1234567890111213l);
 		
 		System.out.println(man.getDickLength());

@@ -10,6 +10,7 @@ import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.variableTable.LocalVariable;
 import jvm.util.common.StringUtil;
+import jvm.util.exception.JvmException;
 
 public class MethodUtil {
 	/**
@@ -183,6 +184,21 @@ public class MethodUtil {
 	}
 	public static boolean isNotObject(String superClass) {
 		return !"java/lang/Object".equals(superClass);
+	}
+	/**
+	 * 在实例中对应的子类和父类中，寻找指定的方法
+	 * @param instanceInfo
+	 * @param method_descripter
+	 * @return
+	 */
+	public static MethodInfo searchMethod(InstanceInfo instanceInfo,
+			String method_descripter) {
+		try {
+			throw new JvmException(1);
+		} catch (JvmException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	
