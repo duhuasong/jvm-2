@@ -10,7 +10,6 @@ import jvm.memory.instanceinfo.InstanceInfo;
 import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.variableTable.LocalVariable;
 import jvm.util.common.StringUtil;
-import jvm.util.exception.JvmException;
 
 public class MethodUtil {
 	/**
@@ -37,20 +36,7 @@ public class MethodUtil {
 		return false;
 		
 	}
-	/**
-	 * method_descripter : test/MyTest.add:(II)I
-	 * @param method_descripter
-	 * @return
-	 */
-	public static MethodInfo searchMethod(String method_descripter) {
-		String className = parseClassName(method_descripter);
-		ClassInfo classInfo = Memory.MethodArea.getClassInfo(className);
-		
-		String methodName = parseMethodName(method_descripter);
-		String methodType = parseMethodTypeWithPath(method_descripter);
-		MethodInfo methodInfo = classInfo.getMethod(methodName,methodType);
-		return methodInfo;
-	}
+	
 	/**
 	 * method_descripter : test/MyTest.add:(II)I
 	 * 						test/MyTest
@@ -186,6 +172,20 @@ public class MethodUtil {
 		return !"java/lang/Object".equals(superClass);
 	}
 	/**
+	 * method_descripter : test/MyTest.add:(II)I
+	 * @param method_descripter
+	 * @return
+	 */
+	public static MethodInfo searchMethod(String method_descripter) {
+		String className = parseClassName(method_descripter);
+		ClassInfo classInfo = Memory.MethodArea.getClassInfo(className);
+		
+		String methodName = parseMethodName(method_descripter);
+		String methodType = parseMethodTypeWithPath(method_descripter);
+		MethodInfo methodInfo = classInfo.getMethod(methodName,methodType);
+		return methodInfo;
+	}
+	/**
 	 * 在实例中对应的子类和父类中，寻找指定的方法
 	 * @param instanceInfo
 	 * @param method_descripter
@@ -193,12 +193,18 @@ public class MethodUtil {
 	 */
 	public static MethodInfo searchMethod(InstanceInfo instanceInfo,
 			String method_descripter) {
-		try {
-			throw new JvmException(1);
-		} catch (JvmException e) {
-			e.printStackTrace();
-		}
-		return null;
+		MethodInfo methodInfo = null;
+		ClassInfo curInfo = instanceInfo.classInfo;
+		do{
+			String methodName = parseMethodName(method_descripter);
+			String methodType = parseMethodTypeWithPath(method_descripter);
+			methodInfo = curInfo.getMethod(methodName,methodType);
+			if(null != methodInfo){
+				break;
+			}
+		}while( (curInfo = curInfo.getSuperClassInfo()) != null );
+		
+		return methodInfo;
 	}
 
 	
