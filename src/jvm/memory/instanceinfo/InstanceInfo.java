@@ -20,12 +20,15 @@ public class InstanceInfo {
 		initFieldValues();
 	}
 	/**
-	 * 初始化字段
+	 * 初始化子类和父类的字段
 	 */
 	private void initFieldValues() {
-		for(FieldInfo field : classInfo.getFields()){
-			fieldValues.put(field, field.getDefaultValue());
-		}
+		ClassInfo curInfo = classInfo;
+		do{
+			for(FieldInfo field : curInfo.getFields()){
+				fieldValues.put(field, field.getDefaultValue());
+			}
+		}while( (curInfo = curInfo.getSuperClassInfo()) != null );
 	}
 	public FieldInfo getFieldKey(String field_descriptor) {
 		String name = FieldUtil.parseFieldName(field_descriptor);
