@@ -1,16 +1,15 @@
 package test.template.beta05;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DateMain {
 	
 	public static void main(String[] args) {
-		
-		People p = new Man("zhaohuan",25);
-		p.pee();
-		
-		Man man = (Man)p;
-		man.setDickLength(1234567890111213l);
-		
-		System.out.println(man.getDickLength());
+		List<People> list = new ArrayList<People>();
+		list.add(new People("yangrui",25));
+		list.add(new Man("zhaohuan",27));
+		System.out.println(list.size());
 	}
 
 }
