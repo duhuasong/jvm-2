@@ -55,6 +55,8 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("bb", "new",2));
 		putByteCodeDesc(new ByteCodeDesc("b9", "invokeinterface",4,"invokeinterface"));
 		putByteCodeDesc(new ByteCodeDesc("57", "pop"));
+		putByteCodeDesc(new ByteCodeDesc("3a", "astore",1));
+		putByteCodeDesc(new ByteCodeDesc("19", "aload",1));
 		
 		
 		

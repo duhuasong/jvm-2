@@ -1,10 +1,20 @@
-package test.template.beta02;
+package jvm.template.beta03;
 
 public class People {
 
 	public String name;
 
 	public int age;
+	
+	public long dick;
+
+	public long getDick() {
+		return dick;
+	}
+
+	public void setDick(long dick) {
+		this.dick = dick;
+	}
 
 	public People(String name, int age) {
 		this.name = name;

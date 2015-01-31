@@ -1,4 +1,4 @@
-package test.template.beta04;
+package jvm.template.beta05;
 
 public class Man extends People {
 	

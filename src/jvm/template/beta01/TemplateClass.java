@@ -1,4 +1,4 @@
-package test.template.beta01;
+package jvm.template.beta01;
 
 public class TemplateClass {
 

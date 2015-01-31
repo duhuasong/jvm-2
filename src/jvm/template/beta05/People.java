@@ -1,4 +1,4 @@
-package test.template.beta03;
+package jvm.template.beta05;
 
 public class People {
 
@@ -6,16 +6,6 @@ public class People {
 
 	public int age;
 	
-	public long dick;
-
-	public long getDick() {
-		return dick;
-	}
-
-	public void setDick(long dick) {
-		this.dick = dick;
-	}
-
 	public People(String name, int age) {
 		this.name = name;
 		this.age = age;
@@ -40,7 +30,9 @@ public class People {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+	public void pie() {
+		System.out.println("people pie.");
+	}
 	/**
 	 * return name+","+age; 调用的是StringBuilder的append方法，这里简化为：
 	 * return name;

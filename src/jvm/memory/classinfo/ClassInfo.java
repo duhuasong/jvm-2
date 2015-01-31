@@ -51,11 +51,15 @@ public class ClassInfo {
 	}
 	
 	public MethodInfo getMethod(String methodName, String methodType) {
-		for(MethodInfo method : methods){
-			if(method.getName().equals(methodName) && method.getDescriptor().equals(methodType)){
-				return method;
+		ClassInfo curClassInfo = this;
+		do{
+			for(MethodInfo method : curClassInfo.methods){
+				if(method.getName().equals(methodName) && method.getDescriptor().equals(methodType)){
+					return method;
+				}
 			}
-		}
+		}while( (curClassInfo = curClassInfo.getSuperClassInfo()) != null );
+		
 		try {
 			throw new JvmException("在classInfo["+name+"]中没有找到方法名为["+methodName+"]，方法类型为["+methodType+"]的方法");
 		} catch (JvmException e) {

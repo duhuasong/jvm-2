@@ -7,7 +7,6 @@ import jvm.stack.operandStack.OperandVariable;
 import jvm.stack.variableTable.LocalVariable;
 import jvm.util.MethodUtil;
 import jvm.util.annotation.ProcessorAnnotation;
-import jvm.util.exception.JvmException;
 /**
  * istore_<i>: pop 顶int元素，存储到index=i的本地变量。
  * @author yangrui
@@ -20,19 +19,16 @@ public class IstoreProcessor implements InstructionProcessor{
 	public void execute(Instruction instruct, JavaStack javaStack) {
 		String opcode = instruct.opcode;
 		String localIndex = instruct.opcode.substring(opcode.length()-1, opcode.length());
+		int index = 0;
 		try {
-			int index = Integer.parseInt(localIndex);
-			//pop栈顶元素
-			OperandVariable operVar = javaStack.popOprand();
-			LocalVariable localVar = MethodUtil.convertOperand2LocalVar(operVar);
-			javaStack.putVarTable(index,localVar);
+			index = Integer.parseInt(localIndex);
 		} catch (NumberFormatException e) {
-			try {
-				throw new JvmException("字节码["+opcode+"]的操作数不在操作码里面");
-			} catch (JvmException je) {
-				je.printStackTrace();
-			}
+			index = Integer.parseInt(instruct.opcodeNum);
 		}
+		//pop栈顶元素
+		OperandVariable operVar = javaStack.popOprand();
+		LocalVariable localVar = MethodUtil.convertOperand2LocalVar(operVar);
+		javaStack.putVarTable(index,localVar);
 	}
 
 }

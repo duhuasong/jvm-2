@@ -1,4 +1,4 @@
-package test.template.beta03;
+package jvm.template.beta03;
 
 public class DateMain {
 

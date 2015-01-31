@@ -143,7 +143,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 			ByteCodeMap.ByteCodeDesc byteCodeDesc = ByteCodeMap.get(code_attribute.byteCodes.get(i));
 			if(null == byteCodeDesc){
 				try {
-					throw new JvmException(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述，请在ByteCodeMap中添加。");
+					throw new JvmException(methodFile.name_index+ "方法中， 指令["+code_attribute.byteCodes.get(i)+"]没有找到对应的描述，请在 ByteCodeMap 中添加。");
 				} catch (JvmException e) {
 					e.printStackTrace();
 				}
