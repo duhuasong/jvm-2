@@ -1,4 +1,7 @@
 package jvm.classloader.classfile;
+
+import jvm.util.enums.ConstantTypeEnum;
+
 /**
  * nameAndType如果描述的是Method：方法名和入出参数
  * nameAndType如果描述的是Field：字段名和类型
@@ -19,6 +22,8 @@ public class ConstantFile {
 	
 	//field、method、nameAndType常量的后两字节索引
 	public int last_uft8_index;
+	
+	public boolean translated = false;
 
 	public ConstantFile(String type, int uft8_index) {
 		super();
@@ -30,6 +35,9 @@ public class ConstantFile {
 		super();
 		this.type = type;
 		this.content = content;
+		if(ConstantTypeEnum.utf8.getCode().equals(type) ||ConstantTypeEnum.longType.getCode().equals(type) ){
+			translated = true;
+		}
 	}
 
 	public ConstantFile(String type, int class_uft8_index,

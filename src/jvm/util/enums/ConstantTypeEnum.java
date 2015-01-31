@@ -8,7 +8,7 @@ public enum ConstantTypeEnum {
 	stringType("stringType", "08"), 
 	nameAndType("nameAndType", "0c"),
 	longType("longType", "05"),
-	utf8("utf8", "01");
+	utf8("utf8", "01"), interfaceMethod("interfaceMethod","0b");
 
 	private String name;
 	private String code;

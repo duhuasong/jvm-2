@@ -147,6 +147,14 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				} catch (JvmException e) {
 					e.printStackTrace();
 				}
+			}else if(byteCodeDesc.index_number == 1){//下一个字节是操作数
+				String opcodeNum = null;
+				if(byteCodeDesc.type.equals("int")){
+					opcodeNum = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)) + "";
+				}
+				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
+				result.add(instr);
+				i = i + 1;
 			}else if(byteCodeDesc.index_number == 2){//下两个字节是操作数
 				String opcodeNum = null;
 				if(byteCodeDesc.type.equals("int")){
@@ -156,14 +164,18 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
 				result.add(instr);
 				i = i + 2;		
-			}else if(byteCodeDesc.index_number == 1){//下一个字节是操作数
+			}else if(byteCodeDesc.index_number == 4){//下四个字节是操作数
 				String opcodeNum = null;
-				if(byteCodeDesc.type.equals("int")){
-					opcodeNum = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)) + "";
+				//String opcodeNum2 = null;
+				if(byteCodeDesc.type.equals("invokeinterface")){
+					int next_u2_index = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+1)+code_attribute.byteCodes.get(i+2));
+					opcodeNum = classFile.getUtf8ConstantContentByIndex(next_u2_index);
+					//opcodeNum2 = ByteHexUtil.fromHexToInt(code_attribute.byteCodes.get(i+3)) + "";
 				}
+				//Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum + "," + opcodeNum2 + ",0");
 				Instruction instr = new Instruction(byteCodeDesc.desc, opcodeNum);
 				result.add(instr);
-				i = i + 1;
+				i = i + 4;
 			}else{//没有操作数
 				Instruction instr = new Instruction(byteCodeDesc.desc);
 				result.add(instr);
@@ -200,15 +212,30 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 			ConstantFile cf = classFile.constantFiles.get(key);
 			if(cf.type.equals(ConstantTypeEnum.classType.getCode()) || cf.type.equals(ConstantTypeEnum.stringType.getCode())){
 				cf.content = classFile.getUtf8ConstantContentByIndex(cf.uft8_index);
+				cf.translated = true;
 			}
 		}
 		//（2）解析NameAndType类型的常量
 		translateConstantWithTwoIndex(classFile,new String[]{ConstantTypeEnum.nameAndType.getCode()},Constants.ConstantLinkSymbol.nameAndType);
-		//（3）解析method和field类型的常量
-		translateConstantWithTwoIndex(classFile,new String[]{ConstantTypeEnum.method.getCode(),ConstantTypeEnum.field.getCode()},Constants.ConstantLinkSymbol.methodAndField);
-		
+		//（3）解析method、field、interfaceMethod类型的常量
+		translateConstantWithTwoIndex(classFile,new String[]{ConstantTypeEnum.method.getCode(),ConstantTypeEnum.field.getCode(),ConstantTypeEnum.interfaceMethod.getCode()},Constants.ConstantLinkSymbol.methodAndField);
+		//检查constant池是否还存在没翻译的
+		checkConstant(classFile);
 	}
 
+	private void checkConstant(ClassFile classFile) {
+		Set<Integer> set = classFile.constantFiles.keySet();
+		for(Integer key : set){
+			ConstantFile cf = classFile.constantFiles.get(key);
+			if(!cf.translated){
+				try {
+					throw new JvmException("classFile中常量类型为["+ ConstantTypeEnum.getName(cf.type)+"]还没有翻译");
+				} catch (JvmException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	/**
 	 * 解析有两个索引的常量
 	 * @param classFile
@@ -223,6 +250,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				String pre_content = classFile.getUtf8ConstantContentByIndex(cf.pre_uft8_index);
 				String last_content = classFile.getUtf8ConstantContentByIndex(cf.last_uft8_index);
 				cf.content = pre_content + symbol + last_content;
+				cf.translated = true;
 			}
 		}
 	}

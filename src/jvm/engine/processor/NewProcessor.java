@@ -13,7 +13,6 @@ import jvm.util.Constants;
 import jvm.util.MethodUtil;
 import jvm.util.annotation.ProcessorAnnotation;
 import jvm.util.common.StringUtil;
-import jvm.util.exception.JvmException;
 import jvm.util.factory.ClassLoaderFactory;
 /**
  * 指令：new <class><n>
@@ -54,11 +53,15 @@ public class NewProcessor implements InstructionProcessor {
 	}
 
 	private void executeOfficial(String className, JavaStack javaStack) {
+		//把实例加入oprand stack
+		OperandVariable opNum = null;
 		try {
-			throw new JvmException("[new]javaApi中的类还没有实现");
-		} catch (JvmException e) {
+			opNum = new OperandVariable(Constants.VarType.Object_Type,Class.forName(className).newInstance());
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		javaStack.pushOprand(opNum);
 	}
 
 }

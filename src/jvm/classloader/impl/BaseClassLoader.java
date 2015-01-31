@@ -115,7 +115,7 @@ public class BaseClassLoader extends AbstractClassLoader {
 								continue;
 							}
 						}
-					}else if(ConstantTypeEnum.method.getCode().equals(obj.constant_type) || ConstantTypeEnum.field.getCode().equals(obj.constant_type) || ConstantTypeEnum.nameAndType.getCode().equals(obj.constant_type)){//如果常量类型是0a
+					}else if(ConstantTypeEnum.method.getCode().equals(obj.constant_type) || ConstantTypeEnum.field.getCode().equals(obj.constant_type) || ConstantTypeEnum.nameAndType.getCode().equals(obj.constant_type) || ConstantTypeEnum.interfaceMethod.getCode().equals(obj.constant_type)){//如果常量类型是0a
 						//如果当前读取的是常量的第一部分
 						if(obj.constant_type_part == 1){
 							setLenAndTemp(obj,4);
@@ -165,10 +165,9 @@ public class BaseClassLoader extends AbstractClassLoader {
 								setLenAndTemp(obj,1);
 								continue;
 							}
-							
 						}
 					}else{
-						throw new JvmException("第["+obj.constant_pool_pointer+"]个常量的类型["+obj.constant_type+"]的读取还未处理。");
+						throw new JvmException("第["+obj.constant_pool_pointer+"]个常量的类型["+obj.constant_type+"]的读取还未处理，请在ConstantTypeEnum中添加。");
 					}
 					
 				}else if(readElement.name.equals("access_flags")){

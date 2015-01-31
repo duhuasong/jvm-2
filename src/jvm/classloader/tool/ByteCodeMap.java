@@ -53,6 +53,8 @@ public class ByteCodeMap {
 		putByteCodeDesc(new ByteCodeDesc("b7", "invokespecial",2));
 		putByteCodeDesc(new ByteCodeDesc("b8", "invokestatic",2));
 		putByteCodeDesc(new ByteCodeDesc("bb", "new",2));
+		putByteCodeDesc(new ByteCodeDesc("b9", "invokeinterface",4,"invokeinterface"));
+		putByteCodeDesc(new ByteCodeDesc("57", "pop"));
 		
 		
 		
@@ -82,6 +84,7 @@ public class ByteCodeMap {
 		//操作码后面操作数的字节数
 		public int index_number;
 		//操作码后面操作数的字节数应该翻译成什么类型（基本上都是int类型，所以这里默认是int类型）
+		//int，invokeinterface
 		public String type = "int";
 		
 		public ByteCodeDesc(String hex, String desc, int index_number) {
@@ -89,6 +92,14 @@ public class ByteCodeMap {
 			this.hex = hex;
 			this.desc = desc;
 			this.index_number = index_number;
+		}
+		
+		public ByteCodeDesc(String hex, String desc, int index_number,String type) {
+			super();
+			this.hex = hex;
+			this.desc = desc;
+			this.index_number = index_number;
+			this.type = type;
 		}
 
 		public ByteCodeDesc(String hex, String desc) {
