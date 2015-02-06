@@ -17,6 +17,7 @@ import jvm.memory.Memory;
 import jvm.memory.classinfo.ClassInfo;
 import jvm.memory.classinfo.FieldInfo;
 import jvm.memory.classinfo.MethodInfo;
+import jvm.util.AccessFlagUtil;
 import jvm.util.Constants;
 import jvm.util.MethodUtil;
 import jvm.util.common.ByteHexUtil;
@@ -101,6 +102,7 @@ public abstract class AbstractClassLoader implements InterfaceClassLoader {
 				//×ª»»instruction
 				List<Instruction> instr = mergeByteCode(methodfile,classFile);
 				methodinfo.setMethodInstructions(instr);
+				methodinfo.setSynchronized(AccessFlagUtil.isSynchronized(methodfile.access_flags));
 				methods.add(methodinfo);
 			}else{
 				//¿½±´fieldinfo

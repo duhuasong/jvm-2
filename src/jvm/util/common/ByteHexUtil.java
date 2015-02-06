@@ -3,7 +3,12 @@ package jvm.util.common;
 import java.io.UnsupportedEncodingException;
 
 public class ByteHexUtil {
-
+	
+	/**
+	 * 二进制转换为16进制
+	 * @param src
+	 * @return
+	 */
 	public static String bytesToHexString(byte[] src) {
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (src == null || src.length <= 0) {
@@ -19,7 +24,14 @@ public class ByteHexUtil {
 		}
 		return stringBuilder.toString();
 	}
-
+	/**
+	 * 二进制转换为10进制
+	 * 例如： ByteHexUtil.getInt(temp, false, temp.length);
+	 * @param buf
+	 * @param asc
+	 * @param len
+	 * @return
+	 */
 	public static int getInt(byte[] buf, boolean asc, int len) {
 		if (buf == null) {
 			throw new IllegalArgumentException("byte array is null!");
@@ -67,7 +79,11 @@ public class ByteHexUtil {
         long v7 = (long) (a[7] & 0xff);  
         return v0 + v1 + v2 + v3 + v4 + v5 + v6 + v7;  
     }  
-
+    /**
+     * 把二进制按照utf8的方式解码
+     * @param temp
+     * @return
+     */
 	public static String getStringFromUtf8(byte[] temp) {
 		try {
 			return new String(temp, "US-ASCII");
@@ -76,7 +92,11 @@ public class ByteHexUtil {
 		};
 		return null;
 	}
-
+	/**
+	 * 16进制转换为10进制
+	 * @param hex
+	 * @return
+	 */
 	public static int fromHexToInt(String hex) {
 		return Integer.parseInt(hex,16);
 	}

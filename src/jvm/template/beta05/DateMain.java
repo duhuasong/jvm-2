@@ -11,7 +11,7 @@ public class DateMain {
 		System.out.println(p.getAge());
 	}
 	
-	public static int add(int i,int j) {
+	public static synchronized int add(int i,int j) {
 		return i+j;
 	}
 

@@ -14,6 +14,8 @@ public class MethodInfo {
 	
 	private TypeDescriptor typeDescriptor;
 	
+	private boolean isSynchronized = false;
+	
 	private List<Instruction> methodInstructions;
 	
 	public String getDescriptor() {
@@ -66,6 +68,14 @@ public class MethodInfo {
 			sb.append(inst.opcode).append("  ").append(inst.opcodeNum==null?"":inst.opcodeNum).append("\n");
 		}
 		return sb.toString();
+	}
+
+	public boolean isSynchronized() {
+		return isSynchronized;
+	}
+
+	public void setSynchronized(boolean isSynchronized) {
+		this.isSynchronized = isSynchronized;
 	}
 
 
