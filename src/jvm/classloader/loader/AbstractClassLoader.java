@@ -1,4 +1,4 @@
-package jvm.classloader;
+package jvm.classloader.loader;
 
 import java.util.ArrayList;
 import java.util.HashMap;

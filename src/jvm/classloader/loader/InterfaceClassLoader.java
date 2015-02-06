@@ -1,4 +1,4 @@
-package jvm.classloader;
+package jvm.classloader.loader;
 
 import jvm.memory.classinfo.ClassInfo;
 

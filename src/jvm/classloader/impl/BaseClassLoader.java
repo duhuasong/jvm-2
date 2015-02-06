@@ -5,10 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import jvm.classloader.AbstractClassLoader;
 import jvm.classloader.classfile.ClassFile;
 import jvm.classloader.classfile.ConstantFile;
 import jvm.classloader.classfile.FieldMethodFile;
+import jvm.classloader.loader.AbstractClassLoader;
 import jvm.classloader.tool.ClassFileReadCounter;
 import jvm.classloader.tool.TempVariable;
 import jvm.classloader.tool.ClassFileReadCounter.ClassElement;

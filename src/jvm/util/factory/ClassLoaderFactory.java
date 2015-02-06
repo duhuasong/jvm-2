@@ -3,7 +3,7 @@ package jvm.util.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import jvm.classloader.InterfaceClassLoader;
+import jvm.classloader.loader.InterfaceClassLoader;
 
 public class ClassLoaderFactory {
 	

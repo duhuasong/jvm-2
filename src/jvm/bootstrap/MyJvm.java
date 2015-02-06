@@ -1,7 +1,7 @@
 package jvm.bootstrap;
 
-import jvm.classloader.InterfaceClassLoader;
 import jvm.classloader.impl.BaseClassLoader;
+import jvm.classloader.loader.InterfaceClassLoader;
 import jvm.engine.ExecuteEngine;
 import jvm.util.factory.ClassLoaderFactory;
 import jvm.util.factory.ProcessorFactory;

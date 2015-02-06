@@ -1,7 +1,7 @@
 package jvm.engine.processor;
 
-import jvm.classloader.InterfaceClassLoader;
 import jvm.classloader.impl.BaseClassLoader;
+import jvm.classloader.loader.InterfaceClassLoader;
 import jvm.engine.instruction.Instruction;
 import jvm.engine.instruction.InstructionProcessor;
 import jvm.memory.Memory.MethodArea;
