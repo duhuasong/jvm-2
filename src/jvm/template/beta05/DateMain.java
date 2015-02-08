@@ -8,6 +8,7 @@ public class DateMain {
 		int age = add(i,j);
 		People p = new Man("hehe", age);
 		p.pie();
+		p.setAge(30);
 		System.out.println(p.getAge());
 	}
 	

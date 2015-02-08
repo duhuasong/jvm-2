@@ -27,7 +27,7 @@ public class People {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public synchronized void setAge(int age) {
 		this.age = age;
 	}
 	public void pie() {
